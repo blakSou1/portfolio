@@ -37,7 +37,7 @@
       "year": 2025,
       "description": "Интерактивная 3D-модель с OrbitControls. Исходник .blend спрятан в private/.",
       "type": "model",
-      "model": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf",
+      "model": "https://unpkg.com/three@0.160.0/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf",
       "poster": "",
       "featured": true
     },
@@ -48,9 +48,31 @@
       "year": 2025,
       "description": "Анимированная модель (скелетная анимация) в интерактивном просмотрщике.",
       "type": "model",
-      "model": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/models/gltf/Soldier.glb",
+      "model": "https://unpkg.com/three@0.160.0/examples/models/gltf/Soldier.glb",
       "poster": "",
       "featured": false
+    },
+    {
+      "id": "test-duck",
+      "title": "Test Duck (.glb)",
+      "category": "modeling",
+      "year": 2026,
+      "description": "Тестовая модель из репозитория (assets/models/test-duck.glb). Крути мышью как в Blender.",
+      "type": "model",
+      "model": "https://blaksou1.github.io/portfolio/assets/models/test-duck.glb",
+      "poster": "",
+      "featured": true
+    },
+    {
+      "id": "test-cesiumman",
+      "title": "Test CesiumMan (.glb, анимация)",
+      "category": "animation",
+      "year": 2026,
+      "description": "Тестовая анимированная модель. Используй ⏸, Speed и Anim для управления воспроизведением.",
+      "type": "model",
+      "model": "https://blaksou1.github.io/portfolio/assets/models/test-cesiumman.glb",
+      "poster": "",
+      "featured": true
     },
     {
       "id": "draft-concept",
