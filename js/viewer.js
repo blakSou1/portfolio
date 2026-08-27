@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 /* ---------- Control panel helper ---------- */
@@ -248,7 +249,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.autoRotate = true;
+  controls.autoRotate = false;
   controls.autoRotateSpeed = 1.2;
   controls.enablePan = true;
 
@@ -256,30 +257,48 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   let actions = [], current = null, grid = null, wire = false;
   let raf;
 
-  const loader = new GLTFLoader();
+  if (modelUrl.toLowerCase().endsWith(".blend")) {
+    const txt = document.createElement("div");
+    txt.style.cssText = "color:#ffb454;padding:24px;font-family:var(--mono);line-height:1.6;";
+    txt.innerHTML = "Blender (.blend) нельзя открыть прямо в браузере.<br>" +
+      "Экспортируй файл из Blender: <b>File → Export → glTF Binary (.glb)</b> " +
+      "или <b>.fbx</b> и закинь в <code>assets/models/</code>.";
+    stage.appendChild(txt);
+    function loop0() { raf = requestAnimationFrame(loop0); controls.update(); renderer.render(scene, camera); }
+    loop0();
+    return { dispose() { cancelAnimationFrame(raf); controls.dispose(); renderer.dispose(); renderer.domElement.remove(); } };
+  }
+
+  function onLoaded(model, animations) {
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    model.position.sub(center);
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    model.scale.setScalar(2.2 / maxDim);
+    scene.add(model);
+
+    if (animations && animations.length) {
+      mixer = new THREE.AnimationMixer(model);
+      actions = animations.map((clip) => mixer.clipAction(clip));
+      current = actions[0];
+      current.play();
+    }
+    grid = new THREE.GridHelper(6, 12, 0x333355, 0x1a1a2a);
+    grid.position.y = -1.2;
+    scene.add(grid);
+
+    if (withControls) buildModelControls();
+  }
+
+  const ext = modelUrl.toLowerCase().split(".").pop();
+  const loader = ext === "fbx" ? new FBXLoader() : new GLTFLoader();
   loader.load(
     modelUrl,
-    (gltf) => {
-      const model = gltf.scene;
-      const box = new THREE.Box3().setFromObject(model);
-      const center = box.getCenter(new THREE.Vector3());
-      const size = box.getSize(new THREE.Vector3());
-      model.position.sub(center);
-      const maxDim = Math.max(size.x, size.y, size.z) || 1;
-      model.scale.setScalar(2.2 / maxDim);
-      scene.add(model);
-
-      if (gltf.animations && gltf.animations.length) {
-        mixer = new THREE.AnimationMixer(model);
-        actions = gltf.animations.map((clip) => mixer.clipAction(clip));
-        current = actions[0];
-        current.play();
-      }
-      grid = new THREE.GridHelper(6, 12, 0x333355, 0x1a1a2a);
-      grid.position.y = -1.2;
-      scene.add(grid);
-
-      if (withControls) buildModelControls();
+    (result) => {
+      const model = result.scene || result;
+      const animations = result.animations || [];
+      onLoaded(model, animations);
     },
     undefined,
     (err) => {
@@ -302,7 +321,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       playBtn.textContent = playing ? "⏸" : "▶";
       playBtn.classList.toggle("active", playing);
     });
-    p.btn("Auto", () => {}, true).addEventListener("click", (e) => {
+    p.btn("Auto", () => {}, false).addEventListener("click", (e) => {
       controls.autoRotate = !controls.autoRotate;
       e.currentTarget.classList.toggle("active", controls.autoRotate);
     });

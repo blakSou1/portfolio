@@ -10,7 +10,7 @@ const state = {
 const $ = (sel) => document.querySelector(sel);
 
 const SCAN = [
-  { path: "assets/models",   ext: ["glb", "gltf"],           type: "model",  category: "modeling" },
+  { path: "assets/models",   ext: ["glb", "gltf", "fbx", "blend"], type: "model", category: "modeling" },
   { path: "assets/shaders",  ext: ["frag"],                  type: "shader", category: "shaders" },
   { path: "assets/previews", ext: ["png","jpg","jpeg","webp","svg"], type: "image", category: "graphics" },
   { path: "assets/videos",   ext: ["mp4","webm"],            type: "video",  category: "animation" },
@@ -46,7 +46,7 @@ async function discover(g) {
         type: cfg.type,
         auto: true,
       };
-      item[cfg.type] = it.download_url;
+      item[cfg.type] = (g.pagesBase || "") + it.path;
       found.push(item);
     }
   }

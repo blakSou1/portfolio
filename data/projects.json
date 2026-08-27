@@ -9,7 +9,8 @@
     "owner": "blakSou1",
     "repo": "portfolio",
     "branch": "main",
-    "auto": true
+    "auto": true,
+    "pagesBase": "https://blaksou1.github.io/portfolio/"
   },
   "categories": [
     { "id": "all", "label": "Всё" },
