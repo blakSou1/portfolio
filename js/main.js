@@ -9,10 +9,74 @@ const state = {
 
 const $ = (sel) => document.querySelector(sel);
 
+const SCAN = [
+  { path: "assets/models",   ext: ["glb", "gltf"],           type: "model",  category: "modeling" },
+  { path: "assets/shaders",  ext: ["frag"],                  type: "shader", category: "shaders" },
+  { path: "assets/previews", ext: ["png","jpg","jpeg","webp","svg"], type: "image", category: "graphics" },
+  { path: "assets/videos",   ext: ["mp4","webm"],            type: "video",  category: "animation" },
+];
+
+function humanize(name) {
+  const base = name.replace(/\.[^.]+$/, "");
+  return base.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+async function githubList(owner, repo, branch, path) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`GitHub API ${r.status} для ${path}`);
+  return r.json();
+}
+
+async function discover(g) {
+  const found = [];
+  for (const cfg of SCAN) {
+    let items;
+    try { items = await githubList(g.owner, g.repo, g.branch, cfg.path); }
+    catch (e) { console.warn(e.message); continue; }
+    if (!Array.isArray(items)) continue;
+    for (const it of items) {
+      const ext = (it.name.split(".").pop() || "").toLowerCase();
+      if (!cfg.ext.includes(ext)) continue;
+      const item = {
+        id: it.path,
+        title: humanize(it.name),
+        category: cfg.category,
+        year: new Date().getFullYear(),
+        type: cfg.type,
+        auto: true,
+      };
+      item[cfg.type] = it.download_url;
+      found.push(item);
+    }
+  }
+  return found;
+}
+
 async function loadData() {
   const res = await fetch("data/projects.json", { cache: "no-store" });
   if (!res.ok) throw new Error("Не удалось загрузить data/projects.json");
-  return res.json();
+  const data = await res.json();
+
+  let projects = (data.projects || []).map((p) => ({ ...p }));
+
+  if (data.github && data.github.auto) {
+    try {
+      const auto = await discover(data.github);
+      const known = new Set(
+        projects.flatMap((p) => [p.model, p.shader, p.image, p.video].filter(Boolean))
+      );
+      for (const a of auto) {
+        if (known.has(a[a.type])) continue;
+        const ov = projects.find((p) => p.file === a.id || p.file === a.title);
+        projects.push(ov ? { ...a, ...ov } : a);
+      }
+    } catch (e) {
+      console.warn("Авто-подтягивание не сработало:", e.message);
+    }
+  }
+  data.projects = projects;
+  return data;
 }
 
 function isHiddenVisible() {
@@ -77,7 +141,7 @@ function makeCardMedia(p) {
     media.appendChild(live);
     const cv = document.createElement("canvas");
     media.appendChild(cv);
-    requestAnimationFrame(() => openShaderViewer(cv, p.shader, true));
+    requestAnimationFrame(() => openShaderViewer(cv, p.shader, { small: true }));
   } else if (p.type === "image") {
     if (p.image) {
       const img = document.createElement("img");
@@ -152,9 +216,12 @@ function openModal(p) {
   }
 
   if (p.type === "model") {
-    state.currentViewer = openModelViewer(stage, p.model);
+    state.currentViewer = openModelViewer(stage, p.model, { withControls: true });
   } else if (p.type === "shader") {
-    state.currentViewer = openShaderViewer(stage, p.shader, false);
+    const cv = document.createElement("canvas");
+    cv.style.cssText = "width:100%;height:100%;display:block;";
+    stage.appendChild(cv);
+    state.currentViewer = openShaderViewer(cv, p.shader, { small: false, withControls: true });
   } else if (p.type === "image") {
     const img = document.createElement("img");
     img.src = p.image; img.style.cssText = "width:100%;height:100%;object-fit:contain;";

@@ -5,6 +5,12 @@
     "author": "ТВОЁ ИМЯ",
     "secretKey": "my-secret-key-123"
   },
+  "github": {
+    "owner": "blakSou1",
+    "repo": "portfolio",
+    "branch": "main",
+    "auto": true
+  },
   "categories": [
     { "id": "all", "label": "Всё" },
     { "id": "modeling", "label": "3D-моделирование" },
