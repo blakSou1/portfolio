@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STUDIO — 3D / Shaders / Animation</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="bg-canvas"></div>
+
+  <header class="site-header">
+    <div class="brand" id="site-title">STUDIO</div>
+    <div class="subtitle" id="site-subtitle"></div>
+    <nav class="filters" id="filters"></nav>
+  </header>
+
+  <main>
+    <section class="intro" id="intro"></section>
+    <section class="gallery" id="gallery"></section>
+  </main>
+
+  <footer class="site-footer">
+    <span id="footer-author"></span>
+    <span class="hint">Все работы защищены авторским правом. Копирование и использование без разрешения автора запрещено.</span>
+  </footer>
+
+  <!-- Modal viewer -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-body">
+      <button class="modal-close" data-close aria-label="Закрыть">×</button>
+      <div class="modal-stage" id="modal-stage"></div>
+      <div class="modal-info">
+        <h2 id="modal-title"></h2>
+        <p id="modal-desc"></p>
+        <div class="modal-meta" id="modal-meta"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

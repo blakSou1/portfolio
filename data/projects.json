@@ -1,0 +1,59 @@
+{
+  "site": {
+    "title": "STUDIO — 3D / Shaders / Animation",
+    "subtitle": "Портфолио: 3D-моделирование, шейдеры, анимация и графика",
+    "author": "ТВОЁ ИМЯ",
+    "secretKey": "my-secret-key-123"
+  },
+  "categories": [
+    { "id": "all", "label": "Всё" },
+    { "id": "modeling", "label": "3D-моделирование" },
+    { "id": "shaders", "label": "Шейдеры" },
+    { "id": "animation", "label": "Анимация" },
+    { "id": "graphics", "label": "Графика" }
+  ],
+  "projects": [
+    {
+      "id": "sample-shader-aurora",
+      "title": "Aurora Shader",
+      "category": "shaders",
+      "year": 2026,
+      "description": "Живой фрагментный шейдер: северное сияние на GLSL. Запускается прямо в браузере.",
+      "type": "shader",
+      "shader": "assets/shaders/aurora.frag",
+      "featured": true
+    },
+    {
+      "id": "sample-model-helmet",
+      "title": "Sci-Fi Helmet",
+      "category": "modeling",
+      "year": 2025,
+      "description": "Интерактивная 3D-модель с OrbitControls. Исходник .blend спрятан в private/.",
+      "type": "model",
+      "model": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf",
+      "poster": "",
+      "featured": true
+    },
+    {
+      "id": "sample-anim-duck",
+      "title": "Animation Demo",
+      "category": "animation",
+      "year": 2025,
+      "description": "Анимированная модель (скелетная анимация) в интерактивном просмотрщике.",
+      "type": "model",
+      "model": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/models/gltf/Soldier.glb",
+      "poster": "",
+      "featured": false
+    },
+    {
+      "id": "draft-concept",
+      "title": "Черновик: концепт персонажа",
+      "category": "graphics",
+      "year": 2026,
+      "description": "Скрытый раздел — виден только владельцу по секретному ключу. Зрители его не видят.",
+      "type": "image",
+      "image": "assets/previews/placeholder.svg",
+      "hidden": true
+    }
+  ]
+}

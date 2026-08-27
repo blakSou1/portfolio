@@ -1,0 +1,7 @@
+# Исходники проектов не публикуются на GitHub Pages — только локально у автора.
+private/source/
+
+# Служебное
+.DS_Store
+Thumbs.db
+*.log
