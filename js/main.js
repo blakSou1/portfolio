@@ -1,4 +1,4 @@
-import { openModelViewer, openShaderViewer, mountBackground } from "./viewer.js";
+import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js";
 
 const state = {
   data: null,
@@ -160,9 +160,12 @@ function makeCardMedia(p) {
       media.style.background = "linear-gradient(135deg,#1a2a50,#2a1030)";
     }
   } else {
-    // model / default
+    // model / default -> live thumbnail render
     media.style.background =
       "radial-gradient(circle at 50% 40%, rgba(124,92,255,0.25), #07070c 70%)";
+    const cv = document.createElement("canvas");
+    media.appendChild(cv);
+    requestAnimationFrame(() => renderModelThumbnail(cv, p.model));
   }
   return media;
 }

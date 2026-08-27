@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 /* ---------- Control panel helper ---------- */
 function panel(stage, title) {
@@ -61,6 +62,61 @@ function panel(stage, title) {
       return s;
     },
   };
+}
+
+/* ---------- Environment for PBR (Blender-like look) ---------- */
+function makeEnv(renderer) {
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
+  return env;
+}
+
+function pickLoader(url) {
+  const ext = url.toLowerCase().split(".").pop();
+  return ext === "fbx" ? new FBXLoader() : new GLTFLoader();
+}
+
+/* ---------- Model thumbnail for gallery cards ---------- */
+export function renderModelThumbnail(canvas, modelUrl) {
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const scene = new THREE.Scene();
+  scene.environment = makeEnv(renderer);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const key = new THREE.DirectionalLight(0xffffff, 2.0);
+  key.position.set(3, 5, 4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0x7c5cff, 1.2);
+  rim.position.set(-4, 2, -3); scene.add(rim);
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+
+  function size() {
+    const w = canvas.clientWidth || 300, h = canvas.clientHeight || 200;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  size();
+
+  pickLoader(modelUrl).load(
+    modelUrl,
+    (res) => {
+      const model = res.scene || res;
+      const box = new THREE.Box3().setFromObject(model);
+      const c = box.getCenter(new THREE.Vector3());
+      const s = box.getSize(new THREE.Vector3());
+      model.position.sub(c);
+      const md = Math.max(s.x, s.y, s.z) || 1;
+      model.scale.setScalar(2.2 / md);
+      scene.add(model);
+      camera.position.set(0, 0.2, 4);
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    },
+    undefined,
+    () => { /* keep gradient fallback behind canvas */ }
+  );
 }
 
 /* ---------- Animated background ---------- */
@@ -239,6 +295,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.6));
