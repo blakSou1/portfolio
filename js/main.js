@@ -53,6 +53,29 @@ async function githubList(owner, repo, branch, path) {
   return r.json();
 }
 
+async function loadRenders(modelUrl) {
+  const g = state.data && state.data.github;
+  if (!g) return [];
+  const seg = modelUrl.split("/").pop();
+  const base = seg.replace(/\.[^.]+$/, "");
+  const rendersPath = "assets/renders/" + base;
+  try {
+    const items = await githubList(g.owner, g.repo, g.branch, rendersPath);
+    if (!Array.isArray(items)) return [];
+    return items
+      .filter((it) => /\.(png|jpe?g|webp)$/i.test(it.name))
+      .map((it) => (g.pagesBase || "") + it.path);
+  } catch (e) {
+    return [];
+  }
+}
+
+function showLightbox(src) {
+  const lb = $("#render-lightbox");
+  lb.querySelector("img").src = src;
+  lb.hidden = false;
+}
+
 async function discover(g) {
   const found = [];
   for (const cfg of SCAN) {
@@ -239,6 +262,9 @@ function openModal(p) {
 
   const stage = $("#modal-stage");
   stage.innerHTML = "";
+  $("#modal-renders").innerHTML = "";
+  $("#modal-renders").style.display = "none";
+  $("#render-lightbox").hidden = true;
 
   if (state.currentViewer && state.currentViewer.dispose) {
     state.currentViewer.dispose();
@@ -247,6 +273,23 @@ function openModal(p) {
 
   if (p.type === "model") {
     state.currentViewer = openModelViewer(stage, p.model, { withControls: true });
+    loadRenders(p.model).then((urls) => {
+      const strip = $("#modal-renders");
+      strip.innerHTML = "";
+      if (!urls.length) { strip.style.display = "none"; return; }
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = "Рендеры модели";
+      strip.appendChild(label);
+      urls.forEach((u) => {
+        const img = document.createElement("img");
+        img.src = u;
+        img.alt = p.title + " render";
+        img.addEventListener("click", () => showLightbox(u));
+        strip.appendChild(img);
+      });
+      strip.style.display = "flex";
+    });
   } else if (p.type === "shader") {
     const cv = document.createElement("canvas");
     cv.style.cssText = "width:100%;height:100%;display:block;";
@@ -275,6 +318,7 @@ function closeModal() {
     state.currentViewer = null;
   }
   $("#modal-stage").innerHTML = "";
+  $("#render-lightbox").hidden = true;
 }
 
 function init() {
@@ -297,7 +341,13 @@ function init() {
     el.addEventListener("click", closeModal)
   );
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+    if (e.key === "Escape") {
+      if (!$("#render-lightbox").hidden) $("#render-lightbox").hidden = true;
+      else closeModal();
+    }
+  });
+  $("#render-lightbox").addEventListener("click", () => {
+    $("#render-lightbox").hidden = true;
   });
 }
 
