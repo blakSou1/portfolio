@@ -9,6 +9,31 @@ const state = {
 
 const $ = (sel) => document.querySelector(sel);
 
+/* Lazy rendering: model thumbnails render once when visible; shader previews
+   animate only while on screen, and free their context when scrolled away. */
+const cardViewers = [];
+const lazy = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    const el = e.target;
+    if (el.__kind === "shader") {
+      if (e.isIntersecting) {
+        if (!el.__viewer) {
+          el.__viewer = openShaderViewer(el, el.__shader, { small: true });
+          cardViewers.push(el.__viewer);
+        } else {
+          el.__viewer.setVisible(true);
+        }
+      } else if (el.__viewer) {
+        el.__viewer.setVisible(false);
+      }
+    } else if (e.isIntersecting && el.__lazy) {
+      el.__lazy();
+      el.__lazy = null;
+      lazy.unobserve(el);
+    }
+  }
+}, { rootMargin: "300px" });
+
 const SCAN = [
   { path: "assets/models",   ext: ["glb", "gltf", "fbx", "blend"], type: "model", category: "modeling" },
   { path: "assets/shaders",  ext: ["frag"],                  type: "shader", category: "shaders" },
@@ -141,7 +166,9 @@ function makeCardMedia(p) {
     media.appendChild(live);
     const cv = document.createElement("canvas");
     media.appendChild(cv);
-    requestAnimationFrame(() => openShaderViewer(cv, p.shader, { small: true }));
+    cv.__kind = "shader";
+    cv.__shader = p.shader;
+    lazy.observe(cv);
   } else if (p.type === "image") {
     if (p.image) {
       const img = document.createElement("img");
@@ -160,18 +187,22 @@ function makeCardMedia(p) {
       media.style.background = "linear-gradient(135deg,#1a2a50,#2a1030)";
     }
   } else {
-    // model / default -> live thumbnail render
+    // model / default -> lazy single thumbnail render
     media.style.background =
       "radial-gradient(circle at 50% 40%, rgba(124,92,255,0.25), #07070c 70%)";
     const cv = document.createElement("canvas");
     media.appendChild(cv);
-    requestAnimationFrame(() => renderModelThumbnail(cv, p.model));
+    cv.__lazy = () => renderModelThumbnail(cv, p.model);
+    lazy.observe(cv);
   }
   return media;
 }
 
 function renderGallery() {
   const gallery = $("#gallery");
+  gallery.querySelectorAll("canvas").forEach((c) => lazy.unobserve(c));
+  cardViewers.forEach((v) => v.dispose && v.dispose());
+  cardViewers.length = 0;
   gallery.innerHTML = "";
   const projects = visibleProjects();
   if (!projects.length) {

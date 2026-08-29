@@ -77,27 +77,28 @@ function pickLoader(url) {
   return ext === "fbx" ? new FBXLoader() : new GLTFLoader();
 }
 
-/* ---------- Model thumbnail for gallery cards ---------- */
+/* ---------- Model thumbnail for gallery cards (single render, then frees GPU) ---------- */
 export function renderModelThumbnail(canvas, modelUrl) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+  } catch (e) {
+    return;
+  }
+  renderer.setPixelRatio(1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
-  scene.environment = makeEnv(renderer);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-  const key = new THREE.DirectionalLight(0xffffff, 2.0);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  const key = new THREE.DirectionalLight(0xffffff, 2.2);
   key.position.set(3, 5, 4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x7c5cff, 1.2);
+  const rim = new THREE.DirectionalLight(0x7c5cff, 1.4);
   rim.position.set(-4, 2, -3); scene.add(rim);
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 
-  function size() {
-    const w = canvas.clientWidth || 300, h = canvas.clientHeight || 200;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  size();
+  const w = canvas.clientWidth || 300, h = canvas.clientHeight || 200;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
 
   pickLoader(modelUrl).load(
     modelUrl,
@@ -113,6 +114,17 @@ export function renderModelThumbnail(canvas, modelUrl) {
       camera.position.set(0, 0.2, 4);
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
+
+      // Copy pixels to a plain 2D canvas, then release the WebGL context
+      try {
+        const copy = document.createElement("canvas");
+        copy.width = canvas.width;
+        copy.height = canvas.height;
+        copy.getContext("2d").drawImage(canvas, 0, 0);
+        copy.style.cssText = "width:100%;height:100%;object-fit:cover;display:block;";
+        if (canvas.parentNode) canvas.parentNode.replaceChild(copy, canvas);
+      } catch (e) { /* keep webgl canvas if copy fails */ }
+      try { renderer.dispose(); renderer.forceContextLoss(); } catch (e) {}
     },
     undefined,
     () => { /* keep gradient fallback behind canvas */ }
@@ -221,10 +233,10 @@ export function openShaderViewer(canvas, fragUrl, opts = {}) {
   }
   rebuild();
 
-  let raf, running = true, shaderOn = true;
+  let raf, dead = false, visible = true, shaderOn = true;
   let timeScale = 1, paramA = 0.5, paramB = 0.5, paramC = 0.5;
   const start = performance.now();
-  let elapsed = 0, last = start;
+  let elapsed = 0, last = start, playing = true;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, small ? 1 : 2);
@@ -237,9 +249,11 @@ export function openShaderViewer(canvas, fragUrl, opts = {}) {
   resize();
 
   function loop() {
-    if (!running) return;
+    raf = requestAnimationFrame(loop);
+    if (dead) return;
     const now = performance.now();
-    if (shaderOn) {
+    if (!visible) { last = now; return; }
+    if (shaderOn && playing) {
       elapsed += (now - last) * timeScale;
       gl.uniform1f(uni.u_time, elapsed / 1000);
       gl.uniform2f(uni.u_resolution, canvas.width, canvas.height);
@@ -247,18 +261,16 @@ export function openShaderViewer(canvas, fragUrl, opts = {}) {
       gl.uniform1f(uni.u_b, paramB);
       gl.uniform1f(uni.u_c, paramC);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-    } else {
+    } else if (!shaderOn) {
       gl.clearColor(0.04, 0.04, 0.06, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
     }
     last = now;
-    raf = requestAnimationFrame(loop);
   }
   loop();
 
   if (withControls) {
     const p = panel(canvas.parentElement, "Шейдер");
-    let playing = true;
     const playBtn = p.btn("⏸", null, true);
     playBtn.addEventListener("click", () => {
       playing = !playing;
@@ -279,7 +291,8 @@ export function openShaderViewer(canvas, fragUrl, opts = {}) {
   }
 
   return {
-    dispose() { running = false; cancelAnimationFrame(raf); ro.disconnect(); },
+    dispose() { dead = true; cancelAnimationFrame(raf); ro.disconnect(); },
+    setVisible(v) { visible = v; },
   };
 }
 
