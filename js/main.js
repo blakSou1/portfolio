@@ -71,6 +71,10 @@ async function discover(g) {
         type: cfg.type,
         auto: true,
       };
+      // Скрытый раздел: файлы с префиксом "hidden" или в папке /hidden/ видны только по секретному ключу
+      if (it.name.toLowerCase().startsWith("hidden") || it.path.toLowerCase().includes("/hidden/")) {
+        item.hidden = true;
+      }
       item[cfg.type] = (g.pagesBase || "") + it.path;
       found.push(item);
     }
@@ -83,19 +87,11 @@ async function loadData() {
   if (!res.ok) throw new Error("Не удалось загрузить data/projects.json");
   const data = await res.json();
 
-  let projects = (data.projects || []).map((p) => ({ ...p }));
-
+  // Галерея строится только из файлов репозитория (авто-подтягивание).
+  let projects = [];
   if (data.github && data.github.auto) {
     try {
-      const auto = await discover(data.github);
-      const known = new Set(
-        projects.flatMap((p) => [p.model, p.shader, p.image, p.video].filter(Boolean))
-      );
-      for (const a of auto) {
-        if (known.has(a[a.type])) continue;
-        const ov = projects.find((p) => p.file === a.id || p.file === a.title);
-        projects.push(ov ? { ...a, ...ov } : a);
-      }
+      projects = await discover(data.github);
     } catch (e) {
       console.warn("Авто-подтягивание не сработало:", e.message);
     }
