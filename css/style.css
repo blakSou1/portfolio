@@ -170,9 +170,43 @@ html, body {
 .modal-close:hover { border-color: var(--accent); }
 .modal-stage {
   width: 100%; height: min(60vh, 520px);
-  background: #07070c; position: relative;
+  position: relative;
+  background:
+    radial-gradient(90% 80% at 50% 32%, rgba(140, 150, 220, 0.13), transparent 62%),
+    radial-gradient(46% 44% at 50% 104%, rgba(0, 224, 198, 0.08), transparent 72%),
+    radial-gradient(72% 58% at 50% 112%, rgba(0, 0, 0, 0.78), transparent 62%),
+    linear-gradient(180deg, #17171f 0%, #0c0c13 55%, #06060a 100%);
 }
 .modal-stage canvas { width: 100% !important; height: 100% !important; display: block; }
+
+/* Sketchfab-like overlays */
+.modal-body:fullscreen {
+  width: 100vw; height: 100vh; max-height: none;
+  border-radius: 0; border: none;
+  background: #0c0c13;
+}
+.modal-body:fullscreen .modal-stage { height: calc(100vh - 130px); }
+.sf-loading {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.sf-loading .spinner {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.14);
+  border-top-color: var(--accent);
+  animation: sf-spin 0.8s linear infinite;
+}
+@keyframes sf-spin { to { transform: rotate(360deg); } }
+.sf-hint {
+  position: absolute; right: 14px; bottom: 14px; z-index: 3;
+  font-size: 11px; color: rgba(255, 255, 255, 0.45);
+  font-family: var(--mono); letter-spacing: 0.3px;
+  pointer-events: none; background: rgba(0, 0, 0, 0.3);
+  border-radius: 999px; padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 .modal-info { padding: 20px 24px 26px; }
 .modal-info h2 { margin: 0 0 8px; font-size: 24px; }
 .modal-info p { color: var(--muted); line-height: 1.6; margin: 0; }
@@ -253,3 +287,34 @@ html, body {
   background: var(--panel); color: var(--text);
   border: 1px solid var(--border); border-radius: 8px; padding: 5px 8px; font-size: 13px;
 }
+
+/* Sketchfab-like bottom toolbar (model viewer) */
+.vp-controls--sf {
+  left: 50%; transform: translateX(-50%);
+  bottom: 14px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(10, 10, 18, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 14px;
+  gap: 6px;
+  max-width: calc(100% - 20px);
+  overflow-x: auto;
+}
+.vp-controls--sf .vp-btn {
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-size: 12.5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.vp-controls--sf .vp-btn:hover { border-color: var(--accent); }
+.vp-controls--sf .vp-btn.active {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+}
+.vp-controls--sf .vp-slider, .vp-controls--sf .vp-select { font-size: 11.5px; white-space: nowrap; }
+.vp-controls--sf .vp-slider input[type="range"] { width: 84px; }

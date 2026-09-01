@@ -317,7 +317,6 @@ export function openShaderViewer(canvas, fragUrl, opts = {}) {
 export function openModelViewer(stage, modelUrl, opts = {}) {
   const withControls = !!opts.withControls;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x07070c);
 
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.set(0, 1, 4);
@@ -325,6 +324,9 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  renderer.setClearColor(0x000000, 0);
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
@@ -340,6 +342,17 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   controls.autoRotateSpeed = 1.2;
   controls.enablePan = true;
 
+  const loading = document.createElement("div");
+  loading.className = "sf-loading";
+  loading.innerHTML = '<div class="spinner"></div>';
+  stage.appendChild(loading);
+  const stopLoading = () => loading.remove();
+
+  const hint = document.createElement("div");
+  hint.className = "sf-hint";
+  hint.textContent = "ЛКМ — вращать · колесо — масштаб · ПКМ — сдвиг";
+  stage.appendChild(hint);
+
   let mixer = null, clock = new THREE.Clock();
   let actions = [], current = null, grid = null, wire = false;
   let raf;
@@ -353,6 +366,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       "Экспортируй файл из Blender: <b>File → Export → glTF Binary (.glb)</b> " +
       "или <b>.fbx</b> и закинь в <code>assets/models/</code>.";
     stage.appendChild(txt);
+    stopLoading();
     function loop0() { raf = requestAnimationFrame(loop0); controls.update(); renderer.render(scene, camera); }
     loop0();
     return { dispose() { cancelAnimationFrame(raf); controls.dispose(); renderer.dispose(); renderer.domElement.remove(); } };
@@ -416,12 +430,14 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   loader.load(
     modelUrl,
     (result) => {
+      stopLoading();
       const model = result.scene || result;
       const animations = result.animations || [];
       onLoaded(model, animations);
     },
     undefined,
     (err) => {
+      stopLoading();
       console.warn("Model load failed:", err);
       const txt = document.createElement("div");
       txt.style.cssText = "color:#ff8080;padding:20px;font-family:monospace;line-height:1.6;overflow:auto;max-height:100%;";
@@ -436,7 +452,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   );
 
   function buildModelControls() {
-    const p = panel(stage, "Модель");
+    const p = panel(stage, "");
+    p.el.classList.add("vp-controls--sf");
     let playing = true;
     const playBtn = p.btn("⏸", () => {}, true);
     playBtn.addEventListener("click", () => {
@@ -446,7 +463,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       playBtn.textContent = playing ? "⏸" : "▶";
       playBtn.classList.toggle("active", playing);
     });
-    p.btn("Auto", () => {}, false).addEventListener("click", (e) => {
+    p.btn("Spin", () => {}, false).addEventListener("click", (e) => {
       controls.autoRotate = !controls.autoRotate;
       e.currentTarget.classList.toggle("active", controls.autoRotate);
     });
@@ -467,6 +484,11 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       camera.position.copy(homePos);
       controls.target.copy(homeTarget);
       controls.update();
+    });
+    p.btn("⤢", () => {}, false).addEventListener("click", (e) => {
+      const box = stage.closest(".modal-body") || stage;
+      if (document.fullscreenElement) document.exitFullscreen();
+      else box.requestFullscreen && box.requestFullscreen();
     });
     p.slider("Speed", 0, 3, 1, (v) => { if (mixer) mixer.timeScale = v; });
     if (actions.length > 1) {
