@@ -374,8 +374,13 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     (err) => {
       console.warn("Model load failed:", err);
       const txt = document.createElement("div");
-      txt.style.cssText = "color:#ff8080;padding:20px;font-family:monospace;";
-      txt.textContent = "Не удалось загрузить модель: " + modelUrl;
+      txt.style.cssText = "color:#ff8080;padding:20px;font-family:monospace;line-height:1.6;overflow:auto;max-height:100%;";
+      const msg = err && err.message ? err.message : String(err);
+      txt.innerHTML = "Не удалось загрузить модель.<br><br>" +
+        "<b>Файл:</b> " + modelUrl.split("/").pop() + "<br>" +
+        "<b>Ошибка:</b> " + msg + "<br><br>" +
+        "<b>Решение:</b> Экспортируй из Blender как <code>glTF 2.0 (.glb)</code><br>" +
+        "(File → Export → glTF Binary 2.0)";
       stage.appendChild(txt);
     }
   );
