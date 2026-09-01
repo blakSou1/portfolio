@@ -73,7 +73,7 @@ function makeEnv(renderer) {
 }
 
 function pickLoader(url) {
-  const ext = url.toLowerCase().split(".").pop();
+  const ext = url.split("?")[0].toLowerCase().split(".").pop();
   return ext === "fbx" ? new FBXLoader() : new GLTFLoader();
 }
 
@@ -370,7 +370,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   const homePos = new THREE.Vector3(0, 1, 4);
   const homeTarget = new THREE.Vector3(0, 0, 0);
 
-  if (modelUrl.toLowerCase().endsWith(".blend")) {
+  if (modelUrl.split("?")[0].toLowerCase().endsWith(".blend")) {
     const txt = document.createElement("div");
     txt.style.cssText = "color:#ffb454;padding:24px;font-family:var(--mono);line-height:1.6;";
     txt.innerHTML = "Blender (.blend) нельзя открыть прямо в браузере.<br>" +
@@ -444,7 +444,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     if (withControls) buildModelControls();
   }
 
-  const ext = modelUrl.toLowerCase().split(".").pop();
+  const ext = modelUrl.split("?")[0].toLowerCase().split(".").pop();
   const loader = ext === "fbx" ? new FBXLoader() : new GLTFLoader();
   loader.load(
     modelUrl,

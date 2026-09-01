@@ -1,4 +1,15 @@
-import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js";
+import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260902a";
+
+// GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
+// старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
+// файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
+// Остальным файлам хватает статической версии ниже.
+const ASSET_VERSION = "20260902a";
+
+function assetUrl(path, fileSha) {
+  const v = fileSha || ASSET_VERSION;
+  return path + (path.includes("?") ? "&" : "?") + "v=" + v;
+}
 
 const state = {
   data: null,
@@ -56,7 +67,7 @@ async function githubList(owner, repo, branch, path) {
 async function loadRenders(modelUrl) {
   const g = state.data && state.data.github;
   if (!g) return [];
-  const seg = modelUrl.split("/").pop();
+  const seg = modelUrl.split("/").pop().split("?")[0];
   const base = seg.replace(/\.[^.]+$/, "");
   const rendersPath = "assets/renders/" + base;
   try {
@@ -64,7 +75,7 @@ async function loadRenders(modelUrl) {
     if (!Array.isArray(items)) return [];
     return items
       .filter((it) => /\.(png|jpe?g|webp)$/i.test(it.name))
-      .map((it) => (g.pagesBase || "") + it.path);
+      .map((it) => assetUrl((g.pagesBase || "") + it.path, it.sha));
   } catch (e) {
     return [];
   }
@@ -98,7 +109,7 @@ async function discover(g) {
       if (it.name.toLowerCase().startsWith("hidden") || it.path.toLowerCase().includes("/hidden/")) {
         item.hidden = true;
       }
-      item[cfg.type] = (g.pagesBase || "") + it.path;
+      item[cfg.type] = assetUrl((g.pagesBase || "") + it.path, it.sha);
       found.push(item);
     }
   }
@@ -310,6 +321,9 @@ function openModal(p) {
 }
 
 function closeModal() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
   const modal = $("#modal");
   modal.hidden = true;
   document.body.style.overflow = "";
