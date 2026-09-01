@@ -104,13 +104,15 @@ export function renderModelThumbnail(canvas, modelUrl) {
     modelUrl,
     (res) => {
       const model = res.scene || res;
-      const box = new THREE.Box3().setFromObject(model);
+      const holder = new THREE.Group();
+      holder.add(model);
+      scene.add(holder);
+      const box = new THREE.Box3().setFromObject(holder);
       const c = box.getCenter(new THREE.Vector3());
       const s = box.getSize(new THREE.Vector3());
-      model.position.sub(c);
+      holder.position.sub(c);
       const md = Math.max(s.x, s.y, s.z) || 1;
-      model.scale.setScalar(2.2 / md);
-      scene.add(model);
+      holder.scale.setScalar(2.2 / md);
       camera.position.set(0, 0.2, 4);
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
@@ -340,13 +342,24 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   }
 
   function onLoaded(model, animations) {
-    const box = new THREE.Box3().setFromObject(model);
+    // Оборачиваем модель в контейнер с единичной матрицей: у FBX корень имеет
+    // поворот (-90° по X), поэтому центрировать через position.sub() нельзя.
+    const holder = new THREE.Group();
+    holder.add(model);
+    scene.add(holder);
+    const box = new THREE.Box3().setFromObject(holder);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
-    model.position.sub(center);
+    holder.position.sub(center);
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    model.scale.setScalar(2.2 / maxDim);
-    scene.add(model);
+    holder.scale.setScalar(2.2 / maxDim);
+
+    let totalVerts = 0;
+    model.traverse((o) => {
+      if (o.isMesh && o.geometry && o.geometry.attributes.position) {
+        totalVerts += o.geometry.attributes.position.count;
+      }
+    });
 
     if (animations && animations.length) {
       mixer = new THREE.AnimationMixer(model);
@@ -357,6 +370,17 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     grid = new THREE.GridHelper(6, 12, 0x333355, 0x1a1a2a);
     grid.position.y = -1.2;
     scene.add(grid);
+
+    if (totalVerts > 500000) {
+      const hint = document.createElement("div");
+      hint.style.cssText =
+        "position:absolute;top:44px;left:12px;z-index:4;color:#ffb454;font-size:12px;" +
+        "font-family:var(--mono);background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px;border:1px solid #ffb45444;";
+      hint.textContent =
+        "Тяжёлая модель: ≈" + (totalVerts / 1000000).toFixed(1) +
+        " млн вершин. Можно проверить полигонаж в Blender (Decimate).";
+      stage.appendChild(hint);
+    }
 
     if (withControls) buildModelControls();
   }
