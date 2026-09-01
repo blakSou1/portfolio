@@ -393,10 +393,11 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     camera.updateProjectionMatrix();
     controls.update();
 
-    let totalVerts = 0;
+    let totalTris = 0;
     model.traverse((o) => {
       if (o.isMesh && o.geometry && o.geometry.attributes.position) {
-        totalVerts += o.geometry.attributes.position.count;
+        const g = o.geometry;
+        totalTris += Math.round((g.index ? g.index.count : g.attributes.position.count) / 3);
       }
     });
 
@@ -411,14 +412,14 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     grid.position.y = box.min.y - maxDim * 0.05;
     scene.add(grid);
 
-    if (totalVerts > 500000) {
+    if (totalTris > 200000) {
       const hint = document.createElement("div");
       hint.style.cssText =
         "position:absolute;top:44px;left:12px;z-index:4;color:#ffb454;font-size:12px;" +
         "font-family:var(--mono);background:rgba(0,0,0,.55);padding:6px 10px;border-radius:8px;border:1px solid #ffb45444;";
       hint.textContent =
-        "Тяжёлая модель: ≈" + (totalVerts / 1000000).toFixed(1) +
-        " млн вершин. Можно проверить полигонаж в Blender (Decimate).";
+        "Тяжёлая модель: ≈" + (totalTris / 1000000).toFixed(1) +
+        " млн треугольников. Уменьши полигонаж в Blender (Decimate / уровни Subdivision).";
       stage.appendChild(hint);
     }
 
