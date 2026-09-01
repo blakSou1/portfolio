@@ -353,6 +353,17 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   hint.textContent = "ЛКМ — вращать · колесо — масштаб · ПКМ — сдвиг";
   stage.appendChild(hint);
 
+  const fsBtn = document.createElement("button");
+  fsBtn.className = "sf-fs";
+  fsBtn.textContent = "⤢";
+  fsBtn.title = "Во весь экран";
+  fsBtn.addEventListener("click", () => {
+    const box = stage.closest(".modal-body") || stage;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else box.requestFullscreen && box.requestFullscreen();
+  });
+  stage.appendChild(fsBtn);
+
   let mixer = null, clock = new THREE.Clock();
   let actions = [], current = null, grid = null, wire = false;
   let raf;
@@ -393,13 +404,20 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     camera.updateProjectionMatrix();
     controls.update();
 
-    let totalTris = 0;
+    let totalTris = 0, totalVerts = 0;
     model.traverse((o) => {
       if (o.isMesh && o.geometry && o.geometry.attributes.position) {
         const g = o.geometry;
+        totalVerts += g.attributes.position.count;
         totalTris += Math.round((g.index ? g.index.count : g.attributes.position.count) / 3);
       }
     });
+
+    const fmt = (n) => n.toLocaleString("ru-RU");
+    const stats = document.createElement("div");
+    stats.className = "sf-stats";
+    stats.textContent = "Треуг.: " + fmt(totalTris) + " · Верш.: " + fmt(totalVerts);
+    stage.appendChild(stats);
 
     if (animations && animations.length) {
       mixer = new THREE.AnimationMixer(model);
@@ -456,18 +474,25 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const p = panel(stage, "");
     p.el.classList.add("vp-controls--sf");
     let playing = true;
-    const playBtn = p.btn("⏸", () => {}, true);
-    playBtn.addEventListener("click", () => {
-      if (!mixer) return;
-      playing = !playing;
-      actions.forEach((a) => (a.paused = !playing));
-      playBtn.textContent = playing ? "⏸" : "▶";
-      playBtn.classList.toggle("active", playing);
-    });
-    p.btn("Spin", () => {}, false).addEventListener("click", (e) => {
-      controls.autoRotate = !controls.autoRotate;
-      e.currentTarget.classList.toggle("active", controls.autoRotate);
-    });
+    if (actions.length) {
+      const playBtn = p.btn("⏸", () => {}, true);
+      playBtn.addEventListener("click", () => {
+        playing = !playing;
+        actions.forEach((a) => (a.paused = !playing));
+        playBtn.textContent = playing ? "⏸" : "▶";
+        playBtn.classList.toggle("active", playing);
+      });
+      p.slider("Speed", 0, 3, 1, (v) => { if (mixer) mixer.timeScale = v; });
+      if (actions.length > 1) {
+        p.select("Anim", actions.map((_, i) => "Anim " + (i + 1)), (val) => {
+          const idx = parseInt(val.split(" ")[1]) - 1;
+          actions.forEach((a) => a.stop());
+          current = actions[idx];
+          current.reset().play();
+          current.paused = !playing;
+        }, "Anim 1");
+      }
+    }
     p.btn("Wire", () => {}, false).addEventListener("click", (e) => {
       wire = !wire;
       scene.traverse((o) => {
@@ -486,21 +511,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       controls.target.copy(homeTarget);
       controls.update();
     });
-    p.btn("⤢", () => {}, false).addEventListener("click", (e) => {
-      const box = stage.closest(".modal-body") || stage;
-      if (document.fullscreenElement) document.exitFullscreen();
-      else box.requestFullscreen && box.requestFullscreen();
-    });
-    p.slider("Speed", 0, 3, 1, (v) => { if (mixer) mixer.timeScale = v; });
-    if (actions.length > 1) {
-      p.select("Anim", actions.map((_, i) => "Anim " + (i + 1)), (val) => {
-        const idx = parseInt(val.split(" ")[1]) - 1;
-        actions.forEach((a) => a.stop());
-        current = actions[idx];
-        current.reset().play();
-        current.paused = !playing;
-      }, "Anim 1");
-    }
   }
 
   function resize() {
