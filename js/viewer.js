@@ -77,6 +77,20 @@ function pickLoader(url) {
   return ext === "fbx" ? new FBXLoader() : new GLTFLoader();
 }
 
+// Меши с зеркальным масштабом (детерминант матрицы < 0) рендерятся изнутри-наружу
+function applyMirrorSide(model) {
+  model.updateMatrixWorld(true);
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const m = o.matrixWorld.elements;
+    const det = m[0]*(m[5]*m[10]-m[6]*m[9]) - m[1]*(m[4]*m[10]-m[6]*m[8]) + m[2]*(m[4]*m[9]-m[5]*m[8]);
+    if (det < 0) {
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      mats.forEach((mat) => { if (mat) mat.side = THREE.DoubleSide; });
+    }
+  });
+}
+
 /* ---------- Model thumbnail for gallery cards (single render, then frees GPU) ---------- */
 export function renderModelThumbnail(canvas, modelUrl) {
   let renderer;
@@ -104,17 +118,18 @@ export function renderModelThumbnail(canvas, modelUrl) {
     modelUrl,
     (res) => {
       const model = res.scene || res;
-      const holder = new THREE.Group();
-      holder.add(model);
-      scene.add(holder);
-      const box = new THREE.Box3().setFromObject(holder);
-      const c = box.getCenter(new THREE.Vector3());
+      scene.add(model);
+      applyMirrorSide(model);
+      const box = new THREE.Box3().setFromObject(model);
+      const cc = box.getCenter(new THREE.Vector3());
       const s = box.getSize(new THREE.Vector3());
-      holder.position.sub(c);
-      const md = Math.max(s.x, s.y, s.z) || 1;
-      holder.scale.setScalar(2.2 / md);
-      camera.position.set(0, 0.2, 4);
-      camera.lookAt(0, 0, 0);
+      const maxDim = Math.max(s.x, s.y, s.z) || 2;
+      const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.5;
+      camera.position.copy(cc).addScaledVector(new THREE.Vector3(0, 0.35, 1).normalize(), dist);
+      camera.near = Math.max(dist / 1000, 0.001);
+      camera.far = dist * 4 + maxDim;
+      camera.updateProjectionMatrix();
+      camera.lookAt(cc);
       renderer.render(scene, camera);
 
       // Copy pixels to a plain 2D canvas, then release the WebGL context
@@ -328,6 +343,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   let mixer = null, clock = new THREE.Clock();
   let actions = [], current = null, grid = null, wire = false;
   let raf;
+  const homePos = new THREE.Vector3(0, 1, 4);
+  const homeTarget = new THREE.Vector3(0, 0, 0);
 
   if (modelUrl.toLowerCase().endsWith(".blend")) {
     const txt = document.createElement("div");
@@ -342,17 +359,25 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   }
 
   function onLoaded(model, animations) {
-    // Оборачиваем модель в контейнер с единичной матрицей: у FBX корень имеет
-    // поворот (-90° по X), поэтому центрировать через position.sub() нельзя.
-    const holder = new THREE.Group();
-    holder.add(model);
-    scene.add(holder);
-    const box = new THREE.Box3().setFromObject(holder);
+    // Камеру наводим на центр модели, а модель не двигаем и не масштабируем:
+    // у FBX внутри бывают узлы с зеркальным (отрицательным) масштабом, при
+    // котором перенос позиции даёт двойной сдвиг и модель уезжает из кадра.
+    scene.add(model);
+    applyMirrorSide(model);
+    const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
-    holder.position.sub(center);
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    holder.scale.setScalar(2.2 / maxDim);
+    const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.4;
+    const dir = new THREE.Vector3(0, 0.35, 1).normalize();
+    homePos.copy(center).addScaledVector(dir, dist);
+    homeTarget.copy(center);
+    camera.position.copy(homePos);
+    controls.target.copy(homeTarget);
+    camera.near = Math.max(dist / 1000, 0.001);
+    camera.far = dist * 4 + maxDim;
+    camera.updateProjectionMatrix();
+    controls.update();
 
     let totalVerts = 0;
     model.traverse((o) => {
@@ -368,7 +393,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       current.play();
     }
     grid = new THREE.GridHelper(6, 12, 0x333355, 0x1a1a2a);
-    grid.position.y = -1.2;
+    grid.scale.setScalar(maxDim / 6);
+    grid.position.y = box.min.y - maxDim * 0.05;
     scene.add(grid);
 
     if (totalVerts > 500000) {
@@ -438,8 +464,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       if (grid) { grid.visible = !grid.visible; e.currentTarget.classList.toggle("active", grid.visible); }
     });
     p.btn("Reset", () => {}, false).addEventListener("click", () => {
-      camera.position.set(0, 1, 4);
-      controls.target.set(0, 0, 0);
+      camera.position.copy(homePos);
+      controls.target.copy(homeTarget);
       controls.update();
     });
     p.slider("Speed", 0, 3, 1, (v) => { if (mixer) mixer.timeScale = v; });
