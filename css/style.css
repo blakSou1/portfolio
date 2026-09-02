@@ -47,6 +47,30 @@ html, body {
   background-clip: text;
   color: transparent;
 }
+.social {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.social-btn {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--accent-2);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.social-btn:hover {
+  border-color: var(--accent-2);
+  color: #fff;
+  background: rgba(0, 224, 198, 0.15);
+}
 .subtitle { color: var(--muted); margin-top: 6px; font-size: 15px; }
 
 .filters {
