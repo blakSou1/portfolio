@@ -352,6 +352,13 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   };
   controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
 
+  // Не даём браузеру включить нативный автоскролл/выделение при зажатой
+  // кнопке над холстом (иначе СКМ-вращение и ЛКМ-сдвиг крутят страницу).
+  renderer.domElement.addEventListener("mousedown", (e) => {
+    if (e.button === 0 || e.button === 1 || e.button === 2) e.preventDefault();
+  });
+  renderer.domElement.addEventListener("dragstart", (e) => e.preventDefault());
+
   const loading = document.createElement("div");
   loading.className = "sf-loading";
   loading.innerHTML = '<div class="spinner"></div>';

@@ -1,10 +1,10 @@
-import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905a";
+﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905b";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260905a";
+const ASSET_VERSION = "20260905b";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -399,12 +399,17 @@ function init() {
   lbNavNext.className = "rl-nav next";
   lbNavNext.textContent = "›";
   lbNavNext.setAttribute("aria-label", "Следующий рендер");
+  const lbClose = document.createElement("button");
+  lbClose.className = "rl-close";
+  lbClose.textContent = "×";
+  lbClose.setAttribute("aria-label", "Закрыть просмотр");
   const lbCount = document.createElement("div");
   lbCount.className = "rl-count";
   lbCount.id = "rl-count";
   lbNavPrev.addEventListener("click", (e) => { e.stopPropagation(); lbStep(-1); });
   lbNavNext.addEventListener("click", (e) => { e.stopPropagation(); lbStep(1); });
-  lb.append(lbNavPrev, lbNavNext, lbCount);
+  lbClose.addEventListener("click", (e) => { e.stopPropagation(); closeLightbox(); });
+  lb.append(lbNavPrev, lbNavNext, lbClose, lbCount);
 
   const lbUrl = lb.querySelector("img");
   lbUrl.addEventListener("dblclick", lbReset);
