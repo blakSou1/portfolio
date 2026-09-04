@@ -1,10 +1,10 @@
-﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905c";
+﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905d";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260905c";
+const ASSET_VERSION = "20260905d";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;

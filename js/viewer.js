@@ -389,31 +389,11 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
 
   // Режимы отображения (левая панель)
   let modelMeshes = [];
-  let modelDim = 1;
   let facesOn = false;
   let showMats = true;
   let grayMats = true;
   let lightsOn = true;
   let flatMaterial = null;
-  let dotTex = null;
-
-  // Круглый мягкий спрайт для вершин (как точки в Blender), без яркого свечения
-  function dotTexture() {
-    if (!dotTex) {
-      const c = document.createElement("canvas");
-      const s = 64;
-      c.width = s; c.height = s;
-      const ctx = c.getContext("2d");
-      const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-      g.addColorStop(0, "rgba(255,255,255,1)");
-      g.addColorStop(0.4, "rgba(255,255,255,0.85)");
-      g.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, s, s);
-      dotTex = new THREE.CanvasTexture(c);
-    }
-    return dotTex;
-  }
 
   if (modelUrl.split("?")[0].toLowerCase().endsWith(".blend")) {
     const txt = document.createElement("div");
@@ -438,7 +418,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    modelDim = maxDim;
     const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.4;
     const dir = new THREE.Vector3(0, 0.35, 1).normalize();
     homePos.copy(center).addScaledVector(dir, dist);
@@ -574,22 +553,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       o.material = showMats ? o.userData.origMats : getFlatMat();
       const ms = showMats ? meshMats(o) : [getFlatMat()];
       ms.forEach((m) => { if (m) m.wireframe = facesOn; });
-      if (facesOn) {
-        if (!o.userData.pts) {
-          const pm = new THREE.PointsMaterial({
-            map: dotTexture(),
-            color: 0x7fb6ac, size: modelDim * 0.0055, sizeAttenuation: true,
-            transparent: true, opacity: 0.85, depthTest: false, alphaTest: 0.02,
-          });
-          const pts = new THREE.Points(o.geometry, pm);
-          pts.renderOrder = 999;
-          o.add(pts);
-          o.userData.pts = pts;
-        }
-        o.userData.pts.visible = true;
-      } else if (o.userData.pts) {
-        o.userData.pts.visible = false;
-      }
     });
     if (flatMaterial) flatMaterial.color.set(grayMats ? 0x8f8f9b : 0x13131a);
     sceneLights.forEach((l) => { l.visible = lightsOn; });
@@ -622,7 +585,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       return row;
     };
 
-    pop.append(makeItem("Грани и вершины", false, (v) => { facesOn = v; applyView(); }));
+    pop.append(makeItem("Треугольники", false, (v) => { facesOn = v; applyView(); }));
     pop.append(makeItem("Материалы", true, (v) => { showMats = v; grayRow.hidden = v; applyView(); }));
     const grayRow = makeItem("Серые материалы", true, (v) => { grayMats = v; applyView(); });
     grayRow.hidden = true;
@@ -662,7 +625,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       ro.disconnect();
       controls.dispose();
       if (flatMaterial) flatMaterial.dispose();
-      if (dotTex) dotTex.dispose();
       renderer.dispose();
       scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();
