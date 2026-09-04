@@ -395,6 +395,25 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   let grayMats = true;
   let lightsOn = true;
   let flatMaterial = null;
+  let dotTex = null;
+
+  // Круглый мягкий спрайт для вершин (как точки в Blender), без яркого свечения
+  function dotTexture() {
+    if (!dotTex) {
+      const c = document.createElement("canvas");
+      const s = 64;
+      c.width = s; c.height = s;
+      const ctx = c.getContext("2d");
+      const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      g.addColorStop(0, "rgba(255,255,255,1)");
+      g.addColorStop(0.4, "rgba(255,255,255,0.85)");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, s, s);
+      dotTex = new THREE.CanvasTexture(c);
+    }
+    return dotTex;
+  }
 
   if (modelUrl.split("?")[0].toLowerCase().endsWith(".blend")) {
     const txt = document.createElement("div");
@@ -558,8 +577,9 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       if (facesOn) {
         if (!o.userData.pts) {
           const pm = new THREE.PointsMaterial({
-            color: 0x00e0c6, size: modelDim * 0.006, sizeAttenuation: true,
-            transparent: true, opacity: 0.9, depthTest: false,
+            map: dotTexture(),
+            color: 0x7fb6ac, size: modelDim * 0.0055, sizeAttenuation: true,
+            transparent: true, opacity: 0.85, depthTest: false, alphaTest: 0.02,
           });
           const pts = new THREE.Points(o.geometry, pm);
           pts.renderOrder = 999;
@@ -642,6 +662,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       ro.disconnect();
       controls.dispose();
       if (flatMaterial) flatMaterial.dispose();
+      if (dotTex) dotTex.dispose();
       renderer.dispose();
       scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();
