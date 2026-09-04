@@ -330,17 +330,27 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
   const key = new THREE.DirectionalLight(0xffffff, 2.2);
   key.position.set(3, 5, 4); scene.add(key);
   const rim = new THREE.DirectionalLight(0x7c5cff, 1.5);
   rim.position.set(-4, 2, -3); scene.add(rim);
+  const sceneLights = [ambient, key, rim];
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.dampingFactor = 0.35;
+  controls.rotateSpeed = 0.6;
   controls.autoRotate = false;
   controls.autoRotateSpeed = 1.2;
   controls.enablePan = true;
+  // Вращение — по зажатой средней кнопке (колесо), зум — колесо, сдвиг — ЛКМ.
+  controls.mouseButtons = {
+    LEFT: THREE.MOUSE.PAN,
+    MIDDLE: THREE.MOUSE.ROTATE,
+    RIGHT: THREE.MOUSE.PAN,
+  };
+  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
 
   const loading = document.createElement("div");
   loading.className = "sf-loading";
@@ -350,7 +360,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
 
   const hint = document.createElement("div");
   hint.className = "sf-hint";
-  hint.textContent = "ЛКМ — вращать · колесо — масштаб · ПКМ — сдвиг";
+  hint.textContent = "СКМ — вращать · колесо — масштаб · ЛКМ — сдвиг";
   stage.appendChild(hint);
 
   const fsBtn = document.createElement("button");
@@ -365,10 +375,19 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   stage.appendChild(fsBtn);
 
   let mixer = null, clock = new THREE.Clock();
-  let actions = [], current = null, grid = null, wire = false;
+  let actions = [], current = null, grid = null;
   let raf;
   const homePos = new THREE.Vector3(0, 1, 4);
   const homeTarget = new THREE.Vector3(0, 0, 0);
+
+  // Режимы отображения (левая панель)
+  let modelMeshes = [];
+  let modelDim = 1;
+  let facesOn = false;
+  let showMats = true;
+  let grayMats = true;
+  let lightsOn = true;
+  let flatMaterial = null;
 
   if (modelUrl.split("?")[0].toLowerCase().endsWith(".blend")) {
     const txt = document.createElement("div");
@@ -393,6 +412,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    modelDim = maxDim;
     const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.4;
     const dir = new THREE.Vector3(0, 0.35, 1).normalize();
     homePos.copy(center).addScaledVector(dir, dist);
@@ -405,8 +425,11 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     controls.update();
 
     let totalTris = 0, totalVerts = 0;
+    modelMeshes = [];
     model.traverse((o) => {
       if (o.isMesh && o.geometry && o.geometry.attributes.position) {
+        modelMeshes.push(o);
+        o.userData.origMats = o.material;
         const g = o.geometry;
         totalVerts += g.attributes.position.count;
         totalTris += Math.round((g.index ? g.index.count : g.attributes.position.count) / 3);
@@ -441,7 +464,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       stage.appendChild(hint);
     }
 
-    if (withControls) buildModelControls();
+    if (withControls) { buildModelControls(); buildSettingsPanel(); }
+    applyView();
   }
 
   const ext = modelUrl.split("?")[0].toLowerCase().split(".").pop();
@@ -493,16 +517,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
         }, "Anim 1");
       }
     }
-    p.btn("Wire", () => {}, false).addEventListener("click", (e) => {
-      wire = !wire;
-      scene.traverse((o) => {
-        if (o.isMesh) {
-          const mats = Array.isArray(o.material) ? o.material : [o.material];
-          mats.forEach((m) => { if (m) m.wireframe = wire; });
-        }
-      });
-      e.currentTarget.classList.toggle("active", wire);
-    });
     p.btn("Grid", () => {}, true).addEventListener("click", (e) => {
       if (grid) { grid.visible = !grid.visible; e.currentTarget.classList.toggle("active", grid.visible); }
     });
@@ -511,6 +525,90 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       controls.target.copy(homeTarget);
       controls.update();
     });
+  }
+
+  function meshMats(o) {
+    return Array.isArray(o.material) ? o.material : [o.material];
+  }
+
+  function getFlatMat() {
+    if (!flatMaterial) {
+      flatMaterial = new THREE.MeshStandardMaterial({
+        color: grayMats ? 0x8f8f9b : 0x13131a,
+        roughness: 0.9, metalness: 0, side: THREE.DoubleSide,
+      });
+    }
+    return flatMaterial;
+  }
+
+  // Применяет выбранные режимы отображения ко всем мешам модели
+  function applyView() {
+    modelMeshes.forEach((o) => {
+      meshMats(o).forEach((m) => { if (m) m.wireframe = false; });
+      o.material = showMats ? o.userData.origMats : getFlatMat();
+      const ms = showMats ? meshMats(o) : [getFlatMat()];
+      ms.forEach((m) => { if (m) m.wireframe = facesOn; });
+      if (facesOn) {
+        if (!o.userData.pts) {
+          const pm = new THREE.PointsMaterial({
+            color: 0x00e0c6, size: modelDim * 0.006, sizeAttenuation: true,
+            transparent: true, opacity: 0.9, depthTest: false,
+          });
+          const pts = new THREE.Points(o.geometry, pm);
+          pts.renderOrder = 999;
+          o.add(pts);
+          o.userData.pts = pts;
+        }
+        o.userData.pts.visible = true;
+      } else if (o.userData.pts) {
+        o.userData.pts.visible = false;
+      }
+    });
+    if (flatMaterial) flatMaterial.color.set(grayMats ? 0x8f8f9b : 0x13131a);
+    sceneLights.forEach((l) => { l.visible = lightsOn; });
+  }
+
+  function buildSettingsPanel() {
+    const wrap = document.createElement("div");
+    wrap.className = "sf-settings";
+
+    const btn = document.createElement("button");
+    btn.className = "sf-settings-btn";
+    btn.title = "Режимы отображения";
+    btn.textContent = "⚙";
+    btn.setAttribute("aria-label", "Режимы отображения");
+
+    const pop = document.createElement("div");
+    pop.className = "sf-settings-pop";
+    pop.hidden = true;
+
+    const makeItem = (label, checked, onChange) => {
+      const row = document.createElement("label");
+      row.className = "sf-mode-item";
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = checked;
+      box.addEventListener("change", () => onChange(box.checked));
+      const sp = document.createElement("span");
+      sp.textContent = label;
+      row.append(box, sp);
+      return row;
+    };
+
+    pop.append(makeItem("Грани и вершины", false, (v) => { facesOn = v; applyView(); }));
+    pop.append(makeItem("Материалы", true, (v) => { showMats = v; grayRow.hidden = v; applyView(); }));
+    const grayRow = makeItem("Серые материалы", true, (v) => { grayMats = v; applyView(); });
+    grayRow.hidden = true;
+    pop.append(grayRow);
+    pop.append(makeItem("Свет", true, (v) => { lightsOn = v; applyView(); }));
+
+    btn.addEventListener("click", () => {
+      pop.hidden = !pop.hidden;
+      btn.classList.toggle("active", !pop.hidden);
+    });
+
+    wrap.append(btn, pop);
+    stage.appendChild(wrap);
   }
 
   function resize() {
@@ -536,6 +634,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
       cancelAnimationFrame(raf);
       ro.disconnect();
       controls.dispose();
+      if (flatMaterial) flatMaterial.dispose();
       renderer.dispose();
       scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();

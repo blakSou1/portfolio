@@ -1,10 +1,10 @@
-import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260902a";
+import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905a";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260902a";
+const ASSET_VERSION = "20260905a";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -81,11 +81,47 @@ async function loadRenders(modelUrl) {
   }
 }
 
-function showLightbox(src) {
-  const lb = $("#render-lightbox");
-  lb.querySelector("img").src = src;
-  lb.hidden = false;
+const lightbox = { list: [], idx: 0, zoom: 1, tx: 0, ty: 0, dragging: false, sx: 0, sy: 0, stx: 0, sty: 0 };
+
+function lbImg() { return $("#render-lightbox img"); }
+
+function openLightbox(list, idx) {
+  lightbox.list = list;
+  lightbox.idx = idx;
+  lbReset();
+  lbImg().src = list[idx];
+  setLightboxCount();
+  $("#render-lightbox").hidden = false;
 }
+
+function lbReset() { lightbox.zoom = 1; lightbox.tx = 0; lightbox.ty = 0; applyLightbox(); }
+
+function applyLightbox() {
+  const img = lbImg();
+  if (lightbox.zoom <= 1) { lightbox.tx = 0; lightbox.ty = 0; }
+  const lb = $("#render-lightbox");
+  const maxTx = Math.max((img.offsetWidth * lightbox.zoom - lb.clientWidth) / 2, 0);
+  const maxTy = Math.max((img.offsetHeight * lightbox.zoom - lb.clientHeight) / 2, 0);
+  lightbox.tx = Math.max(-maxTx, Math.min(maxTx, lightbox.tx));
+  lightbox.ty = Math.max(-maxTy, Math.min(maxTy, lightbox.ty));
+  img.style.transform = `translate(${lightbox.tx}px, ${lightbox.ty}px) scale(${lightbox.zoom})`;
+}
+
+function setLightboxCount() {
+  const el = $("#rl-count");
+  if (el) el.textContent = (lightbox.idx + 1) + " / " + lightbox.list.length;
+}
+
+function lbStep(d) {
+  const n = lightbox.list.length;
+  if (!n) return;
+  lightbox.idx = (lightbox.idx + d + n) % n;
+  lbReset();
+  lbImg().src = lightbox.list[lightbox.idx];
+  setLightboxCount();
+}
+
+function closeLightbox() { $("#render-lightbox").hidden = true; }
 
 async function discover(g) {
   const found = [];
@@ -292,11 +328,11 @@ function openModal(p) {
       label.className = "label";
       label.textContent = "Рендеры модели";
       strip.appendChild(label);
-      urls.forEach((u) => {
+      urls.forEach((u, i) => {
         const img = document.createElement("img");
         img.src = u;
         img.alt = p.title + " render";
-        img.addEventListener("click", () => showLightbox(u));
+        img.addEventListener("click", () => openLightbox(urls, i));
         strip.appendChild(img);
       });
       strip.style.display = "flex";
@@ -354,14 +390,62 @@ function init() {
   document.querySelectorAll("[data-close]").forEach((el) =>
     el.addEventListener("click", closeModal)
   );
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      if (!$("#render-lightbox").hidden) $("#render-lightbox").hidden = true;
-      else closeModal();
-    }
+  const lb = $("#render-lightbox");
+  const lbNavPrev = document.createElement("button");
+  lbNavPrev.className = "rl-nav prev";
+  lbNavPrev.textContent = "‹";
+  lbNavPrev.setAttribute("aria-label", "Предыдущий рендер");
+  const lbNavNext = document.createElement("button");
+  lbNavNext.className = "rl-nav next";
+  lbNavNext.textContent = "›";
+  lbNavNext.setAttribute("aria-label", "Следующий рендер");
+  const lbCount = document.createElement("div");
+  lbCount.className = "rl-count";
+  lbCount.id = "rl-count";
+  lbNavPrev.addEventListener("click", (e) => { e.stopPropagation(); lbStep(-1); });
+  lbNavNext.addEventListener("click", (e) => { e.stopPropagation(); lbStep(1); });
+  lb.append(lbNavPrev, lbNavNext, lbCount);
+
+  const lbUrl = lb.querySelector("img");
+  lbUrl.addEventListener("dblclick", lbReset);
+  lbUrl.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const prev = lightbox.zoom;
+    lightbox.zoom = Math.min(8, Math.max(1, prev * (e.deltaY < 0 ? 1.12 : 0.9)));
+    const k = lightbox.zoom / prev;
+    const cx = lb.clientWidth / 2, cy = lb.clientHeight / 2;
+    const rx = e.clientX - cx - lightbox.tx;
+    const ry = e.clientY - cy - lightbox.ty;
+    lightbox.tx = e.clientX - cx - rx * k;
+    lightbox.ty = e.clientY - cy - ry * k;
+    applyLightbox();
+  }, { passive: false });
+  lbUrl.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    lightbox.dragging = true;
+    lightbox.sx = e.clientX; lightbox.sy = e.clientY;
+    lightbox.stx = lightbox.tx; lightbox.sty = lightbox.ty;
+    lbUrl.setPointerCapture(e.pointerId);
   });
-  $("#render-lightbox").addEventListener("click", () => {
-    $("#render-lightbox").hidden = true;
+  lbUrl.addEventListener("pointermove", (e) => {
+    if (!lightbox.dragging) return;
+    lightbox.tx = lightbox.stx + (e.clientX - lightbox.sx);
+    lightbox.ty = lightbox.sty + (e.clientY - lightbox.sy);
+    applyLightbox();
+  });
+  ["pointerup", "pointercancel"].forEach((ev) =>
+    lbUrl.addEventListener(ev, () => { lightbox.dragging = false; })
+  );
+
+  lb.addEventListener("click", (e) => { if (e.target === lb) closeLightbox(); });
+
+  document.addEventListener("keydown", (e) => {
+    const lbOpen = !$("#render-lightbox").hidden;
+    if (e.key === "Escape") {
+      if (lbOpen) closeLightbox();
+      else closeModal();
+    } else if (lbOpen && e.key === "ArrowLeft") lbStep(-1);
+    else if (lbOpen && e.key === "ArrowRight") lbStep(1);
   });
 }
 
