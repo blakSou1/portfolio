@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T14:21:10Z",
+  "generated_at": "2026-09-05T14:24:35Z",
   "games": [
     {
       "id": "myindie/overlord_kvv",
@@ -53,14 +53,21 @@
   "sources": {
     "itch": {
       "url": "https://someshboy.itch.io/",
-      "count": 0
+      "http": 200,
+      "len": 13292,
+      "count": 0,
+      "kept_previous": 0
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
+      "http": 200,
+      "len": 97283,
       "count": 2
     },
     "sibgamejam": {
       "url": "https://naspeh.tech/api/v1/games/public/onemella",
+      "http": 200,
+      "len": 1171,
       "count": 1
     }
   }
