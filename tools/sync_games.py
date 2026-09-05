@@ -85,27 +85,34 @@ def load_static_jams():
         return []
 
 
+def game_match_keys(g):
+    """Ключи сопоставления игры с конфиг-джемом (ищутся по любой платформе)."""
+    keys = {(g.get("id") or "").split("/", 1)[-1].lower(),
+            (g.get("title") or "").strip().lower()}
+    gid = g.get("game_id")
+    if gid is not None:
+        keys.add(str(gid))
+    return keys
+
+
 def attach_static_jams(games):
     for j in load_static_jams():
-        src = j.get("source")
-        wanted = set(j.get("game_ids", []) or [])
-        if not src or not wanted:
+        wanted = {w.strip().lower() for w in (j.get("game_ids", []) or [])}
+        if not wanted:
             continue
         for g in games:
-            if g.get("source") != src:
+            if not (game_match_keys(g) & wanted):
                 continue
-            key = g.get("id", "").split("/", 1)[-1]
-            if key in wanted:
-                g.setdefault("jams", []).append({
-                    "source": src,
-                    "title": j.get("title", ""),
-                    "url": j.get("url", ""),
-                    "date_start": j.get("date_start") or None,
-                    "date_end": j.get("date_end") or None,
-                    "entries": j.get("entries"),
-                    "place": j.get("place"),
-                    "score": j.get("score"),
-                })
+            g.setdefault("jams", []).append({
+                "source": j.get("source", ""),
+                "title": j.get("title", ""),
+                "url": j.get("url", ""),
+                "date_start": j.get("date_start") or None,
+                "date_end": j.get("date_end") or None,
+                "entries": j.get("entries"),
+                "place": j.get("place"),
+                "score": j.get("score"),
+            })
 
 
 # --------------------------------------------------------------------------
@@ -208,8 +215,7 @@ def parse_itch_game_jams(html):
     """Джемы, в которых участвует игра (из страницы игры)."""
     found = []
     for m in re.finditer(
-            r'<li class="jam_entry"><a class="action_btn" href="'
-            r'https://itch\.io/jam/([^"/]+)/rate/(\d+)"[^>]*>'
+            r'<li class="jam_entry"><a[^>]*href="https://itch\.io/jam/([^"/]+)/rate/(\d+)"[^>]*>'
             r'(?:<svg.*?</svg>\s*)?Submission to ([^<]+)</a></li>',
             html, re.S):
         found.append({

@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906b";
+const ASSET_VERSION = "20260906c";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -253,11 +253,21 @@ function renderPlatformBlock(snap, source, projects) {
   blk.appendChild(grid);
 
   const seen = new Map();
+  const richerJam = (a, b) => {
+    const score = (j) => ["level", "date_start", "date_end", "entries", "participants",
+      "ratings", "place", "score", "title", "url"]
+      .filter((k) => j[k] != null && j[k] !== "" && j[k] !== false).length;
+    return score(a) >= score(b) ? a : b;
+  };
   projects.forEach((p) => {
     (p.game.jams || []).forEach((jam) => {
       const key = jam.url || (jam.source + "/" + jam.title);
-      if (seen.has(key)) seen.get(key).games.push(p.title);
-      else seen.set(key, { jam, games: [p.title] });
+      if (seen.has(key)) {
+        const cur = seen.get(key);
+        seen.set(key, { jam: richerJam(cur.jam, jam), games: cur.games.concat(p.title) });
+      } else {
+        seen.set(key, { jam, games: [p.title] });
+      }
     });
   });
   const jTitle = el("h3", "gblk-subtitle");
