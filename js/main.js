@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906a";
+const ASSET_VERSION = "20260906b";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -233,13 +233,15 @@ function renderPlatformBlock(snap, source, projects) {
   if (acc.url) chips.appendChild(accountChip("Профиль", acc.url));
   const counts = acc.counts || {};
   [["games", "Игр"], ["likes", "Лайков"], ["subscribers", "Подписчиков"],
-   ["comments", "Комментариев"], ["reviews", "Рецензий"]].forEach(([k, label]) => {
+   ["comments", "Комментариев"], ["reviews", "Рецензий"],
+   ["posts", "Постов"], ["following", "Подписок"]].forEach(([k, label]) => {
     if (typeof counts[k] === "number") chips.appendChild(accountChip(label, counts[k]));
   });
   if (typeof acc.score === "number") chips.appendChild(accountChip("Балл", "★ " + acc.score));
   if (typeof acc.games_count === "number" && typeof counts.games !== "number") {
     chips.appendChild(accountChip("Игр", acc.games_count));
   }
+  if (acc.joined) chips.appendChild(accountChip("На itch.io с", acc.joined));
   if (chips.childElementCount) head.appendChild(chips);
   blk.appendChild(head);
 
