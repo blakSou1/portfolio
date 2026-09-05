@@ -1,5 +1,37 @@
 {
-  "generated_at": "2026-09-05T14:30:07Z",
+  "generated_at": "2026-09-05T15:16:06Z",
+  "accounts": {
+    "itch": {
+      "source": "itch",
+      "username": "someshboy",
+      "nickname": "someshboy",
+      "url": "https://someshboy.itch.io/",
+      "games_count": 4
+    },
+    "myindie": {
+      "source": "myindie",
+      "username": "someshboy",
+      "url": "https://myindie.net/users/user/someshboy",
+      "nickname": "SoMeshBoy",
+      "line": "@someshboy | разработчик",
+      "avatar": "https://storage.yandexcloud.net/myindie/users/f5a4277f-6fba-4768-86e4-49a6ee0db699/1767266649194.jpeg",
+      "counts": {
+        "games": 2,
+        "likes": 0,
+        "subscribers": 0,
+        "comments": 1,
+        "reviews": 0
+      },
+      "score": 10
+    },
+    "sibgamejam": {
+      "source": "sibgamejam",
+      "username": "onemella",
+      "nickname": "onemella",
+      "url": "https://naspeh.tech/profile/onemella",
+      "games_count": 1
+    }
+  },
   "games": [
     {
       "id": "itch/4313240",
@@ -12,7 +44,8 @@
         "web"
       ],
       "description": "",
-      "game_id": 4313240
+      "game_id": 4313240,
+      "jams": []
     },
     {
       "id": "itch/4223926",
@@ -25,7 +58,8 @@
         "web"
       ],
       "description": "Protect your tower from intruders! Set traps and upgrade your fortress.",
-      "game_id": 4223926
+      "game_id": 4223926,
+      "jams": []
     },
     {
       "id": "itch/3720025",
@@ -39,7 +73,8 @@
         "windows"
       ],
       "description": "",
-      "game_id": 3720025
+      "game_id": 3720025,
+      "jams": []
     },
     {
       "id": "itch/3645748",
@@ -52,7 +87,27 @@
         "web"
       ],
       "description": "",
-      "game_id": 3645748
+      "game_id": 3645748,
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "daydream-jam",
+          "title": "Daydream Jam SkillUp",
+          "url": "https://itch.io/jam/daydream-jam",
+          "entries": 2,
+          "ratings": 1
+        },
+        {
+          "source": "itch",
+          "slug": "emotionally-loaded-ii",
+          "title": "emotionally loaded jam #2 🍂 fall 2025",
+          "url": "https://itch.io/jam/emotionally-loaded-ii",
+          "entries": 12,
+          "ratings": 7,
+          "place": "7th",
+          "score": 2.714
+        }
+      ]
     },
     {
       "id": "myindie/overlord_kvv",
@@ -69,9 +124,22 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 8,
+        "views": 9,
         "likes": 0
-      }
+      },
+      "jams": [
+        {
+          "source": "myindie",
+          "slug": "myindie-january-rush-lvl-8",
+          "title": "MyIndie January Rush Lvl 8",
+          "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-8",
+          "entries": 73,
+          "participants": 329,
+          "date_start": "2026-01-23T12:00:00Z",
+          "date_end": "2026-02-03T20:00:00Z",
+          "level": "8"
+        }
+      ]
     },
     {
       "id": "myindie/bones-in-my-swords",
@@ -90,7 +158,20 @@
         "downloads": 15,
         "views": 6,
         "likes": 2
-      }
+      },
+      "jams": [
+        {
+          "source": "myindie",
+          "slug": "myindie-january-rush-lvl-7",
+          "title": "MyIndie January Rush Lvl 7",
+          "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-7",
+          "entries": 55,
+          "participants": 218,
+          "date_start": "2026-01-03T12:00:00Z",
+          "date_end": "2026-01-12T20:59:00Z",
+          "level": "7"
+        }
+      ]
     },
     {
       "id": "sibgamejam/inkdarkunk",
@@ -100,7 +181,19 @@
       "cover": "https://storage.naspeh.tech/static/capsule-images/69f379da4f80cd3d2aa39fa2/1777810868408-56be67912f6ece8e-uploads.jpg",
       "description": "Это пошаговая абстрактная стратегическая игра\n\nЦель:\n        Собирайте Фишки с особыми способностями, побеждайте противников в нечестной партии и достигните \"оракула\"\n\nКак играть?\n        Выставляйте фишки на доску для захвата преимущества\n        Собирайте модифицированные фишки с поверженных противников\n        Для победы удержите превосходящее число фишек своего цвета на доске или захватите особенные клетки",
       "genre": "",
-      "platforms": []
+      "platforms": [],
+      "jams": [
+        {
+          "source": "sibgamejam",
+          "title": "Siberian Game Jam — Ноябрь 2025",
+          "url": "https://itch.io/jam/sibgamejam-nov-2025",
+          "date_start": null,
+          "date_end": null,
+          "entries": null,
+          "place": null,
+          "score": null
+        }
+      ]
     }
   ],
   "sources": {
@@ -108,12 +201,29 @@
       "url": "https://someshboy.itch.io/",
       "http": 200,
       "len": 13292,
+      "games_fetched": 4,
       "count": 4
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97282,
+      "len": 97286,
+      "account": {
+        "source": "myindie",
+        "username": "someshboy",
+        "url": "https://myindie.net/users/user/someshboy",
+        "nickname": "SoMeshBoy",
+        "line": "@someshboy | разработчик",
+        "avatar": "https://storage.yandexcloud.net/myindie/users/f5a4277f-6fba-4768-86e4-49a6ee0db699/1767266649194.jpeg",
+        "counts": {
+          "games": 2,
+          "likes": 0,
+          "subscribers": 0,
+          "comments": 1,
+          "reviews": 0
+        },
+        "score": 10
+      },
       "count": 2
     },
     "sibgamejam": {
