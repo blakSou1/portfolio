@@ -37,6 +37,14 @@
       "username": "onemella",
       "home": "https://naspeh.tech/profile/onemella",
       "api": "https://naspeh.tech/api/v1/games/public/onemella"
-    }
+    },
+    "jams": [
+      {
+        "source": "sibgamejam",
+        "game_ids": ["inkdarkunk"],
+        "title": "Siberian Game Jam — Ноябрь 2025",
+        "url": "https://itch.io/jam/sibgamejam-nov-2025"
+      }
+    ]
   }
 }
