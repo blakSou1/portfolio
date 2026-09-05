@@ -51,15 +51,37 @@ class SourceResult:
 # itch.io
 # --------------------------------------------------------------------------
 
+def _attr(tag, name):
+    m = re.search(name + r'="([^"]*)"', tag)
+    return m.group(1) if m else ""
+
+
 def parse_itch(html):
     res = SourceResult()
-    starts = list(re.finditer(r'<div[^>]*data-game_id="(\d+)"[^>]*class="game_cell', html))
-    for i, m in enumerate(starts):
-        end = starts[i + 1].start() if i + 1 < len(starts) else len(html)
-        cell = html[m.start():end]
-        url_m = re.search(r'<a[^>]*class="thumb_link game_link"[^>]*href="(https://[^"]+)"', cell)
-        title_m = re.search(r'<a[^>]*class="title game_link"[^>]*>([^<]+)</a>', cell)
-        if not url_m or not title_m:
+    # Сканируем теги <div ...> и фильтруем по обоим атрибутам — порядок атрибутов не важен.
+    open_tags = re.finditer(r'<div[^>]*>', html)
+    starts = []
+    for m in open_tags:
+        gm = re.search(r'data-game_id="(\d+)"', m.group(0))
+        if gm and "game_cell" in m.group(0):
+            starts.append((m.start(), gm.group(1)))
+    for i, (cell_start, game_id) in enumerate(starts):
+        end = starts[i + 1][0] if i + 1 < len(starts) else len(html)
+        cell = html[cell_start:end]
+        url = ""
+        title = ""
+        for am in re.finditer(r'<a[^>]*>.*?</a>', cell, re.S):
+            tag = am.group(0)
+            cls = _attr(tag, "class")
+            if "game_link" not in cls:
+                continue
+            if "thumb_link" in cls:
+                url = _attr(tag, "href")
+            if "title" in cls:
+                inner = re.sub(r"^<a[^>]*>", "", tag)
+                inner = re.sub(r"</a>$", "", inner)
+                title = htmllib.unescape(re.sub(r"<[^>]+>", "", inner)).strip()
+        if not url or not title:
             continue
         cover_m = re.search(r'<img[^>]*data-lazy_src="([^"]+)"', cell)
         desc_m = re.search(r'class="game_text"[^>]*>([^<]*)</div>', cell)
@@ -72,20 +94,21 @@ def parse_itch(html):
             if mapped not in platforms:
                 platforms.append(mapped)
         res.games.append({
-            "id": "itch/" + m.group(1),
-            "title": htmllib.unescape(title_m.group(1)).strip(),
+            "id": "itch/" + game_id,
+            "title": title,
             "source": "itch",
-            "url": url_m.group(1),
+            "url": url,
             "cover": cover_m.group(1) if cover_m else "",
             "genre": htmllib.unescape(genre_m.group(1)).strip() if genre_m else "",
             "platforms": platforms,
             "description": htmllib.unescape(desc_m.group(1)).strip() if desc_m and desc_m.group(1).strip() else "",
-            "game_id": int(m.group(1)),
+            "game_id": int(game_id),
         })
     res.count = len(res.games)
-    if not res.games and html and "game_cell" not in html:
-        res.error = ("empty grid (bot-wall/captcha or layout change?) "
-                     f"len={len(html)}")
+    if not res.games:
+        start = html.find("game_cell")
+        snippet = html[start:start + 200] if start >= 0 else html[:200]
+        res.error = f"no game cells parsed (len={len(html)}, snippet={snippet!r})"
     return res
 
 
