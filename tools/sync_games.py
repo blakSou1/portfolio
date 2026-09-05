@@ -35,8 +35,9 @@ def fetch(url, timeout=25):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         raw = resp.read()
+        status = resp.status
     ctype = resp.headers.get_content_charset()
-    return raw.decode(ctype or "utf-8", errors="replace")
+    return raw.decode(ctype or "utf-8", errors="replace"), status, len(raw)
 
 
 class SourceResult:
@@ -82,6 +83,9 @@ def parse_itch(html):
             "game_id": int(m.group(1)),
         })
     res.count = len(res.games)
+    if not res.games and html and "game_cell" not in html:
+        res.error = ("empty grid (bot-wall/captcha or layout change?) "
+                     f"len={len(html)}")
     return res
 
 
@@ -206,21 +210,38 @@ def main():
     results = {}
     for name, url, fn in jobs:
         try:
-            text = fetch(url)
+            text, status, length = fetch(url)
             results[name] = fn(text)
+            meta[name] = {"url": url, "http": status, "len": length}
         except Exception as e:  # noqa: BLE001 -- keep the snapshot built with the rest
             r = SourceResult()
             r.error = f"{type(e).__name__}: {e}"
             results[name] = r
-        meta[name] = {"url": url}
+            meta[name] = {"url": url}
 
     games = []
+    old_by_source = {}
+    if os.path.exists(OUT):
+        try:
+            with open(OUT, "r", encoding="utf-8") as f:
+                old = json.load(f)
+            for g in old.get("games", []):
+                old_by_source.setdefault(g.get("source"), []).append(g)
+        except Exception:  # noqa: BLE001 -- corrupt old snapshot, start fresh
+            old = {}
+
     for name in ("itch", "myindie", "sibgamejam"):
         r = results[name]
         meta[name]["count"] = r.count
         if r.error:
             meta[name]["error"] = r.error
-        games.extend(r.games)
+        if r.count:
+            games.extend(r.games)
+        else:
+            # Источник отдал 0 игр (блокировка/сбой) → сохраняем прошлые данные.
+            kept = old_by_source.get(name, [])
+            meta[name]["kept_previous"] = len(kept)
+            games.extend(kept)
 
     for src in ("itch", "myindie", "sibgamejam"):
         print(f"{src}: {meta[src]}")
