@@ -1,0 +1,30 @@
+name: sync-games
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect game data
+        run: python3 tools/sync_games.py
+
+      - name: Commit games snapshot
+        run: |
+          if git diff --quiet data/games.json; then
+            echo "No changes to data/games.json"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/games.json
+          git commit -m "chore: update game data snapshot"
+          git push

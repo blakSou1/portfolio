@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260905d";
+const ASSET_VERSION = "20260905e";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -26,7 +26,7 @@ const cardViewers = [];
 const lazy = new IntersectionObserver((entries) => {
   for (const e of entries) {
     const el = e.target;
-    if (el.__kind === "shader") {
+if (el.__kind === "shader") {
       if (e.isIntersecting) {
         if (!el.__viewer) {
           el.__viewer = openShaderViewer(el, el.__shader, { small: true });
@@ -55,6 +55,184 @@ const SCAN = [
 function humanize(name) {
   const base = name.replace(/\.[^.]+$/, "");
   return base.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/* Вкладка «Мои игры»: данные подтягиваются с itch.io / MyIndie /
+   SibGameJam скриптом tools/sync_games.py (GitHub Actions) в data/games.json. */
+const GAME_SOURCES = {
+  itch: { label: "itch.io" },
+  myindie: { label: "MyIndie" },
+  sibgamejam: { label: "SibGameJam" },
+};
+const PLATFORM_LABELS = {
+  web: "В браузере", windows: "Windows", linux: "Linux",
+  mac: "macOS", android: "Android", ios: "iOS",
+};
+
+function gameSourceLabel(src) {
+  return (GAME_SOURCES[src] && GAME_SOURCES[src].label) || src;
+}
+function gamePlatforms(p) {
+  return (p.game.platforms || []).map((pl) => PLATFORM_LABELS[pl] || pl);
+}
+function gameStatsParts(p) {
+  const s = p.game.stats;
+  if (!s) return [];
+  const parts = [];
+  if (s.downloads) parts.push("⬇ " + s.downloads);
+  if (s.likes != null) parts.push("♥ " + s.likes);
+  if (s.views) parts.push("👁 " + s.views);
+  if (s.comments) parts.push("💬 " + s.comments);
+  return parts;
+}
+function matchPlayable(g) {
+  return (g.platforms || []).includes("web");
+}
+
+async function fetchGamesSnapshot() {
+  try {
+    const res = await fetch("data/games.json", { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) {
+    console.warn("Не удалось загрузить data/games.json:", e.message);
+    return null;
+  }
+}
+
+function normalizeGames(snap) {
+  return (snap.games || []).map((g) => ({
+    id: "game-" + g.id,
+    title: g.title,
+    description: g.description || "",
+    category: "games",
+    year: g.year || "",
+    type: "game",
+    game: {
+      source: g.source,
+      url: g.url,
+      cover: g.cover,
+      genre: g.genre || "",
+      platforms: g.platforms || [],
+      stats: g.stats || null,
+      badges: g.badges || [],
+      game_id: g.game_id || null,
+      verified: false,
+    },
+    auto: true,
+    hidden: false,
+  }));
+}
+
+function isItchConnected() {
+  try {
+    return !!localStorage.getItem("itch_token");
+  } catch (e) {
+    return false;
+  }
+}
+
+function renderGamesStrip() {
+  const host = $("#games-strip");
+  if (!host) return;
+  host.innerHTML = "";
+  if (state.activeCategory !== "games") {
+    host.hidden = true;
+    return;
+  }
+  host.hidden = false;
+  const snap = state.gamesSnapshot;
+  const cfg = state.data && state.data.games;
+
+  const row = document.createElement("div");
+  row.className = "gs-row";
+
+  if (snap && snap.games) {
+    const counts = {};
+    snap.games.forEach((g) => { counts[g.source] = (counts[g.source] || 0) + 1; });
+    ["itch", "myindie", "sibgamejam"].forEach((s) => {
+      if (!counts[s]) return;
+      const pill = document.createElement("span");
+      pill.className = "gs-pill";
+      pill.textContent = gameSourceLabel(s) + ": " + counts[s];
+      row.appendChild(pill);
+    });
+    if (snap.generated_at) {
+      const up = document.createElement("span");
+      up.className = "gs-updated";
+      up.textContent = "Обновлено: " + new Date(snap.generated_at).toLocaleString("ru-RU");
+      row.appendChild(up);
+    }
+  } else {
+    const pill = document.createElement("span");
+    pill.className = "gs-pill";
+    pill.textContent = "Синк данных ещё не выполнен — появится после первого запуска GitHub Actions";
+    row.appendChild(pill);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "gs-row gs-actions";
+  const btn = document.createElement("button");
+  btn.className = "gs-btn";
+  btn.id = "itch-connect";
+  btn.textContent = isItchConnected() ? "itch.io подключён ✓" : "Подключить itch.io";
+  btn.addEventListener("click", () => itchOAuth(btn));
+  actions.appendChild(btn);
+  const note = document.createElement("span");
+  note.className = "gs-note";
+  note.id = "itch-note";
+  note.textContent = "Статистика подтверждается через твой аккаунт itch.io.";
+  actions.appendChild(note);
+
+  host.append(row, actions);
+}
+
+function itchOAuth(btn) {
+  const cfg = state.data && state.data.games && state.data.games.itch;
+  const note = $("#itch-note");
+  if (!cfg) {
+    if (note) note.textContent = "Конфиг games.itch не найден в data/projects.json.";
+    return;
+  }
+  const clientId = (cfg.oauth && cfg.oauth.clientId) || "";
+  if (!clientId) {
+    if (note) {
+      note.textContent = "OAuth ещё не настроен: на itch.io/settings/oauth-apps создай приложение с redirect_uri = " +
+        location.origin + location.pathname + ", а clientId впиши в data/projects.json → games.itch.oauth.clientId.";
+    }
+    return;
+  }
+  const redirect = location.origin + location.pathname;
+  const url = "https://itch.io/user/oauth?client_id=" + encodeURIComponent(clientId) +
+    "&scope=profile%3Aplus&response_type=token&redirect_uri=" + encodeURIComponent(redirect);
+  location.href = url;
+}
+
+function handleItchToken() {
+  if (!location.hash) return;
+  const m = location.hash.match(/access_token=([^&\s]+)/);
+  if (!m) return;
+  const token = m[1];
+  try { localStorage.setItem("itch_token", token); } catch (e) {}
+  try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+  fetch("https://itch.io/api/1/" + token + "/my-games")
+    .then((r) => r.json())
+    .then((body) => {
+      if (!body || !Array.isArray(body.games)) return;
+      const ids = new Set();
+      body.games.forEach((g) => {
+        if (typeof g.id !== "undefined") ids.add(String(g.id));
+      });
+      state.data.projects.forEach((p) => {
+        if (p.type === "game" && p.game.source === "itch" && p.game.game_id != null &&
+            ids.has(String(p.game.game_id))) {
+          p.game.verified = true;
+        }
+      });
+      renderGamesStrip();
+      renderGallery();
+    })
+    .catch(() => {});
 }
 
 async function githubList(owner, repo, branch, path) {
@@ -166,6 +344,15 @@ async function loadData() {
       console.warn("Авто-подтягивание не сработало:", e.message);
     }
   }
+  const snap = await fetchGamesSnapshot();
+  state.gamesSnapshot = snap;
+  if (snap) {
+    try {
+      projects = projects.concat(normalizeGames(snap));
+    } catch (e) {
+      console.warn("Не удалось разобрать data/games.json:", e.message);
+    }
+  }
   data.projects = projects;
   return data;
 }
@@ -252,6 +439,26 @@ function makeCardMedia(p) {
     } else {
       media.style.background = "linear-gradient(135deg,#1a2a50,#2a1030)";
     }
+  } else if (p.type === "game") {
+    if (p.game.cover) {
+      const img = document.createElement("img");
+      img.src = p.game.cover;
+      img.alt = p.title;
+      img.loading = "lazy";
+      media.appendChild(img);
+    } else {
+      media.style.background = "linear-gradient(135deg,#2a2350,#10302a)";
+    }
+    const src = document.createElement("div");
+    src.className = "card-source";
+    src.textContent = gameSourceLabel(p.game.source);
+    media.appendChild(src);
+    if (p.game.verified) {
+      const v = document.createElement("div");
+      v.className = "card-verified";
+      v.textContent = "✓ подтверждено";
+      media.appendChild(v);
+    }
   } else {
     // model / default -> lazy single thumbnail render
     media.style.background =
@@ -270,6 +477,7 @@ function renderGallery() {
   cardViewers.forEach((v) => v.dispose && v.dispose());
   cardViewers.length = 0;
   gallery.innerHTML = "";
+  renderGamesStrip();
   const projects = visibleProjects();
   if (!projects.length) {
     gallery.innerHTML = '<p style="color:var(--muted)">Нет работ в этой категории.</p>';
@@ -291,7 +499,15 @@ function renderGallery() {
     desc.textContent = p.description || "";
     const year = document.createElement("div");
     year.className = "card-year";
-    year.textContent = p.year || "";
+    if (p.type === "game") {
+      const meta = [];
+      if (p.game.genre) meta.push(p.game.genre);
+      meta.push(...gamePlatforms(p));
+      meta.push(...gameStatsParts(p));
+      year.textContent = meta.filter(Boolean).join("  •  ");
+    } else {
+      year.textContent = p.year || "";
+    }
     body.append(title, desc, year);
     card.appendChild(body);
 
@@ -304,8 +520,19 @@ function openModal(p) {
   const modal = $("#modal");
   $("#modal-title").textContent = p.title;
   $("#modal-desc").textContent = p.description || "";
-  $("#modal-meta").textContent =
-    [categoryLabel(p.category), p.year, p.type].filter(Boolean).join("  •  ");
+  $("#modal-links").innerHTML = "";
+
+  let metaParts = [categoryLabel(p.category), "Игра", p.year].filter(Boolean);
+  if (p.type === "game") {
+    const mm = [];
+    if (p.game.genre) mm.push(p.game.genre);
+    mm.push(gamePlatforms(p).join(", "));
+    mm.push(...gameStatsParts(p));
+    if (mm.filter(Boolean).length) metaParts.push(mm.filter(Boolean).join(" • "));
+  } else if (p.category !== "games") {
+    metaParts = [categoryLabel(p.category), p.year, p.type].filter(Boolean);
+  }
+  $("#modal-meta").textContent = metaParts.join("  •  ");
 
   const stage = $("#modal-stage");
   stage.innerHTML = "";
@@ -350,6 +577,23 @@ function openModal(p) {
     const v = document.createElement("video");
     v.src = p.video; v.controls = true; v.autoplay = true; v.style.cssText = "width:100%;height:100%;";
     stage.appendChild(v);
+  } else if (p.type === "game") {
+    const img = document.createElement("img");
+    img.src = p.game.cover || "";
+    img.alt = p.title;
+    img.style.cssText = "width:100%;max-height:100%;object-fit:cover;object-position:top;";
+    stage.appendChild(img);
+    if (p.game.url) {
+      const links = $("#modal-links");
+      const a = document.createElement("a");
+      a.className = "game-link-btn";
+      a.href = p.game.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = matchPlayable(p.game) ? "Играть на " + gameSourceLabel(p.game.source)
+                                            : "Открыть на " + gameSourceLabel(p.game.source);
+      links.appendChild(a);
+    }
   }
 
   modal.hidden = false;
@@ -376,6 +620,9 @@ function init() {
     .then((data) => {
       state.data = data;
       state.secretOk = isHiddenVisible();
+      const cat = new URLSearchParams(location.search).get("cat");
+      if (cat && data.categories.some((c) => c.id === cat)) state.activeCategory = cat;
+      handleItchToken();
       renderHeader();
       renderFilters();
       renderGallery();

@@ -17,6 +17,26 @@
     { "id": "modeling", "label": "3D-моделирование" },
     { "id": "shaders", "label": "Шейдеры" },
     { "id": "animation", "label": "Анимация" },
-    { "id": "graphics", "label": "Графика" }
-  ]
+    { "id": "graphics", "label": "Графика" },
+    { "id": "games", "label": "Мои игры" }
+  ],
+  "games": {
+    "itch": {
+      "username": "someshboy",
+      "home": "https://someshboy.itch.io/",
+      "oauth": {
+        "clientId": "",
+        "redirectPath": ""
+      }
+    },
+    "myindie": {
+      "user": "someshboy",
+      "home": "https://myindie.net/users/user/someshboy"
+    },
+    "sibgamejam": {
+      "username": "onemella",
+      "home": "https://naspeh.tech/profile/onemella",
+      "api": "https://naspeh.tech/api/v1/games/public/onemella"
+    }
+  }
 }
