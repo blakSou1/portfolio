@@ -1,12 +1,19 @@
 {
-  "generated_at": "2026-09-05T15:16:06Z",
+  "generated_at": "2026-09-05T15:35:33Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
-      "nickname": "someshboy",
-      "url": "https://someshboy.itch.io/",
-      "games_count": 4
+      "url": "https://itch.io/profile/someshboy",
+      "nickname": "SoMeshBoy",
+      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
+      "counts": {
+        "posts": 15,
+        "subscribers": 8,
+        "following": 9
+      },
+      "joined": "26 March 2024 @ 14:10 UTC",
+      "games_count": 8
     },
     "myindie": {
       "source": "myindie",
@@ -110,6 +117,84 @@
       ]
     },
     {
+      "id": "itch/3624616",
+      "title": "kolector girl",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/kolector-girl",
+      "cover": "https://img.itch.zone/aW1nLzI4MTA2OTE2LnBuZw==/315x250%23c/gtP2sN.png",
+      "genre": "Platformer",
+      "platforms": [
+        "web"
+      ],
+      "description": "",
+      "game_id": 3624616,
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "cgcjam2",
+          "title": "CGC'Jam'2",
+          "url": "https://itch.io/jam/cgcjam2",
+          "entries": 22,
+          "ratings": 3,
+          "place": "11th",
+          "score": 2.533
+        }
+      ]
+    },
+    {
+      "id": "itch/3530433",
+      "title": "MentalMemory",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/mentalmemory",
+      "cover": "https://img.itch.zone/aW1nLzIxMDMwNTc3LmdpZg==/315x250%23c/ddu6sy.gif",
+      "genre": "Platformer",
+      "platforms": [
+        "web",
+        "windows"
+      ],
+      "description": "The way of the lonely",
+      "game_id": 3530433,
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "sibgamejam-may-2025",
+          "title": "Siberian Game Jam - Май 2025",
+          "url": "https://itch.io/jam/sibgamejam-may-2025",
+          "entries": 217,
+          "ratings": 4805
+        }
+      ]
+    },
+    {
+      "id": "itch/3400824",
+      "title": "TheHorrorOfChildhood",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/thehorrorofchildhood",
+      "cover": "https://img.itch.zone/aW1nLzIwMzEzOTA1LnBuZw==/315x250%23c/f9Q4Nk.png",
+      "genre": "Puzzle",
+      "platforms": [
+        "web",
+        "windows"
+      ],
+      "description": "",
+      "game_id": 3400824,
+      "jams": []
+    },
+    {
+      "id": "itch/3164624",
+      "title": "Daughter's gold",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/daughteris-gold",
+      "cover": "https://img.itch.zone/aW1nLzE4ODk4ODI5LnBuZw==/315x250%23c/X%2FC8oi.png",
+      "genre": "Adventure",
+      "platforms": [
+        "web"
+      ],
+      "description": "",
+      "game_id": 3164624,
+      "jams": []
+    },
+    {
       "id": "myindie/overlord_kvv",
       "title": "Overlord",
       "source": "myindie",
@@ -198,16 +283,16 @@
   ],
   "sources": {
     "itch": {
-      "url": "https://someshboy.itch.io/",
+      "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 13292,
-      "games_fetched": 4,
-      "count": 4
+      "len": 19354,
+      "games_fetched": 8,
+      "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97286,
+      "len": 97285,
       "account": {
         "source": "myindie",
         "username": "someshboy",
