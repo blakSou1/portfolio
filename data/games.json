@@ -1,6 +1,59 @@
 {
-  "generated_at": "2026-09-05T14:24:35Z",
+  "generated_at": "2026-09-05T14:30:07Z",
   "games": [
+    {
+      "id": "itch/4313240",
+      "title": "InkDarKunk",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/inkdarkunk",
+      "cover": "https://img.itch.zone/aW1nLzI4MDgxMzIxLmpwZw==/315x250%23c/QwrA1q.jpg",
+      "genre": "Strategy",
+      "platforms": [
+        "web"
+      ],
+      "description": "",
+      "game_id": 4313240
+    },
+    {
+      "id": "itch/4223926",
+      "title": "Overlord",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/overlord",
+      "cover": "https://img.itch.zone/aW1nLzI1MzkyNjU0LnBuZw==/315x250%23c/CxBFK9.png",
+      "genre": "Strategy",
+      "platforms": [
+        "web"
+      ],
+      "description": "Protect your tower from intruders! Set traps and upgrade your fortress.",
+      "game_id": 4223926
+    },
+    {
+      "id": "itch/3720025",
+      "title": "WanderingFlame",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/wanderingflame",
+      "cover": "https://img.itch.zone/aW1nLzIzOTQ4Nzg1LmpwZw==/315x250%23c/A2EmwF.jpg",
+      "genre": "Strategy",
+      "platforms": [
+        "web",
+        "windows"
+      ],
+      "description": "",
+      "game_id": 3720025
+    },
+    {
+      "id": "itch/3645748",
+      "title": "EchoOfDarkness",
+      "source": "itch",
+      "url": "https://someshboy.itch.io/echoofdarkness",
+      "cover": "https://img.itch.zone/aW1nLzIzNTg4NzQyLmpwZw==/315x250%23c/vzXxYz.jpg",
+      "genre": "Puzzle",
+      "platforms": [
+        "web"
+      ],
+      "description": "",
+      "game_id": 3645748
+    },
     {
       "id": "myindie/overlord_kvv",
       "title": "Overlord",
@@ -55,13 +108,12 @@
       "url": "https://someshboy.itch.io/",
       "http": 200,
       "len": 13292,
-      "count": 0,
-      "kept_previous": 0
+      "count": 4
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97283,
+      "len": 97282,
       "count": 2
     },
     "sibgamejam": {
