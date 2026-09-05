@@ -1,50 +1,6 @@
 {
-  "generated_at": "2026-09-05T00:00:00Z",
+  "generated_at": "2026-09-05T14:21:10Z",
   "games": [
-    {
-      "id": "itch/4313240",
-      "title": "InkDarKunk",
-      "source": "itch",
-      "url": "https://someshboy.itch.io/inkdarkunk",
-      "cover": "https://img.itch.zone/aW1nLzI4MDgxMzIxLmpwZw==/315x250%23c/QwrA1q.jpg",
-      "genre": "Strategy",
-      "platforms": ["web"],
-      "description": "",
-      "game_id": 4313240
-    },
-    {
-      "id": "itch/4223926",
-      "title": "Overlord",
-      "source": "itch",
-      "url": "https://someshboy.itch.io/overlord",
-      "cover": "https://img.itch.zone/aW1nLzI1MzkyNjU0LnBuZw==/315x250%23c/CxBFK9.png",
-      "genre": "Strategy",
-      "platforms": ["web"],
-      "description": "Protect your tower from intruders! Set traps and upgrade your fortress.",
-      "game_id": 4223926
-    },
-    {
-      "id": "itch/3720025",
-      "title": "WanderingFlame",
-      "source": "itch",
-      "url": "https://someshboy.itch.io/wanderingflame",
-      "cover": "https://img.itch.zone/aW1nLzIzOTQ4Nzg1LmpwZw==/315x250%23c/A2EmwF.jpg",
-      "genre": "Strategy",
-      "platforms": ["web", "windows"],
-      "description": "",
-      "game_id": 3720025
-    },
-    {
-      "id": "itch/3645748",
-      "title": "EchoOfDarkness",
-      "source": "itch",
-      "url": "https://someshboy.itch.io/echoofdarkness",
-      "cover": "https://img.itch.zone/aW1nLzIzNTg4NzQyLmpwZw==/315x250%23c/vzXxYz.jpg",
-      "genre": "Puzzle",
-      "platforms": ["web"],
-      "description": "",
-      "game_id": 3645748
-    },
     {
       "id": "myindie/overlord_kvv",
       "title": "Overlord",
@@ -52,19 +8,36 @@
       "url": "https://myindie.net/games/game/overlord_kvv",
       "cover": "https://storage.yandexcloud.net/myindie/games/34bae5bc-f3a1-42e7-8ab1-61061631aa42/tumb_b_64hrhqighojqwi.png",
       "genre": "Arcade",
-      "platforms": ["windows"],
-      "badges": ["MyIndie January Rush Lvl 8"],
-      "stats": { "downloads": 14, "views": 8, "likes": 0 }
+      "platforms": [
+        "windows"
+      ],
+      "badges": [
+        "MyIndie January Rush Lvl 8"
+      ],
+      "stats": {
+        "downloads": 14,
+        "views": 8,
+        "likes": 0
+      }
     },
     {
       "id": "myindie/bones-in-my-swords",
       "title": "Bones in my swords",
       "source": "myindie",
       "url": "https://myindie.net/games/game/bones-in-my-swords",
-      "cover": "",
-      "genre": "",
-      "platforms": ["windows"],
-      "badges": ["MyIndie January Rush Lvl 7"]
+      "cover": "https://storage.yandexcloud.net/myindie/games/d9a90510-e2c2-4970-b518-a823a0acf9bf/tumb_b_rqr1myhubpc4y2.png",
+      "genre": "Puzzle",
+      "platforms": [
+        "windows"
+      ],
+      "badges": [
+        "MyIndie January Rush Lvl 7"
+      ],
+      "stats": {
+        "downloads": 15,
+        "views": 6,
+        "likes": 2
+      }
     },
     {
       "id": "sibgamejam/inkdarkunk",
@@ -72,14 +45,23 @@
       "source": "sibgamejam",
       "url": "https://naspeh.tech/games/inkdarkunk",
       "cover": "https://storage.naspeh.tech/static/capsule-images/69f379da4f80cd3d2aa39fa2/1777810868408-56be67912f6ece8e-uploads.jpg",
+      "description": "Это пошаговая абстрактная стратегическая игра\n\nЦель:\n        Собирайте Фишки с особыми способностями, побеждайте противников в нечестной партии и достигните \"оракула\"\n\nКак играть?\n        Выставляйте фишки на доску для захвата преимущества\n        Собирайте модифицированные фишки с поверженных противников\n        Для победы удержите превосходящее число фишек своего цвета на доске или захватите особенные клетки",
       "genre": "",
-      "platforms": [],
-      "description": "Это пошаговая абстрактная стратегическая игра\n\nЦель:\n        Собирайте Фишки с особыми способностями, побеждайте противников в нечестной партии и достигните \"оракула\"\n\nКак играть?\n        Выставляйте фишки на доску для захвата преимущества\n        Собирайте модифицированные фишки с поверженных противников\n        Для победы удержите превосходящее число фишек своего цвета на доске или захватите особенные клетки"
+      "platforms": []
     }
   ],
   "sources": {
-    "itch": { "url": "https://someshboy.itch.io/", "count": 4 },
-    "myindie": { "url": "https://myindie.net/users/user/someshboy", "count": 2 },
-    "sibgamejam": { "url": "https://naspeh.tech/profile/onemella", "count": 1 }
+    "itch": {
+      "url": "https://someshboy.itch.io/",
+      "count": 0
+    },
+    "myindie": {
+      "url": "https://myindie.net/users/user/someshboy",
+      "count": 2
+    },
+    "sibgamejam": {
+      "url": "https://naspeh.tech/api/v1/games/public/onemella",
+      "count": 1
+    }
   }
 }
