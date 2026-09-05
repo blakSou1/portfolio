@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T15:35:33Z",
+  "generated_at": "2026-09-05T16:22:50Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -52,7 +52,18 @@
       ],
       "description": "",
       "game_id": 4313240,
-      "jams": []
+      "jams": [
+        {
+          "source": "sibgamejam",
+          "title": "Siberian Game Jam — Ноябрь 2025",
+          "url": "https://itch.io/jam/sibgamejam-nov-2025",
+          "date_start": null,
+          "date_end": null,
+          "entries": null,
+          "place": null,
+          "score": null
+        }
+      ]
     },
     {
       "id": "itch/4223926",
@@ -81,7 +92,16 @@
       ],
       "description": "",
       "game_id": 3720025,
-      "jams": []
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "sibgamejam-nov-2025",
+          "title": "Siberian Game Jam - Ноябрь 2025",
+          "url": "https://itch.io/jam/sibgamejam-nov-2025",
+          "entries": 215,
+          "ratings": 4564
+        }
+      ]
     },
     {
       "id": "itch/3645748",
@@ -178,7 +198,18 @@
       ],
       "description": "",
       "game_id": 3400824,
-      "jams": []
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "cgcjam",
+          "title": "CGCJam",
+          "url": "https://itch.io/jam/cgcjam",
+          "entries": 8,
+          "ratings": 3,
+          "place": "4th",
+          "score": 2.333
+        }
+      ]
     },
     {
       "id": "itch/3164624",
@@ -192,7 +223,16 @@
       ],
       "description": "",
       "game_id": 3164624,
-      "jams": []
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "gp-profit-jam-2",
+          "title": "GP Profit Jam #2 feat Pikabu",
+          "url": "https://itch.io/jam/gp-profit-jam-2",
+          "entries": 94,
+          "ratings": 1198
+        }
+      ]
     },
     {
       "id": "myindie/overlord_kvv",
@@ -285,7 +325,7 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19354,
+      "len": 19358,
       "games_fetched": 8,
       "count": 8
     },
