@@ -32,7 +32,8 @@ ITCH_USER = "someshboy"
 MYINDIE_USER = "someshboy"
 SIB_USER = "onemella"
 
-ITCH_URL = f"https://{ITCH_USER}.itch.io/"
+ITCH_URL = f"https://itch.io/profile/{ITCH_USER}"
+ITCH_CREATOR_URL = f"https://{ITCH_USER}.itch.io/"
 ITCH_JAM_URL = "https://itch.io/jam/"
 MYINDIE_URL = f"https://myindie.net/users/user/{MYINDIE_USER}"
 MYINDIE_JAM_URL = "https://myindie.net/jams/jam/"
@@ -165,6 +166,42 @@ def parse_itch(html):
         snippet = html[start:start + 200] if start >= 0 else html[:200]
         res.error = f"no game cells parsed (len={len(html)}, snippet={snippet!r})"
     return res
+
+
+def parse_itch_account(html):
+    """Полная инфо аккаунта из страницы itch.io/profile/<user>."""
+    acc = {"source": "itch", "username": ITCH_USER, "url": ITCH_URL}
+    m = re.search(r'class="avatar"></div><h2>([^<]+)</h2>', html)
+    if not m:
+        m = re.search(r'<h2>' + re.escape(ITCH_USER) + r'</h2>', html, re.I)
+    if m:
+        acc["nickname"] = htmllib.unescape(m.group(1)).strip()
+    m = re.search(r'background-image:\s*url\(&#039;([^&]+?)&', html)
+    if not m:
+        m = re.search(r'class="avatar".*?url\(([\'\"]?)([^\)\'\"]+)', html, re.S)
+        m = m if m else None
+    if m:
+        acc["avatar"] = htmllib.unescape(m.group(1 if m.lastindex == 1 else 2)).strip()
+    stats = {}
+    stat_map = {r'stat_label">Posts': "posts",
+                r'stat_label">Followers': "subscribers",
+                r'stat_label">Following': "following"}
+    for label_re, key in stat_map.items():
+        # ищем <div class="stat_value">N</div><div class="stat_label">Label</div>
+        pat = r'<div class="stat_value">([\d,]+)</div><div class="' + label_re.lstrip("stat_label")
+        m = re.search(r'<div class="stat_value">([\d,]+)</div><div class="' +
+                      label_re + r'</div>', html)
+        if m:
+            stats[key] = int(m.group(1).replace(",", ""))
+    if stats:
+        acc["counts"] = stats
+    m = re.search(r'registered <abbr[^>]*>([^<]+)</abbr>', html, re.S)
+    if not m:
+        m = re.search(r'<abbr title="([^"]+)">', html)
+    if m:
+        acc["joined"] = m.group(1).strip()
+    acc["games_count"] = len(re.findall(r'data-game_id="(\d+)"', html))
+    return acc
 
 
 def parse_itch_game_jams(html):
@@ -518,13 +555,21 @@ def main():
             accounts_src["myindie"] = parse_myindie_account(fetched["myindie"])
         except Exception:  # noqa: BLE001
             pass
-    accounts_src["itch"] = {
-        "source": "itch",
-        "username": ITCH_USER,
-        "nickname": ITCH_USER,
-        "url": ITCH_URL,
-        "games_count": len(results["itch"].games) or None,
-    }
+    if fetched.get("itch"):
+        try:
+            acc = parse_itch_account(fetched["itch"])
+            acc.setdefault("games_count", len(results["itch"].games) or None)
+            accounts_src["itch"] = acc
+        except Exception:  # noqa: BLE001
+            pass
+    if not accounts_src.get("itch"):
+        accounts_src["itch"] = {
+            "source": "itch",
+            "username": ITCH_USER,
+            "nickname": ITCH_USER,
+            "url": ITCH_URL,
+            "games_count": len(results["itch"].games) or None,
+        }
     accounts_src["sibgamejam"] = {
         "source": "sibgamejam",
         "username": SIB_USER,
