@@ -264,6 +264,18 @@ def parse_itch_game_page(html):
             name = name.strip()
             if name:
                 out["authors"].append({"name": name})
+    # Извлекаем URL-ы профилей авторов из ссылок *.itch.io/
+    author_urls = {}
+    for m in re.finditer(r'href="(https?://[^"]*\.itch\.io/?)"[^>]*>([^<]+)</a>', html):
+        url = m.group(1)
+        name = htmllib.unescape(m.group(2)).strip()
+        if name and url and not url.endswith("/games/") and "/jam/" not in url:
+            author_urls[name.lower()] = url
+    # Сопоставляем URL-ы с авторами по имени
+    for author in out["authors"]:
+        url = author_urls.get(author["name"].lower(), "")
+        if url:
+            author["url"] = url
     m = re.search(r'"@type"\s*:\s*"BreadcrumbList"(.*?)</script>', html, re.S)
     if m:
         for em in re.finditer(r'"name"\s*:\s*"([^"]+)"', m.group(1)):
@@ -335,6 +347,13 @@ def enrich_itch(games):
         if detail["tags"]:
             game["tags"] = detail["tags"]
         if detail["authors"]:
+            # Сохраняем URL-ы из старых данных, если новые авторы их не hebben
+            old_authors = {a.get("name", "").lower(): a for a in game.get("authors", [])}
+            for a in detail["authors"]:
+                if not a.get("url"):
+                    old = old_authors.get(a["name"].lower())
+                    if old and old.get("url"):
+                        a["url"] = old["url"]
             game["authors"] = detail["authors"]
         else:
             game["authors"] = [{"name": ITCH_USER}]
