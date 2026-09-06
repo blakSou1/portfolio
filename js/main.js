@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906c";
+const ASSET_VERSION = "20260906d";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -112,9 +112,14 @@ function normalizeGames(snap) {
       source: g.source,
       url: g.url,
       cover: g.cover,
+      screens: g.screens || [],
+      tags: g.tags || [],
+      authors: g.authors || [],
+      published: g.published || "",
       genre: g.genre || "",
       platforms: g.platforms || [],
       stats: g.stats || null,
+      itchStats: null,
       badges: g.badges || [],
       jams: g.jams || [],
       game_id: g.game_id || null,
@@ -183,10 +188,10 @@ function renderGamesTab() {
     bar.appendChild(up);
   }
   host.appendChild(bar);
-  host.appendChild(renderItchControls());
+  if (state.secretOk) host.appendChild(renderItchControls());
 
   if (!snap || !projects.length) {
-    if (!snap) {
+    if (!snap && state.secretOk) {
       const pill = el("span", "gs-pill");
       pill.textContent = "Синк данных ещё не выполнен — появится после первого запуска GitHub Actions";
       host.appendChild(pill);
@@ -245,13 +250,76 @@ function renderPlatformBlock(snap, source, projects) {
   if (chips.childElementCount) head.appendChild(chips);
   blk.appendChild(head);
 
+  const tabbar = el("div", "gblk-tabs");
+  const btGames = el("button", "gblk-tab active");
+  btGames.type = "button";
+  btGames.textContent = "Игры";
+  const btAna = el("button", "gblk-tab");
+  btAna.type = "button";
+  btAna.textContent = "Анализ";
+  tabbar.append(btGames, btAna);
+  blk.appendChild(tabbar);
+
+  const gamesPane = el("div", "gblk-pane");
+  const anaPane = el("div", "gblk-pane gblk-pane--ana");
+  anaPane.hidden = true;
+  let anaBuilt = false;
+  const switchTo = (games) => {
+    btGames.classList.toggle("active", games);
+    btAna.classList.toggle("active", !games);
+    gamesPane.hidden = !games;
+    anaPane.hidden = games;
+    if (!games && !anaBuilt) {
+      anaPane.appendChild(buildAccountAnalysis(snap, source, projects));
+      anaBuilt = true;
+    }
+  };
+  btGames.addEventListener("click", () => switchTo(true));
+  btAna.addEventListener("click", () => switchTo(false));
+  blk.appendChild(gamesPane);
+  blk.appendChild(anaPane);
+
   const gTitle = el("h3", "gblk-subtitle");
   gTitle.textContent = "Игры · " + projects.length;
-  blk.appendChild(gTitle);
+  gamesPane.appendChild(gTitle);
   const grid = el("div", "gblk-games");
   projects.forEach((p) => grid.appendChild(gameTabCard(p)));
-  blk.appendChild(grid);
+  gamesPane.appendChild(grid);
 
+  const list = collectAccountJams(projects);
+  const jTitle = el("h3", "gblk-subtitle");
+  jTitle.textContent = "Джемы · " + list.length;
+  gamesPane.appendChild(jTitle);
+  const jamsBox = el("div", "gblk-jams");
+  if (!list.length) {
+    const empty = el("p", "gblk-empty");
+    empty.textContent = "Публичных данных о джемах на этой платформе нет.";
+    jamsBox.appendChild(empty);
+  } else {
+    const sel = el("select", "jam-select");
+    sel.id = "jam-select-" + source;
+    sel.setAttribute("aria-label", "Джемы");
+    list.forEach((item, i) => {
+      const o = el("option");
+      o.value = String(i);
+      const place = item.jam.place ? "#" + item.jam.place + " · " : "";
+      o.textContent = place + (item.jam.title || item.jam.slug || ("Джем " + (i + 1)));
+      sel.appendChild(o);
+    });
+    const detail = el("div", "jam-detail");
+    const show = (i) => {
+      detail.innerHTML = "";
+      if (list[i]) detail.appendChild(jamRow(list[i].jam, list[i].games));
+    };
+    sel.addEventListener("change", () => show(Number(sel.value)));
+    show(0);
+    jamsBox.append(sel, detail);
+  }
+  gamesPane.appendChild(jamsBox);
+  return blk;
+}
+
+function collectAccountJams(projects) {
   const seen = new Map();
   const richerJam = (a, b) => {
     const score = (j) => ["level", "date_start", "date_end", "entries", "participants",
@@ -270,19 +338,138 @@ function renderPlatformBlock(snap, source, projects) {
       }
     });
   });
-  const jTitle = el("h3", "gblk-subtitle");
-  jTitle.textContent = "Джемы · " + seen.size;
-  blk.appendChild(jTitle);
-  const jamsBox = el("div", "gblk-jams");
-  if (!seen.size) {
-    const empty = el("p", "gblk-empty");
-    empty.textContent = "Публичных данных о джемах на этой платформе нет.";
-    jamsBox.appendChild(empty);
-  } else {
-    seen.forEach(({ jam, games }) => jamsBox.appendChild(jamRow(jam, games)));
+  return Array.from(seen.values());
+}
+
+function fmtNum(n) {
+  return typeof n === "number" ? n.toLocaleString("ru-RU") : String(n);
+}
+
+function kpiCard(label, value) {
+  const c = el("div", "kpi-card");
+  const v = el("div", "kpi-num");
+  v.textContent = fmtNum(value);
+  const k = el("div", "kpi-label");
+  k.textContent = label;
+  c.append(v, k);
+  return c;
+}
+
+function parseJoinedDate(s) {
+  const str = String(s || "");
+  const en = { january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11 };
+  const ru = { "января": 0, "февраля": 1, "марта": 2, "апреля": 3, "мая": 4, "июня": 5,
+    "июля": 6, "августа": 7, "сентября": 8, "октября": 9, "ноября": 10, "декабря": 11 };
+  const m = str.match(/^(\d{1,2})\s+([\wа-я]+)\s+(\d{4})/i);
+  if (!m) {
+    const d = new Date(str);
+    return isNaN(d.getTime()) ? null : d;
   }
-  blk.appendChild(jamsBox);
-  return blk;
+  const key = m[2].toLowerCase();
+  const mo = en[key] != null ? en[key] : (ru[key] != null ? ru[key] : null);
+  if (mo == null) return null;
+  return new Date(Number(m[3]), mo, Number(m[1]));
+}
+
+function buildAccountAnalysis(snap, source, projects) {
+  const acc = (snap.accounts && snap.accounts[source]) || {};
+  const root = el("div", "ganaly");
+  const list = collectAccountJams(projects);
+
+  let views = 0, downloads = 0, ratings = 0, likes = 0, collections = 0;
+  let hasViews = false, hasDownloads = false, hasRatings = false,
+      hasLikes = false, hasCollections = false;
+  projects.forEach((p) => {
+    const st = Object.assign({}, p.game.stats || {}, p.game.itchStats || {});
+    if (typeof st.views === "number" && st.views > 0) { views += st.views; hasViews = true; }
+    if (typeof st.downloads === "number" && st.downloads > 0) { downloads += st.downloads; hasDownloads = true; }
+    if (typeof st.likes === "number" && st.likes > 0) { likes += st.likes; hasLikes = true; }
+    if (typeof st.collections === "number" && st.collections > 0) { collections += st.collections; hasCollections = true; }
+    (p.game.jams || []).forEach((jam) => {
+      if (typeof jam.ratings === "number" && jam.ratings > 0) { ratings += jam.ratings; hasRatings = true; }
+    });
+  });
+
+  const kpis = el("div", "gblk-kpis");
+  kpis.appendChild(kpiCard("Игр", projects.length));
+  if (list.length) kpis.appendChild(kpiCard("Джемов", list.length));
+  let best = null;
+  list.forEach(({ jam }) => {
+    if (!jam.place) return;
+    const n = parseInt(String(jam.place), 10);
+    if (!isNaN(n) && (best == null || n < best)) best = n;
+  });
+  if (best != null) kpis.appendChild(kpiCard("Лучший топ", "#" + best));
+  if (hasViews) kpis.appendChild(kpiCard("Просмотры", views));
+  if (hasLikes) kpis.appendChild(kpiCard("Лайки", likes));
+  if (hasRatings) kpis.appendChild(kpiCard("Человек оценили", ratings));
+  if (hasCollections) kpis.appendChild(kpiCard("В коллекциях", collections));
+  if (hasDownloads) kpis.appendChild(kpiCard("Загрузки", downloads));
+  if (typeof acc.score === "number") kpis.appendChild(kpiCard("Качество", "★ " + acc.score));
+  root.appendChild(kpis);
+
+  const tops = list.filter(({ jam }) => jam.place);
+  const tTitle = el("h3", "gblk-subtitle");
+  tTitle.textContent = "Топы · " + tops.length;
+  root.appendChild(tTitle);
+  if (tops.length) {
+    tops.sort((a, b) => {
+      const na = parseInt(String(a.jam.place), 10) || 1e9;
+      const nb = parseInt(String(b.jam.place), 10) || 1e9;
+      return na - nb;
+    });
+    const box = el("div", "gblk-jams");
+    tops.forEach(({ jam, games }) => box.appendChild(jamRow(jam, games)));
+    root.appendChild(box);
+  } else {
+    const e = el("p", "gblk-empty");
+    e.textContent = "Мест в результатах джемов пока нет — появятся после публикации итогов.";
+    root.appendChild(e);
+  }
+
+  const events = [];
+  const addEvent = (d, text, url) => {
+    if (!d || isNaN(d.getTime())) return;
+    events.push({ date: d, text, url: url || "" });
+  };
+  addEvent(parseJoinedDate(acc.joined), "Регистрация на платформе", acc.url);
+  projects.forEach((p) => {
+    if (p.game.published) addEvent(new Date(p.game.published), "Игра · " + p.title, p.game.url);
+  });
+  list.forEach(({ jam }) => {
+    if (jam.date_start) addEvent(new Date(jam.date_start), "Джем · " + (jam.title || jam.slug || ""), jam.url);
+  });
+  events.sort((a, b) => a.date - b.date);
+
+  const hTitle = el("h3", "gblk-subtitle");
+  hTitle.textContent = "Хронология · " + events.length;
+  root.appendChild(hTitle);
+  if (events.length) {
+    const tl = el("div", "tl");
+    events.forEach((ev) => {
+      const item = el("div", "tl-item");
+      const dn = el("span", "tl-date");
+      dn.textContent = ev.date.toISOString().slice(0, 10);
+      const tx = el("span", "tl-text");
+      const a = el("a", "tl-link");
+      a.textContent = ev.text;
+      if (ev.url) {
+        a.href = ev.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
+      tx.appendChild(a);
+      item.append(dn, tx);
+      tl.appendChild(item);
+    });
+    root.appendChild(tl);
+  } else {
+    const e = el("p", "gblk-empty");
+    e.textContent = "Хронология недоступна: нет дат регистрации, игр и джемов.";
+    root.appendChild(e);
+  }
+  return root;
 }
 
 function jamRow(jam, games) {
@@ -458,16 +645,30 @@ async function fetchItchMyGames(token) {
   return [];
 }
 
+function itchOwnerStats(g) {
+  const out = {};
+  const keys = Object.keys(g);
+  const rules = [["view", "views"], ["download", "downloads"], ["purchase", "purchases"],
+                 ["collection", "collections"], ["favorite", "favorites"], ["rating", "ratings"]];
+  rules.forEach(([pat, outKey]) => {
+    const k = keys.find((kk) => kk.toLowerCase().includes(pat) && typeof g[kk] === "number");
+    if (k != null) out[outKey] = g[k];
+  });
+  return out;
+}
+
 function markItchVerified(games) {
-  const ids = new Set();
+  const map = new Map();
   games.forEach((g) => {
-    if (typeof g.id !== "undefined") ids.add(String(g.id));
+    if (typeof g.id !== "undefined") map.set(String(g.id), g);
   });
   (state.data.projects || []).forEach((p) => {
-    if (p.type === "game" && p.game.source === "itch" && p.game.game_id != null &&
-        ids.has(String(p.game.game_id))) {
-      p.game.verified = true;
-    }
+    if (p.type !== "game" || p.game.source !== "itch" || p.game.game_id == null) return;
+    const g = map.get(String(p.game.game_id));
+    if (!g) return;
+    p.game.verified = true;
+    const st = itchOwnerStats(g);
+    if (Object.keys(st).length) p.game.itchStats = st;
   });
 }
 
@@ -631,7 +832,7 @@ function renderHeader() {
   $("#footer-author").textContent = "© " + new Date().getFullYear() + " " + s.author;
   $("#intro").innerHTML = state.secretOk
     ? "Добро пожаловать в <b>скрытый раздел</b> — здесь видны черновики и работы, скрытые от зрителей. Чтобы открыть публичную версию, перейди на сайт без параметра <code>?key=</code>."
-    : "Портфолио с интерактивными 3D-моделями, живыми шейдерами и анимацией. Кликни по работе, чтобы открыть просмотрщик. Исходные файлы проектов остаются в <b>private/</b> и недоступны зрителям.";
+    : "Портфолио с интерактивными 3D-моделями, живыми шейдерами, анимацией и моими играми. Кликни по работе, чтобы открыть просмотрщик.";
 }
 
 function renderFilters() {
@@ -792,7 +993,9 @@ function openModal(p) {
   if (p.type === "game") {
     const mm = [];
     if (p.game.genre) mm.push(p.game.genre);
-    mm.push(gamePlatforms(p).join(", "));
+    if (p.game.published) mm.push("Опубликована " + p.game.published.slice(0, 10));
+    const plat = gamePlatforms(p).join(", ");
+    if (plat) mm.push(plat);
     mm.push(...gameStatsParts(p));
     if (mm.filter(Boolean).length) metaParts.push(mm.filter(Boolean).join(" • "));
   } else if (p.category !== "games") {
@@ -805,6 +1008,8 @@ function openModal(p) {
   $("#modal-renders").innerHTML = "";
   $("#modal-renders").style.display = "none";
   $("#render-lightbox").hidden = true;
+  $("#modal-screens").hidden = true;
+  $("#modal-extra").hidden = true;
 
   if (state.currentViewer && state.currentViewer.dispose) {
     state.currentViewer.dispose();
@@ -844,11 +1049,73 @@ function openModal(p) {
     v.src = p.video; v.controls = true; v.autoplay = true; v.style.cssText = "width:100%;height:100%;";
     stage.appendChild(v);
   } else if (p.type === "game") {
-    const img = document.createElement("img");
-    img.src = p.game.cover || "";
-    img.alt = p.title;
-    img.style.cssText = "width:100%;max-height:100%;object-fit:cover;object-position:top;";
-    stage.appendChild(img);
+    const all = (p.game.screens && p.game.screens.length)
+      ? p.game.screens.slice()
+      : ([p.game.cover].filter(Boolean));
+    const mainImg = document.createElement("img");
+    mainImg.src = all[0] || "";
+    mainImg.alt = p.title;
+    mainImg.loading = "lazy";
+    mainImg.style.cssText = "width:100%;max-height:100%;object-fit:contain;object-position:center;cursor:zoom-in;";
+    mainImg.addEventListener("click", () => { if (all.length) openLightbox(all, 0); });
+    stage.appendChild(mainImg);
+
+    const scr = $("#modal-screens");
+    scr.innerHTML = "";
+    if (all.length > 1) {
+      all.forEach((u, i) => {
+        const t = document.createElement("img");
+        t.src = u;
+        t.alt = p.title + " · скриншот " + (i + 1);
+        t.loading = "lazy";
+        t.addEventListener("click", () => openLightbox(all, i));
+        scr.appendChild(t);
+      });
+      scr.hidden = false;
+    } else {
+      scr.hidden = true;
+    }
+
+    const extra = $("#modal-extra");
+    extra.innerHTML = "";
+    if ((p.game.tags || []).length || (p.game.authors || []).length) {
+      if ((p.game.tags || []).length) {
+        const w = el("div", "modal-block");
+        const l = el("div", "label");
+        l.textContent = "Теги";
+        const row = el("div", "tag-row");
+        p.game.tags.forEach((t) => {
+          const c = el("span", "tag-chip");
+          c.textContent = t;
+          row.appendChild(c);
+        });
+        w.append(l, row);
+        extra.appendChild(w);
+      }
+      if ((p.game.authors || []).length) {
+        const w = el("div", "modal-block");
+        const l = el("div", "label");
+        l.textContent = "Авторы";
+        const row = el("div", "tag-row");
+        p.game.authors.forEach((a) => {
+          const who = (a && a.name) || a || "";
+          const c = el("a", "author-chip");
+          c.textContent = who;
+          if (a && a.url) {
+            c.href = a.url;
+            c.target = "_blank";
+            c.rel = "noopener";
+          }
+          row.appendChild(c);
+        });
+        w.append(l, row);
+        extra.appendChild(w);
+      }
+      extra.hidden = false;
+    } else {
+      extra.hidden = true;
+    }
+
     if (p.game.url) {
       const links = $("#modal-links");
       const a = document.createElement("a");
@@ -891,6 +1158,8 @@ function closeModal() {
     state.currentViewer = null;
   }
   $("#modal-stage").innerHTML = "";
+  $("#modal-screens").hidden = true;
+  $("#modal-extra").hidden = true;
   $("#render-lightbox").hidden = true;
   $("#modal-jams").hidden = true;
 }

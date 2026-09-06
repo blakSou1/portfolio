@@ -227,13 +227,72 @@ def parse_itch_game_jams(html):
 
 
 def parse_itch_jam_page(html):
-    """Статистика джема: Entries / Ratings из шапки страницы джема."""
+    """Статистика джема: Entries / Ratings из шапки + даты из meta-описания."""
     stats = {}
     for val, label in re.findall(
             r'<div class="stat_value">([\d,]+)</div><div class="stat_label">(Entries|Ratings)</div>',
             html):
         stats[label.lower()] = int(val.replace(",", ""))
+    m = re.search(r'A game jam from (\d{4}-\d{2}-\d{2}) to (\d{4}-\d{2}-\d{2})', html)
+    if m:
+        stats["date_start"] = m.group(1)
+        stats["date_end"] = m.group(2)
     return stats
+
+
+def _meta_content(html, meta_name):
+    for tag in re.finditer(r'<meta[^>]*>', html):
+        t = tag.group(0)
+        if re.search(r'\bname="' + re.escape(meta_name) + r'"', t):
+            return _attr(t, "content")
+    return ""
+
+
+def parse_itch_game_page(html):
+    """Скриншоты, теги и автор игры со страницы itch.io (атрибут-порядок не важен)."""
+    out = {"screens": [], "tags": [], "authors": []}
+    for m in re.finditer(r'<img[^>]+>', html):
+        tag = m.group(0)
+        if re.search(r'\bclass="[^"]*screenshot[^"]*"', tag):
+            src = _attr(tag, "src")
+            if src and src not in out["screens"]:
+                out["screens"].append(src)
+    title = _meta_content(html, "twitter:title")
+    if " by " in title:
+        out["authors"].append({"name": htmllib.unescape(title.split(" by ", 1)[-1].strip())})
+    m = re.search(r'"@type"\s*:\s*"BreadcrumbList"(.*?)</script>', html, re.S)
+    if m:
+        for em in re.finditer(r'"name"\s*:\s*"([^"]+)"', m.group(1)):
+            t = htmllib.unescape(em.group(1)).strip()
+            if t.lower() != "games" and t and t not in out["tags"]:
+                out["tags"].append(t)
+    return out
+
+
+def parse_myindie_game_page(html):
+    """Авторы/теги/дата публикации игры из JSON-LD (VideoGame) на странице MyIndie."""
+    out = {"screens": [], "tags": [], "authors": [], "published": None}
+    m = re.search(r'"@type"\s*:\s*"VideoGame"(.*?)</script>', html, re.S)
+    if not m:
+        return out
+    j = m.group(1)
+    mm = re.search(r'"datePublished"\s*:\s*"([^"]+)"', j)
+    if mm:
+        out["published"] = mm.group(1)
+    for em in re.finditer(r'"genre"\s*:\s*\[([^\]]*)\]', j):
+        for gm in re.finditer(r'"([^"]+)"', em.group(1)):
+            if gm.group(1) not in out["tags"]:
+                out["tags"].append(gm.group(1))
+    for am in re.finditer(r'\{\s*"@type"\s*:\s*"Person"(.*?)\}', j, re.S):
+        p = am.group(1)
+        name_m = re.search(r'"name"\s*:\s*"([^"]+)"', p)
+        url_m = re.search(r'"url"\s*:\s*"([^"]+)"', p)
+        if name_m:
+            out["authors"].append({
+                "name": htmllib.unescape(name_m.group(1)).strip(),
+                "url": url_m.group(1) if url_m else "",
+            })
+    return out
 
 
 def parse_itch_results(html, game_url):
@@ -256,7 +315,8 @@ def parse_itch_results(html, game_url):
 
 
 def enrich_itch(games):
-    """По каждой игре — страница игры → джемы; страницы джемов → статистика."""
+    """По каждой игре — страница игры → джемы + скриншоты/теги/автор;
+    страницы джемов → статистика и даты."""
     note = {}
     jam_page_stats = {}
     for game in games:
@@ -266,6 +326,14 @@ def enrich_itch(games):
             note[game["id"]] = f"game_page failed: {type(e).__name__}"
             game["jams"] = []
             continue
+        detail = parse_itch_game_page(text)
+        game["screens"] = [s for s in detail["screens"]] or ([game["cover"]] if game.get("cover") else [])
+        if detail["tags"]:
+            game["tags"] = detail["tags"]
+        if detail["authors"]:
+            game["authors"] = detail["authors"]
+        else:
+            game["authors"] = [{"name": ITCH_USER}]
         entries = parse_itch_game_jams(text)
         jams = []
         for j in entries:
@@ -286,6 +354,8 @@ def enrich_itch(games):
                 "url": ITCH_JAM_URL + slug,
                 "entries": stats.get("entries"),
                 "ratings": stats.get("ratings"),
+                "date_start": stats.get("date_start"),
+                "date_end": stats.get("date_end"),
             }
             try:
                 rt, st2, ln2 = fetch(ITCH_JAM_URL + slug + "/results")
@@ -415,7 +485,8 @@ def parse_myindie_jam(html):
 
 
 def enrich_myindie(games):
-    """Джемы из бейджей карточек: "MyIndie January Rush Lvl 8" → страница джема."""
+    """Джемы из бейджей карточек: "MyIndie January Rush Lvl 8" → страница джема.
+    Плюс страница игры → авторы/теги/дата публикации."""
     note = {}
     cache = {}
     for game in games:
@@ -448,7 +519,49 @@ def enrich_myindie(games):
             }
             jams.append(jam)
         game["jams"] = jams
+        try:
+            gt, st, ln = fetch(game["url"])
+            page = parse_myindie_game_page(gt)
+        except Exception:  # noqa: BLE001
+            page = None
+        if page:
+            if not game.get("screens") and page["screens"]:
+                game["screens"] = page["screens"]
+            if not game.get("screens"):
+                game["screens"] = [game["cover"]] if game.get("cover") else []
+            if page["tags"]:
+                game["tags"] = page["tags"]
+                if not game.get("genre") and page["tags"]:
+                    game["genre"] = page["tags"][0]
+            if page["authors"]:
+                game["authors"] = page["authors"]
+            if page["published"]:
+                game["published"] = page["published"]
     return note
+
+
+def enrich_static_jam_dates(games):
+    """Даты itch-джемов, привязанных статикой (без дат в снапшоте)."""
+    fetched = {}
+    for game in games:
+        for jam in game.get("jams", []) or []:
+            if jam.get("date_start") or not jam.get("url"):
+                continue
+            if not jam["url"].startswith("https://itch.io/jam/"):
+                continue
+            if jam["url"] in fetched:
+                dates = fetched[jam["url"]]
+            else:
+                dates = {}
+                try:
+                    jt, st, ln = fetch(jam["url"])
+                    dates = parse_itch_jam_page(jt)
+                except Exception:  # noqa: BLE001
+                    pass
+                fetched[jam["url"]] = dates
+            if dates:
+                jam["date_start"] = dates.get("date_start")
+                jam["date_end"] = dates.get("date_end")
 
 
 # --------------------------------------------------------------------------
@@ -552,7 +665,11 @@ def main():
             meta[name]["kept_previous"] = len(kept)
             games.extend(kept)
 
-    attach_static_jams(games)
+attach_static_jams(games)
+    try:
+        enrich_static_jam_dates(games)
+    except Exception as e:  # noqa: BLE001
+        print(f"static jam dates: {type(e).__name__}: {e}")
 
     accounts = {}
     accounts_src = {}
