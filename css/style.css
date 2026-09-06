@@ -572,8 +572,18 @@ html, body {
   color: #fff;
   font-weight: 600;
 }
-.gblk-pane { margin-top: 2px; }
+.gblk-pane { margin-top: 2px; transition: opacity .22s ease, max-height .3s ease; will-change: opacity, max-height; overflow: hidden; }
 .gblk-pane[hidden] { display: none; }
+.gblk-pane.gblk-pane--out {
+  opacity: 0;
+  max-height: 0 !important;
+  pointer-events: none;
+  margin-top: 0;
+}
+.gblk-pane.gblk-pane--in {
+  opacity: 1;
+  max-height: 5000px;
+}
 .gblk-kpis {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -764,3 +774,36 @@ html, body {
   transition: filter .15s ease, transform .15s ease;
 }
 .game-link-btn:hover { filter: brightness(1.1); transform: translateY(-1px); color: #fff; }
+
+/* ── Smoothness animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes kpiIn {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeSwap {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.gblk {
+  animation: fadeIn .4s ease both;
+}
+.gblk-games .game-tab-card {
+  animation: cardIn .35s ease both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+.gblk-kpis .kpi-card {
+  animation: kpiIn .3s ease both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.jam-detail.jam-detail--animate {
+  animation: fadeSwap .25s ease both;
+}

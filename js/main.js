@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906i";
+const ASSET_VERSION = "20260906j";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -261,18 +261,27 @@ function renderPlatformBlock(snap, source, projects) {
   blk.appendChild(tabbar);
 
   const gamesPane = el("div", "gblk-pane");
-  const anaPane = el("div", "gblk-pane gblk-pane--ana");
-  anaPane.hidden = true;
+  const anaPane = el("div", "gblk-pane gblk-pane--ana gblk-pane--out");
   let anaBuilt = false;
+  let switching = false;
   const switchTo = (games) => {
+    if (switching) return;
+    switching = true;
     btGames.classList.toggle("active", games);
     btAna.classList.toggle("active", !games);
-    gamesPane.hidden = !games;
-    anaPane.hidden = games;
+    const show = games ? gamesPane : anaPane;
+    const hide = games ? anaPane : gamesPane;
     if (!games && !anaBuilt) {
       anaPane.appendChild(buildAccountAnalysis(snap, source, projects));
       anaBuilt = true;
     }
+    hide.classList.add("gblk-pane--out");
+    hide.hidden = true;
+    show.hidden = false;
+    show.classList.remove("gblk-pane--out");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { switching = false; });
+    });
   };
   btGames.addEventListener("click", () => switchTo(true));
   btAna.addEventListener("click", () => switchTo(false));
@@ -283,7 +292,11 @@ function renderPlatformBlock(snap, source, projects) {
   gTitle.textContent = "Игры · " + projects.length;
   gamesPane.appendChild(gTitle);
   const grid = el("div", "gblk-games");
-  projects.forEach((p) => grid.appendChild(gameTabCard(p)));
+  projects.forEach((p, i) => {
+    const card = gameTabCard(p);
+    card.style.setProperty("--i", i);
+    grid.appendChild(card);
+  });
   gamesPane.appendChild(grid);
 
   const list = collectAccountJams(projects);
@@ -307,9 +320,22 @@ function renderPlatformBlock(snap, source, projects) {
       sel.appendChild(o);
     });
     const detail = el("div", "jam-detail");
+    let jamAnimating = false;
     const show = (i) => {
-      detail.innerHTML = "";
-      if (list[i]) detail.appendChild(jamRow(list[i].jam, list[i].games));
+      if (jamAnimating) return;
+      jamAnimating = true;
+      detail.style.opacity = "0";
+      detail.style.transform = "translateY(6px)";
+      setTimeout(() => {
+        detail.innerHTML = "";
+        if (list[i]) detail.appendChild(jamRow(list[i].jam, list[i].games));
+        detail.classList.remove("jam-detail--animate");
+        void detail.offsetWidth;
+        detail.classList.add("jam-detail--animate");
+        detail.style.opacity = "";
+        detail.style.transform = "";
+        jamAnimating = false;
+      }, 140);
     };
     sel.addEventListener("change", () => show(Number(sel.value)));
     show(0);
@@ -345,8 +371,9 @@ function fmtNum(n) {
   return typeof n === "number" ? n.toLocaleString("ru-RU") : String(n);
 }
 
-function kpiCard(label, value) {
+function kpiCard(label, value, idx) {
   const c = el("div", "kpi-card");
+  if (idx != null) c.style.setProperty("--i", idx);
   const v = el("div", "kpi-num");
   v.textContent = fmtNum(value);
   const k = el("div", "kpi-label");
@@ -392,21 +419,22 @@ function buildAccountAnalysis(snap, source, projects) {
   });
 
   const kpis = el("div", "gblk-kpis");
-  kpis.appendChild(kpiCard("Игр", projects.length));
-  if (list.length) kpis.appendChild(kpiCard("Джемов", list.length));
+  let ki = 0;
+  kpis.appendChild(kpiCard("Игр", projects.length, ki++));
+  if (list.length) kpis.appendChild(kpiCard("Джемов", list.length, ki++));
   let best = null;
   list.forEach(({ jam }) => {
     if (!jam.place) return;
     const n = parseInt(String(jam.place), 10);
     if (!isNaN(n) && (best == null || n < best)) best = n;
   });
-  if (best != null) kpis.appendChild(kpiCard("Лучший топ", "#" + best));
-  if (hasViews) kpis.appendChild(kpiCard("Просмотры", views));
-  if (hasLikes) kpis.appendChild(kpiCard("Лайки", likes));
-  if (hasRatings) kpis.appendChild(kpiCard("Человек оценили", ratings));
-  if (hasCollections) kpis.appendChild(kpiCard("В коллекциях", collections));
-  if (hasDownloads) kpis.appendChild(kpiCard("Загрузки", downloads));
-  if (typeof acc.score === "number") kpis.appendChild(kpiCard("Качество", "★ " + acc.score));
+  if (best != null) kpis.appendChild(kpiCard("Лучший топ", "#" + best, ki++));
+  if (hasViews) kpis.appendChild(kpiCard("Просмотры", views, ki++));
+  if (hasLikes) kpis.appendChild(kpiCard("Лайки", likes, ki++));
+  if (hasRatings) kpis.appendChild(kpiCard("Человек оценили", ratings, ki++));
+  if (hasCollections) kpis.appendChild(kpiCard("В коллекциях", collections, ki++));
+  if (hasDownloads) kpis.appendChild(kpiCard("Загрузки", downloads, ki++));
+  if (typeof acc.score === "number") kpis.appendChild(kpiCard("Качество", "★ " + acc.score, ki++));
   root.appendChild(kpis);
 
   const tops = list.filter(({ jam }) => jam.place);
