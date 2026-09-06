@@ -1141,7 +1141,7 @@ function openModal(p) {
         let url = (a && a.url) || "";
         if (!url && p.game.source === "itch") {
           const slug = who.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-          url = "https://" + slug + ".itch.io/";
+          if (slug && slug.length >= 2) url = "https://" + slug + ".itch.io/";
         }
         if (url) {
           c.href = url;
