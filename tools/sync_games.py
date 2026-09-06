@@ -249,7 +249,7 @@ def _meta_content(html, meta_name):
 
 
 def parse_itch_game_page(html):
-    """Скриншоты, теги и автор игры со страницы itch.io (атрибут-порядок не важен)."""
+    """Скриншоты, теги и авторы игры со страницы itch.io (атрибут-порядок не важен)."""
     out = {"screens": [], "tags": [], "authors": []}
     for m in re.finditer(r'<img[^>]+>', html):
         tag = m.group(0)
@@ -259,7 +259,11 @@ def parse_itch_game_page(html):
                 out["screens"].append(src)
     title = _meta_content(html, "twitter:title")
     if " by " in title:
-        out["authors"].append({"name": htmllib.unescape(title.split(" by ", 1)[-1].strip())})
+        raw = htmllib.unescape(title.split(" by ", 1)[-1]).strip()
+        for name in re.split(r'\s*,\s*', raw):
+            name = name.strip()
+            if name:
+                out["authors"].append({"name": name})
     m = re.search(r'"@type"\s*:\s*"BreadcrumbList"(.*?)</script>', html, re.S)
     if m:
         for em in re.finditer(r'"name"\s*:\s*"([^"]+)"', m.group(1)):

@@ -633,8 +633,8 @@ html, body {
 .modal-screens[hidden] { display: none; }
 .modal-screens img {
   flex: 0 0 auto;
-  height: 90px;
-  width: 160px;
+  height: 120px;
+  min-width: 200px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -645,10 +645,10 @@ html, body {
 .modal-screens img:hover { border-color: var(--accent); transform: translateY(-2px); }
 @media (max-width: 600px) {
   .modal-screens { padding: 10px 16px; gap: 8px; }
-  .modal-screens img { height: 100px; width: 140px; }
+  .modal-screens img { height: 140px; min-width: 180px; }
 }
 @media (min-width: 1000px) {
-  .modal-screens img { height: 100px; width: 180px; }
+  .modal-screens img { height: 150px; min-width: 240px; }
 }
 .modal-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 .modal-extra[hidden] { display: none; }
