@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T10:10:28Z",
+  "generated_at": "2026-09-06T22:14:16Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -57,14 +57,10 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         }
       ],
       "jams": [
@@ -98,20 +94,18 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         },
         {
-          "name": "Blezis"
+          "name": "Blezis",
+          "url": "https://blezis.itch.io"
         },
         {
-          "name": "Tausdei"
+          "name": "Tausdei",
+          "url": "https://tausdei.itch.io"
         }
       ],
       "jams": []
@@ -134,14 +128,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         }
       ],
       "jams": [
@@ -180,7 +170,7 @@
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         }
       ],
       "jams": [
@@ -224,14 +214,10 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
-      "tags": [
-        "Platformer",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         }
       ],
       "jams": [
@@ -268,7 +254,7 @@
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         }
       ],
       "jams": [
@@ -305,11 +291,11 @@
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         },
         {
           "name": "Илья",
-          "url": "https://shad1qq.itch.io/"
+          "url": "https://shad1qq.itch.io"
         }
       ],
       "jams": [
@@ -347,17 +333,19 @@
       "authors": [
         {
           "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io/"
+          "url": "https://someshboy.itch.io"
         },
         {
           "name": "Илья",
-          "url": "https://shad1qq.itch.io/"
+          "url": "https://shad1qq.itch.io"
         },
         {
-          "name": "GVPGerman"
+          "name": "GVPGerman",
+          "url": "https://gvpgerman.itch.io"
         },
         {
-          "name": "thenickto"
+          "name": "thenickto",
+          "url": "https://thenickto.itch.io"
         }
       ],
       "jams": [
@@ -514,14 +502,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19355,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97286,
+      "len": 97285,
       "account": {
         "source": "myindie",
         "username": "someshboy",
