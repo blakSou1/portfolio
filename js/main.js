@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906d";
+const ASSET_VERSION = "20260906e";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -1099,10 +1099,16 @@ function openModal(p) {
         const row = el("div", "tag-row");
         p.game.authors.forEach((a) => {
           const who = (a && a.name) || a || "";
+          if (!who) return;
           const c = el("a", "author-chip");
           c.textContent = who;
-          if (a && a.url) {
-            c.href = a.url;
+          let url = (a && a.url) || "";
+          if (!url && p.game.source === "itch") {
+            const slug = who.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+            url = "https://" + slug + ".itch.io/";
+          }
+          if (url) {
+            c.href = url;
             c.target = "_blank";
             c.rel = "noopener";
           }

@@ -627,19 +627,29 @@ html, body {
   gap: 10px;
   overflow-x: auto;
   padding: 12px 26px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 .modal-screens[hidden] { display: none; }
 .modal-screens img {
   flex: 0 0 auto;
-  height: 96px;
-  width: 170px;
+  height: 90px;
+  width: 160px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--border);
   cursor: pointer;
   transition: border-color .15s ease, transform .15s ease;
+  scroll-snap-align: start;
 }
 .modal-screens img:hover { border-color: var(--accent); transform: translateY(-2px); }
+@media (max-width: 600px) {
+  .modal-screens { padding: 10px 16px; gap: 8px; }
+  .modal-screens img { height: 100px; width: 140px; }
+}
+@media (min-width: 1000px) {
+  .modal-screens img { height: 100px; width: 180px; }
+}
 .modal-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 .modal-extra[hidden] { display: none; }
 .modal-block { display: flex; flex-direction: column; gap: 8px; }
@@ -660,6 +670,14 @@ html, body {
   padding: 3px 11px;
   border-radius: 999px;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.author-chip[href]::after {
+  content: "↗";
+  font-size: 9px;
+  opacity: 0.6;
 }
 .author-chip:hover { border-color: #facd3a; color: #ffedb8; }
 .game-tab-card { cursor: pointer; transition: transform .15s ease, border-color .15s ease; }
