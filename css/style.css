@@ -633,22 +633,23 @@ html, body {
 .modal-screens[hidden] { display: none; }
 .modal-screens img {
   flex: 0 0 auto;
-  height: 120px;
-  min-width: 200px;
-  object-fit: cover;
+  height: 180px;
+  min-width: 260px;
+  object-fit: contain;
   border-radius: 8px;
   border: 1px solid var(--border);
   cursor: pointer;
   transition: border-color .15s ease, transform .15s ease;
   scroll-snap-align: start;
+  background: rgba(0,0,0,0.3);
 }
 .modal-screens img:hover { border-color: var(--accent); transform: translateY(-2px); }
 @media (max-width: 600px) {
   .modal-screens { padding: 10px 16px; gap: 8px; }
-  .modal-screens img { height: 140px; min-width: 180px; }
+  .modal-screens img { height: 160px; min-width: 200px; }
 }
 @media (min-width: 1000px) {
-  .modal-screens img { height: 150px; min-width: 240px; }
+  .modal-screens img { height: 220px; min-width: 320px; }
 }
 .modal-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 .modal-extra[hidden] { display: none; }
