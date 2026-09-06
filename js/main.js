@@ -1,10 +1,10 @@
-﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260906n";
+﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260906p";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906n";
+const ASSET_VERSION = "20260906p";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -16,6 +16,7 @@ const state = {
   activeCategory: "all",
   secretOk: false,
   currentViewer: null,
+  manifest: null,
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -724,11 +725,22 @@ async function handleItchToken() {
   }
 }
 
-async function githubList(owner, repo, branch, path) {
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`GitHub API ${r.status} для ${path}`);
-  return r.json();
+async function loadManifest() {
+  if (state.manifest) return state.manifest;
+  try {
+    const r = await fetch("assets/manifest.json", { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    state.manifest = await r.json();
+    return state.manifest;
+  } catch (e) {
+    console.warn("manifest.json недоступен:", e.message);
+    return null;
+  }
+}
+
+function manifestFiles(manifest, dirPrefix) {
+  if (!manifest || !Array.isArray(manifest.files)) return [];
+  return manifest.files.filter((f) => f.path.startsWith(dirPrefix + "/"));
 }
 
 async function loadRenders(modelUrl) {
@@ -736,16 +748,14 @@ async function loadRenders(modelUrl) {
   if (!g) return [];
   const seg = modelUrl.split("/").pop().split("?")[0];
   const base = seg.replace(/\.[^.]+$/, "");
-  const rendersPath = "assets/renders/" + base;
-  try {
-    const items = await githubList(g.owner, g.repo, g.branch, rendersPath);
-    if (!Array.isArray(items)) return [];
-    return items
-      .filter((it) => /\.(png|jpe?g|webp)$/i.test(it.name))
-      .map((it) => assetUrl((g.pagesBase || "") + it.path, it.sha));
-  } catch (e) {
-    return [];
+  const rendersPrefix = "assets/renders/" + base;
+  const manifest = await loadManifest();
+  if (manifest) {
+    return manifestFiles(manifest, rendersPrefix)
+      .filter((f) => /\.(png|jpe?g|webp)$/i.test(f.name))
+      .map((f) => assetUrl((g.pagesBase || "") + f.path, f.sha));
   }
+  return [];
 }
 
 const lightbox = { list: [], idx: 0, zoom: 1, tx: 0, ty: 0, dragging: false, sx: 0, sy: 0, stx: 0, sty: 0 };
@@ -791,12 +801,11 @@ function lbStep(d) {
 function closeLightbox() { $("#render-lightbox").hidden = true; }
 
 async function discover(g) {
+  const manifest = await loadManifest();
+  if (!manifest) return [];
   const found = [];
   for (const cfg of SCAN) {
-    let items;
-    try { items = await githubList(g.owner, g.repo, g.branch, cfg.path); }
-    catch (e) { console.warn(e.message); continue; }
-    if (!Array.isArray(items)) continue;
+    const items = manifestFiles(manifest, cfg.path);
     for (const it of items) {
       const ext = (it.name.split(".").pop() || "").toLowerCase();
       if (!cfg.ext.includes(ext)) continue;
@@ -808,7 +817,6 @@ async function discover(g) {
         type: cfg.type,
         auto: true,
       };
-      // Скрытый раздел: файлы с префиксом "hidden" или в папке /hidden/ видны только по секретному ключу
       if (it.name.toLowerCase().startsWith("hidden") || it.path.toLowerCase().includes("/hidden/")) {
         item.hidden = true;
       }

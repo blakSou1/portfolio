@@ -1,0 +1,77 @@
+name: Generate asset manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/models/**'
+      - 'assets/shaders/**'
+      - 'assets/previews/**'
+      - 'assets/videos/**'
+      - 'assets/renders/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Generate manifest
+        run: |
+          python3 - <<'PY'
+          import os, json, hashlib
+
+          EXT_MAP = {
+            "models":   ["glb","gltf","fbx","blend"],
+            "shaders":  ["frag"],
+            "previews": ["png","jpg","jpeg","webp","svg"],
+            "videos":   ["mp4","webm"],
+            "renders":  ["png","jpg","jpeg","webp"],
+          }
+
+          manifest = {"files": [], "generated_at": __import__("datetime").datetime.utcnow().isoformat()+"Z"}
+
+          for folder, exts in EXT_MAP.items():
+            base = os.path.join("assets", folder)
+            if not os.path.isdir(base):
+              continue
+            for root, dirs, files in os.walk(base):
+              for f in files:
+                ext = f.rsplit(".",1)[-1].lower() if "." in f else ""
+                if ext not in exts:
+                  continue
+                full = os.path.join(root, f)
+                rel = full.replace(os.sep, "/")
+                sha = hashlib.sha1(open(full,"rb").read()).hexdigest()
+                manifest["files"].append({
+                  "path": rel,
+                  "name": f,
+                  "sha": sha,
+                })
+
+          manifest["files"].sort(key=lambda x: x["path"])
+
+          os.makedirs("assets", exist_ok=True)
+          with open("assets/manifest.json", "w") as fp:
+            json.dump(manifest, fp, indent=2)
+          print(f"Manifest: {len(manifest['files'])} files")
+          PY
+
+      - name: Commit manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/manifest.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: update asset manifest [skip ci]"
+            git push
+          fi

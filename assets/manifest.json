@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "path": "assets/models/chuba.fbx",
+      "name": "chuba.fbx",
+      "sha": "68b62133992481937850281d3755dba6f4b94cfd"
+    },
+    {
+      "path": "assets/models/test-duck.glb",
+      "name": "test-duck.glb",
+      "sha": "78170efd55f69ea61bda4ab184ba0776c78c5b5c"
+    },
+    {
+      "path": "assets/renders/chuba/Untitled.png",
+      "name": "Untitled.png",
+      "sha": "c290cb59b4ca951c0846884a5f5a0dd4cbc8b7fd"
+    },
+    {
+      "path": "assets/renders/chuba/Untitled2.png",
+      "name": "Untitled2.png",
+      "sha": "78f6e575c838c9e15a52cf2cae5aa0069dcc5dab"
+    },
+    {
+      "path": "assets/renders/chuba/Untitled3.png",
+      "name": "Untitled3.png",
+      "sha": "6b6c5ee2c780f5a36e1fdb34cdd043f6f8b233c8"
+    },
+    {
+      "path": "assets/renders/chuba/Untitled4.png",
+      "name": "Untitled4.png",
+      "sha": "94ba4c2d5689a09cf6ffd2d08ad8e39f5314baa2"
+    },
+    {
+      "path": "assets/renders/test-cesiumman/preview-1.png",
+      "name": "preview-1.png",
+      "sha": "83628c8f50b50ef63cd2e54925ec6da6dccedbc6"
+    },
+    {
+      "path": "assets/renders/test-duck/preview-1.png",
+      "name": "preview-1.png",
+      "sha": "49603e8d79fb04bba0f05fbfabdb7658729d14b3"
+    },
+    {
+      "path": "assets/renders/test-duck/preview-2.png",
+      "name": "preview-2.png",
+      "sha": "f54eef60fedfb457c7919a0bdbf9571e035dc272"
+    }
+  ],
+  "generated_at": "2026-09-06T00:00:00Z"
+}
