@@ -39,12 +39,12 @@ jobs:
 
       - name: Commit minified files
         run: |
-          if git diff --quiet css/style.min.css js/main.min.js js/viewer.min.js 2>/dev/null; then
-            echo "No changes to minified files"
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add css/style.min.css js/main.min.js js/viewer.min.js
+          if git diff --cached --quiet; then
+            echo "No changes to minified files"
+            exit 0
+          fi
           git commit -m "chore: minify css/js assets"
           git push
