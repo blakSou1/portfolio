@@ -501,9 +501,9 @@ html, body {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 18px;
-  backdrop-filter: blur(8px);
   content-visibility: auto;
   contain-intrinsic-size: 800px;
+  animation: fadeIn .4s ease both;
 }
 .gblk-head { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
 .gblk-ident { display: flex; align-items: center; gap: 14px; }
@@ -572,17 +572,14 @@ html, body {
   color: #fff;
   font-weight: 600;
 }
-.gblk-pane { margin-top: 2px; transition: opacity .22s ease, max-height .3s ease; will-change: opacity, max-height; overflow: hidden; }
+.gblk-pane { margin-top: 2px; transition: opacity .22s ease; }
 .gblk-pane[hidden] { display: none; }
 .gblk-pane.gblk-pane--out {
   opacity: 0;
-  max-height: 0 !important;
   pointer-events: none;
-  margin-top: 0;
 }
 .gblk-pane.gblk-pane--in {
   opacity: 1;
-  max-height: 5000px;
 }
 .gblk-kpis {
   display: grid;
