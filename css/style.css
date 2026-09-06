@@ -623,33 +623,30 @@ html, body {
 .tl-link { color: var(--text); text-decoration: none; }
 .tl-link:hover { color: var(--accent); }
 .modal-screens {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 12px 26px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  display: none;
 }
-.modal-screens[hidden] { display: none; }
-.modal-screens img {
-  flex: 0 0 auto;
-  height: 180px;
-  min-width: 260px;
-  object-fit: contain;
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+.screens-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--border);
   cursor: pointer;
   transition: border-color .15s ease, transform .15s ease;
-  scroll-snap-align: start;
-  background: rgba(0,0,0,0.3);
 }
-.modal-screens img:hover { border-color: var(--accent); transform: translateY(-2px); }
+.screens-grid img:hover { border-color: var(--accent); transform: translateY(-2px); }
 @media (max-width: 600px) {
-  .modal-screens { padding: 10px 16px; gap: 8px; }
-  .modal-screens img { height: 160px; min-width: 200px; }
+  .screens-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .screens-grid img { height: 100px; }
 }
 @media (min-width: 1000px) {
-  .modal-screens img { height: 220px; min-width: 320px; }
+  .screens-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .screens-grid img { height: 140px; }
 }
 .modal-extra { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 .modal-extra[hidden] { display: none; }

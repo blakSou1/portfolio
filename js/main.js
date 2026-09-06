@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906g";
+const ASSET_VERSION = "20260906h";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -1008,7 +1008,6 @@ function openModal(p) {
   $("#modal-renders").innerHTML = "";
   $("#modal-renders").style.display = "none";
   $("#render-lightbox").hidden = true;
-  $("#modal-screens").hidden = true;
   $("#modal-extra").hidden = true;
 
   if (state.currentViewer && state.currentViewer.dispose) {
@@ -1060,67 +1059,65 @@ function openModal(p) {
     mainImg.addEventListener("click", () => { if (all.length) openLightbox(all, 0); });
     stage.appendChild(mainImg);
 
-    const scr = $("#modal-screens");
-    scr.innerHTML = "";
+    const extra = $("#modal-extra");
+    extra.innerHTML = "";
+
     if (all.length > 1) {
+      const w = el("div", "modal-block");
+      const l = el("div", "label");
+      l.textContent = "Скриншоты";
+      const grid = el("div", "screens-grid");
       all.forEach((u, i) => {
         const t = document.createElement("img");
         t.src = u;
         t.alt = p.title + " · скриншот " + (i + 1);
         t.loading = "lazy";
         t.addEventListener("click", () => openLightbox(all, i));
-        scr.appendChild(t);
+        grid.appendChild(t);
       });
-      scr.hidden = false;
-    } else {
-      scr.hidden = true;
+      w.append(l, grid);
+      extra.appendChild(w);
     }
 
-    const extra = $("#modal-extra");
-    extra.innerHTML = "";
-    if ((p.game.tags || []).length || (p.game.authors || []).length) {
-      if ((p.game.tags || []).length) {
-        const w = el("div", "modal-block");
-        const l = el("div", "label");
-        l.textContent = "Теги";
-        const row = el("div", "tag-row");
-        p.game.tags.forEach((t) => {
-          const c = el("span", "tag-chip");
-          c.textContent = t;
-          row.appendChild(c);
-        });
-        w.append(l, row);
-        extra.appendChild(w);
-      }
-      if ((p.game.authors || []).length) {
-        const w = el("div", "modal-block");
-        const l = el("div", "label");
-        l.textContent = "Авторы";
-        const row = el("div", "tag-row");
-        p.game.authors.forEach((a) => {
-          const who = (a && a.name) || a || "";
-          if (!who) return;
-          const c = el("a", "author-chip");
-          c.textContent = who;
-          let url = (a && a.url) || "";
-          if (!url && p.game.source === "itch") {
-            const slug = who.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-            url = "https://" + slug + ".itch.io/";
-          }
-          if (url) {
-            c.href = url;
-            c.target = "_blank";
-            c.rel = "noopener";
-          }
-          row.appendChild(c);
-        });
-        w.append(l, row);
-        extra.appendChild(w);
-      }
-      extra.hidden = false;
-    } else {
-      extra.hidden = true;
+    if ((p.game.tags || []).length) {
+      const w = el("div", "modal-block");
+      const l = el("div", "label");
+      l.textContent = "Теги";
+      const row = el("div", "tag-row");
+      p.game.tags.forEach((t) => {
+        const c = el("span", "tag-chip");
+        c.textContent = t;
+        row.appendChild(c);
+      });
+      w.append(l, row);
+      extra.appendChild(w);
     }
+    if ((p.game.authors || []).length) {
+      const w = el("div", "modal-block");
+      const l = el("div", "label");
+      l.textContent = "Авторы";
+      const row = el("div", "tag-row");
+      p.game.authors.forEach((a) => {
+        const who = (a && a.name) || a || "";
+        if (!who) return;
+        const c = el("a", "author-chip");
+        c.textContent = who;
+        let url = (a && a.url) || "";
+        if (!url && p.game.source === "itch") {
+          const slug = who.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+          url = "https://" + slug + ".itch.io/";
+        }
+        if (url) {
+          c.href = url;
+          c.target = "_blank";
+          c.rel = "noopener";
+        }
+        row.appendChild(c);
+      });
+      w.append(l, row);
+      extra.appendChild(w);
+    }
+    extra.hidden = extra.children.length === 0;
 
     if (p.game.url) {
       const links = $("#modal-links");
@@ -1164,7 +1161,6 @@ function closeModal() {
     state.currentViewer = null;
   }
   $("#modal-stage").innerHTML = "";
-  $("#modal-screens").hidden = true;
   $("#modal-extra").hidden = true;
   $("#render-lightbox").hidden = true;
   $("#modal-jams").hidden = true;
