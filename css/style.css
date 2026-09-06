@@ -126,6 +126,8 @@ html, body {
   min-height: 240px;
   display: flex;
   flex-direction: column;
+  content-visibility: auto;
+  contain-intrinsic-size: 300px 400px;
 }
 .card:hover {
   transform: translateY(-6px);
@@ -500,6 +502,8 @@ html, body {
   border: 1px solid var(--border);
   border-radius: 18px;
   backdrop-filter: blur(8px);
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
 }
 .gblk-head { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
 .gblk-ident { display: flex; align-items: center; gap: 14px; }
@@ -678,7 +682,12 @@ html, body {
   opacity: 0.6;
 }
 .author-chip:hover { border-color: #facd3a; color: #ffedb8; }
-.game-tab-card { cursor: pointer; transition: transform .15s ease, border-color .15s ease; }
+.game-tab-card {
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease;
+  content-visibility: auto;
+  contain-intrinsic-size: 250px 350px;
+}
 .game-tab-card:hover { transform: translateY(-3px); border-color: var(--accent); }
 .card-jams { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .jam-chip {
@@ -701,6 +710,8 @@ html, body {
   background: rgba(0,0,0,0.28);
   border: 1px solid var(--border);
   border-radius: 12px;
+  content-visibility: auto;
+  contain-intrinsic-size: 600px 60px;
 }
 .jam-main { min-width: 240px; flex: 1 1 auto; }
 .jam-title { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 14px; }

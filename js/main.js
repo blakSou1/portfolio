@@ -1,4 +1,4 @@
-﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260905d";
+﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.min.js?v=20260906i";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA

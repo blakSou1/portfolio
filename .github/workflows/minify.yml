@@ -1,0 +1,50 @@
+name: minify
+
+on:
+  push:
+    paths:
+      - 'css/style.css'
+      - 'js/main.js'
+      - 'js/viewer.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install tools
+        run: npm install -g terser csso-cli
+
+      - name: Minify CSS
+        run: |
+          csso css/style.css -o css/style.min.css --no-restructure
+          echo "CSS minified: $(wc -c < css/style.min.css) bytes"
+
+      - name: Minify JS
+        run: |
+          terser js/main.js -o js/main.min.js --compress --mangle --module
+          terser js/viewer.js -o js/viewer.min.js --compress --mangle --module
+          echo "main.js minified: $(wc -c < js/main.min.js) bytes"
+          echo "viewer.js minified: $(wc -c < js/viewer.min.js) bytes"
+
+      - name: Commit minified files
+        run: |
+          if git diff --quiet css/style.min.css js/main.min.js js/viewer.min.js 2>/dev/null; then
+            echo "No changes to minified files"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add css/style.min.css js/main.min.js js/viewer.min.js
+          git commit -m "chore: minify css/js assets"
+          git push
