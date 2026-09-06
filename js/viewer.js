@@ -67,9 +67,9 @@ function panel(stage, title) {
 /* ---------- Environment for PBR (Blender-like look) ---------- */
 function makeEnv(renderer) {
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const neutralEnv = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
-  return env;
+  return neutralEnv;
 }
 
 function pickLoader(url) {
@@ -102,11 +102,13 @@ export function renderModelThumbnail(canvas, modelUrl) {
   renderer.setPixelRatio(1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
-  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-  const key = new THREE.DirectionalLight(0xffffff, 2.2);
-  key.position.set(3, 5, 4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x7c5cff, 1.4);
-  rim.position.set(-4, 2, -3); scene.add(rim);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const key = new THREE.DirectionalLight(0xfff5e6, 1.4);
+  key.position.set(4, 6, 5); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.6);
+  fill.position.set(-3, 3, -2); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.8);
+  rim.position.set(-2, 4, -4); scene.add(rim);
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 
   const w = canvas.clientWidth || 300, h = canvas.clientHeight || 200;
@@ -325,17 +327,19 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.2;
   renderer.setClearColor(0x000000, 0);
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
-  const key = new THREE.DirectionalLight(0xffffff, 2.2);
-  key.position.set(3, 5, 4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0x7c5cff, 1.5);
-  rim.position.set(-4, 2, -3); scene.add(rim);
-  const sceneLights = [ambient, key, rim];
+  const ambient = new THREE.AmbientLight(0xffffff, 0.4); scene.add(ambient);
+  const key = new THREE.DirectionalLight(0xfff5e6, 1.4);
+  key.position.set(4, 6, 5); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.6);
+  fill.position.set(-3, 3, -2); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.8);
+  rim.position.set(-2, 4, -4); scene.add(rim);
+  const sceneLights = [ambient, key, fill, rim];
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
