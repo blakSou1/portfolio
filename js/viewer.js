@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 /* ---------- Control panel helper ---------- */
 function panel(stage, title) {
@@ -64,12 +63,85 @@ function panel(stage, title) {
   };
 }
 
-/* ---------- Environment for PBR (Blender-like look) ---------- */
+/* ---------- Procedural studio environment (Sketchfab-like) ---------- */
 function makeEnv(renderer) {
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const neutralEnv = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.compileEquirectangularShader();
+
+  // Создаём процедурную сцену-окружение с мягким студийным светом
+  const envScene = new THREE.Scene();
+
+  // Тёплый верхний свет (key light)
+  const keyGeo = new THREE.SphereGeometry(1, 16, 16);
+  const keyMat = new THREE.MeshBasicMaterial({ color: 0xfff0dd });
+  const keyLight = new THREE.Mesh(keyGeo, keyMat);
+  keyLight.scale.set(8, 1, 8);
+  keyLight.position.set(5, 10, 5);
+  envScene.add(keyLight);
+
+  // Холодный боковой свет (fill)
+  const fillMat = new THREE.MeshBasicMaterial({ color: 0xc8d8f0 });
+  const fillLight = new THREE.Mesh(keyGeo.clone(), fillMat);
+  fillLight.scale.set(6, 1, 6);
+  fillLight.position.set(-8, 4, -3);
+  envScene.add(fillLight);
+
+  // Мягкий задний свет (rim)
+  const rimMat = new THREE.MeshBasicMaterial({ color: 0xe8e0f0 });
+  const rimLight = new THREE.Mesh(keyGeo.clone(), rimMat);
+  rimLight.scale.set(5, 1, 5);
+  rimLight.position.set(-2, 6, -10);
+  envScene.add(rimLight);
+
+  // Нижний отражённый свет (bounce)
+  const bounceMat = new THREE.MeshBasicMaterial({ color: 0x222230 });
+  const bounce = new THREE.Mesh(keyGeo.clone(), bounceMat);
+  bounce.scale.set(20, 0.5, 20);
+  bounce.position.set(0, -6, 0);
+  envScene.add(bounce);
+
+  const envTexture = pmrem.fromScene(envScene, 0.04).texture;
   pmrem.dispose();
-  return neutralEnv;
+  return envTexture;
+}
+
+/* ---------- Post-load material fixup for FBX ---------- */
+function fixFbxMaterials(model) {
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    o.material = mats.map((m) => {
+      if (!m) return m;
+      // MeshBasicMaterial → MeshStandardMaterial
+      if (m.isMeshBasicMaterial) {
+        const fixed = new THREE.MeshStandardMaterial({
+          color: m.color.clone(),
+          map: m.map,
+          side: THREE.DoubleSide,
+          roughness: 0.55,
+          metalness: 0.1,
+        });
+        return fixed;
+      }
+      // Убедимся что roughness/metalness адекватные
+      if (m.isMeshStandardMaterial) {
+        if (m.roughness === 0 && m.metalness === 0) {
+          // Похоже на дефолтный FBX материал — дадим разумные PBR-свойства
+          m.roughness = 0.55;
+          m.metalness = 0.1;
+        }
+        // Если color слишком тёмный — осветлим
+        const hsl = {};
+        m.color.getHSL(hsl);
+        if (hsl.l < 0.05) {
+          m.color.setHSL(hsl.h, hsl.s, 0.15);
+        }
+        m.side = THREE.DoubleSide;
+        m.needsUpdate = true;
+      }
+      return m;
+    });
+  });
 }
 
 function pickLoader(url) {
@@ -102,13 +174,14 @@ export function renderModelThumbnail(canvas, modelUrl) {
   renderer.setPixelRatio(1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-  const key = new THREE.DirectionalLight(0xfff5e6, 1.4);
-  key.position.set(4, 6, 5); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.6);
-  fill.position.set(-3, 3, -2); scene.add(fill);
-  const rim = new THREE.DirectionalLight(0xffffff, 0.8);
-  rim.position.set(-2, 4, -4); scene.add(rim);
+  scene.environment = makeEnv(renderer);
+  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 0.6); scene.add(ambient);
+  const key = new THREE.DirectionalLight(0xfff8f0, 1.8);
+  key.position.set(5, 8, 6); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.8);
+  fill.position.set(-5, 4, -3); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.0);
+  rim.position.set(-3, 6, -6); scene.add(rim);
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 
   const w = canvas.clientWidth || 300, h = canvas.clientHeight || 200;
@@ -120,6 +193,7 @@ export function renderModelThumbnail(canvas, modelUrl) {
     modelUrl,
     (res) => {
       const model = res.scene || res;
+      if (modelUrl.split("?")[0].toLowerCase().endsWith(".fbx")) fixFbxMaterials(model);
       scene.add(model);
       applyMirrorSide(model);
       const box = new THREE.Box3().setFromObject(model);
@@ -327,19 +401,22 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.2;
+  renderer.toneMappingExposure = 1.0;
   renderer.setClearColor(0x000000, 0);
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.4); scene.add(ambient);
-  const key = new THREE.DirectionalLight(0xfff5e6, 1.4);
-  key.position.set(4, 6, 5); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.6);
-  fill.position.set(-3, 3, -2); scene.add(fill);
-  const rim = new THREE.DirectionalLight(0xffffff, 0.8);
-  rim.position.set(-2, 4, -4); scene.add(rim);
-  const sceneLights = [ambient, key, fill, rim];
+  // Sketchfab-like 4-light studio setup
+  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 0.6); scene.add(ambient);
+  const key = new THREE.DirectionalLight(0xfff8f0, 1.8);
+  key.position.set(5, 8, 6); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.8);
+  fill.position.set(-5, 4, -3); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.0);
+  rim.position.set(-3, 6, -6); scene.add(rim);
+  const bottom = new THREE.DirectionalLight(0x303040, 0.3);
+  bottom.position.set(0, -4, 2); scene.add(bottom);
+  const sceneLights = [ambient, key, fill, rim, bottom];
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -418,6 +495,8 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     // котором перенос позиции даёт двойной сдвиг и модель уезжает из кадра.
     scene.add(model);
     applyMirrorSide(model);
+    // FBX-материалы: исправляем дефолтные свойства для PBR
+    if (ext === "fbx") fixFbxMaterials(model);
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
