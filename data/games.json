@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T09:50:46Z",
+  "generated_at": "2026-09-06T10:02:20Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -56,10 +56,6 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -159,10 +155,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -286,10 +278,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
       ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy, Илья"
@@ -326,6 +314,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
+      ],
+      "tags": [
+        "Adventure",
+        "Free"
       ],
       "authors": [
         {
@@ -486,14 +478,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19354,
+      "len": 19358,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97285,
+      "len": 97286,
       "account": {
         "source": "myindie",
         "username": "someshboy",
