@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260906k";
+const ASSET_VERSION = "20260906l";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;

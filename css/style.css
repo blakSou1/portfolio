@@ -176,7 +176,7 @@ html, body {
 /* Modal */
 .modal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
 .modal[hidden] { display: none; }
-.modal-backdrop { position: absolute; inset: 0; background: rgba(4,4,10,0.85); backdrop-filter: blur(4px); }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(4,4,10,0.88); }
 .modal-body {
   position: relative;
   width: min(960px, 94vw);
