@@ -665,7 +665,7 @@ def main():
             meta[name]["kept_previous"] = len(kept)
             games.extend(kept)
 
-attach_static_jams(games)
+    attach_static_jams(games)
     try:
         enrich_static_jam_dates(games)
     except Exception as e:  # noqa: BLE001
