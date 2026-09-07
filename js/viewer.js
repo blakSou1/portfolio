@@ -75,28 +75,28 @@ function makeEnv(renderer) {
   const keyGeo = new THREE.SphereGeometry(1, 16, 16);
   const keyMat = new THREE.MeshBasicMaterial({ color: 0xfff0dd });
   const keyLight = new THREE.Mesh(keyGeo, keyMat);
-  keyLight.scale.set(8, 1, 8);
+  keyLight.scale.set(20, 1, 20);
   keyLight.position.set(5, 10, 5);
   envScene.add(keyLight);
 
   // Холодный боковой свет (fill)
   const fillMat = new THREE.MeshBasicMaterial({ color: 0xc8d8f0 });
   const fillLight = new THREE.Mesh(keyGeo.clone(), fillMat);
-  fillLight.scale.set(6, 1, 6);
+  fillLight.scale.set(16, 1, 16);
   fillLight.position.set(-8, 4, -3);
   envScene.add(fillLight);
 
   // Мягкий задний свет (rim)
   const rimMat = new THREE.MeshBasicMaterial({ color: 0xe8e0f0 });
   const rimLight = new THREE.Mesh(keyGeo.clone(), rimMat);
-  rimLight.scale.set(5, 1, 5);
+  rimLight.scale.set(14, 1, 14);
   rimLight.position.set(-2, 6, -10);
   envScene.add(rimLight);
 
   // Нижний отражённый свет (bounce)
   const bounceMat = new THREE.MeshBasicMaterial({ color: 0x222230 });
   const bounce = new THREE.Mesh(keyGeo.clone(), bounceMat);
-  bounce.scale.set(20, 0.5, 20);
+  bounce.scale.set(40, 1, 40);
   bounce.position.set(0, -6, 0);
   envScene.add(bounce);
 
@@ -241,6 +241,7 @@ function loadSideTextures(modelUrl, model, onDone) {
               applied.metalnessMap.colorSpace = THREE.LinearSRGBColorSpace;
               m.metalnessMap = applied.metalnessMap;
               m.metalness = 1;
+              if (m.envMapIntensity !== undefined) m.envMapIntensity = 2;
             }
             if (applied.roughnessMap) {
               applied.roughnessMap.colorSpace = THREE.LinearSRGBColorSpace;
@@ -299,12 +300,12 @@ export function renderModelThumbnail(canvas, modelUrl) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   scene.environment = makeEnv(renderer);
-  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 0.6); scene.add(ambient);
-  const key = new THREE.DirectionalLight(0xfff8f0, 1.8);
+  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 1.0); scene.add(ambient);
+  const key = new THREE.DirectionalLight(0xfff8f0, 3.0);
   key.position.set(5, 8, 6); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.8);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 1.3);
   fill.position.set(-5, 4, -3); scene.add(fill);
-  const rim = new THREE.DirectionalLight(0xffffff, 1.0);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.5);
   rim.position.set(-3, 6, -6); scene.add(rim);
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
 
@@ -324,7 +325,7 @@ export function renderModelThumbnail(canvas, modelUrl) {
       const cc = box.getCenter(new THREE.Vector3());
       const s = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(s.x, s.y, s.z) || 2;
-      const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.5;
+      const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.25;
       camera.position.copy(cc).addScaledVector(defaultViewDir(s), dist);
       camera.near = Math.max(dist / 1000, 0.001);
       camera.far = dist * 4 + maxDim;
@@ -530,20 +531,20 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.35;
   renderer.setClearColor(0x000000, 0);
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
 
   // Sketchfab-like 4-light studio setup
-  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 0.6); scene.add(ambient);
-  const key = new THREE.DirectionalLight(0xfff8f0, 1.8);
+  const ambient = new THREE.HemisphereLight(0xd0d0e0, 0x1a1a2e, 1.0); scene.add(ambient);
+  const key = new THREE.DirectionalLight(0xfff8f0, 3.0);
   key.position.set(5, 8, 6); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xe0e8ff, 0.8);
+  const fill = new THREE.DirectionalLight(0xe0e8ff, 1.3);
   fill.position.set(-5, 4, -3); scene.add(fill);
-  const rim = new THREE.DirectionalLight(0xffffff, 1.0);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.5);
   rim.position.set(-3, 6, -6); scene.add(rim);
-  const bottom = new THREE.DirectionalLight(0x303040, 0.3);
+  const bottom = new THREE.DirectionalLight(0x303040, 0.5);
   bottom.position.set(0, -4, 2); scene.add(bottom);
   const sceneLights = [ambient, key, fill, rim, bottom];
 
@@ -633,7 +634,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.4;
+    const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.2;
     const dir = defaultViewDir(size);
     homePos.copy(center).addScaledVector(dir, dist);
     homeTarget.copy(center);
