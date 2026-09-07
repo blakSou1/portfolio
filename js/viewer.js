@@ -149,7 +149,102 @@ function pickLoader(url) {
   return ext === "fbx" ? new FBXLoader() : new GLTFLoader();
 }
 
-// Меши с зеркальным масштабом (детерминант матрицы < 0) рендерятся изнутри-наружу
+/* ---------- Side texture discovery (color_<model>.png etc.) ---------- */
+const SIDE_TEX_SLOTS = {
+  map: ["color", "diffuse", "albedo", "basecolor"],
+  metalnessMap: ["metal", "metalic", "metallic", "metalness"],
+  roughnessMap: ["rough", "roughness", "gloss"],
+  normalMap: ["normal", "nrm", "bump"],
+  aoMap: ["ao", "occlusion"],
+  emissiveMap: ["emissive", "glow"],
+};
+const SIDE_TEX_LOADER = new THREE.TextureLoader();
+
+function sideTexCandidates(modelUrl) {
+  const path = modelUrl.split("?")[0];
+  const dir = path.substring(0, path.lastIndexOf("/") + 1);
+  const stem = path.split("/").pop().toLowerCase().replace(/\.[^.]+$/, "");
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const qs = modelUrl.indexOf("?") >= 0 ? "?" + modelUrl.split("?")[1] : "";
+  const out = {};
+  Object.keys(SIDE_TEX_SLOTS).forEach((slot) => {
+    const names = [];
+    SIDE_TEX_SLOTS[slot].forEach((p) => {
+      names.push(p + cap(stem), p + "_" + stem, p + "-" + stem);
+    });
+    out[slot] = names.map((n) => dir + n + ".png" + qs);
+  });
+  return out;
+}
+
+function fetchFirstTex(urls, sink) {
+  let i = 0;
+  const next = () => {
+    if (i >= urls.length) return sink && sink(null);
+    SIDE_TEX_LOADER.load(urls[i++], (t) => sink && sink(t), undefined, next);
+  };
+  next();
+}
+
+function loadSideTextures(modelUrl, model, onDone) {
+  const isFbx = modelUrl.split("?")[0].toLowerCase().endsWith(".fbx");
+  const slots = isFbx ? sideTexCandidates(modelUrl) : {};
+  const keys = Object.keys(slots);
+  if (!keys.length) return onDone && onDone();
+  const applied = {};
+  let pending = keys.length;
+  keys.forEach((slot) => {
+    fetchFirstTex(slots[slot], (tex) => {
+      if (tex) applied[slot] = tex;
+      if (--pending > 0) return;
+      if (Object.keys(applied).length) {
+        model.traverse((o) => {
+          if (!o.isMesh) return;
+          const mats = Array.isArray(o.material) ? o.material : [o.material];
+          mats.forEach((m) => {
+            if (!m) return;
+            if (applied.map) {
+              applied.map.colorSpace = THREE.SRGBColorSpace;
+              m.map = applied.map;
+              if (m.color) m.color.set(0xffffff);
+            }
+            if (applied.metalnessMap) {
+              applied.metalnessMap.colorSpace = THREE.LinearSRGBColorSpace;
+              m.metalnessMap = applied.metalnessMap;
+              m.metalness = 1;
+            }
+            if (applied.roughnessMap) {
+              applied.roughnessMap.colorSpace = THREE.LinearSRGBColorSpace;
+              m.roughnessMap = applied.roughnessMap;
+            } else if (applied.metalnessMap && m.isMeshStandardMaterial) {
+              m.roughness = 0.4;
+            }
+            if (applied.normalMap) {
+              applied.normalMap.colorSpace = THREE.LinearSRGBColorSpace;
+              m.normalMap = applied.normalMap;
+              if (!m.normalScale) m.normalScale = new THREE.Vector2(1, 1);
+              m.normalScale.set(1, 1);
+            }
+            if (applied.aoMap) {
+              applied.aoMap.colorSpace = THREE.LinearSRGBColorSpace;
+              m.aoMap = applied.aoMap;
+              if (!m.aoMapIntensity) m.aoMapIntensity = 1;
+            }
+            if (applied.emissiveMap) {
+              applied.emissiveMap.colorSpace = THREE.SRGBColorSpace;
+              m.emissiveMap = applied.emissiveMap;
+              if (m.emissive) m.emissive.set(0xffffff);
+            }
+            if (m.needsUpdate !== undefined) m.needsUpdate = true;
+          });
+        });
+      }
+      onDone && onDone();
+    });
+  });
+}
+
+/* ---------- Meshes with mirrored scale (determinant < 0) render inside-out ---------- */
 function applyMirrorSide(model) {
   model.updateMatrixWorld(true);
   model.traverse((o) => {
@@ -206,18 +301,23 @@ export function renderModelThumbnail(canvas, modelUrl) {
       camera.far = dist * 4 + maxDim;
       camera.updateProjectionMatrix();
       camera.lookAt(cc);
-      renderer.render(scene, camera);
 
-      // Copy pixels to a plain 2D canvas, then release the WebGL context
-      try {
-        const copy = document.createElement("canvas");
-        copy.width = canvas.width;
-        copy.height = canvas.height;
-        copy.getContext("2d").drawImage(canvas, 0, 0);
-        copy.style.cssText = "width:100%;height:100%;object-fit:cover;display:block;";
-        if (canvas.parentNode) canvas.parentNode.replaceChild(copy, canvas);
-      } catch (e) { /* keep webgl canvas if copy fails */ }
-      try { renderer.dispose(); renderer.forceContextLoss(); } catch (e) {}
+      const present = () => {
+        try {
+          const copy = document.createElement("canvas");
+          copy.width = canvas.width;
+          copy.height = canvas.height;
+          copy.getContext("2d").drawImage(canvas, 0, 0);
+          copy.style.cssText = "width:100%;height:100%;object-fit:cover;display:block;";
+          if (canvas.parentNode) canvas.parentNode.replaceChild(copy, canvas);
+        } catch (e) { /* keep webgl canvas if copy fails */ }
+        try { renderer.dispose(); renderer.forceContextLoss(); } catch (e) {}
+      };
+
+      loadSideTextures(modelUrl, model, () => {
+        renderer.render(scene, camera);
+        present();
+      });
     },
     undefined,
     () => { /* keep gradient fallback behind canvas */ }
@@ -496,7 +596,10 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     scene.add(model);
     applyMirrorSide(model);
     // FBX-материалы: исправляем дефолтные свойства для PBR
-    if (ext === "fbx") fixFbxMaterials(model);
+    if (ext === "fbx") {
+      fixFbxMaterials(model);
+      loadSideTextures(modelUrl, model);
+    }
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
