@@ -3,7 +3,7 @@
     {
       "path": "assets/models/chuba.fbx",
       "name": "chuba.fbx",
-      "sha": "68b62133992481937850281d3755dba6f4b94cfd"
+      "sha": "dd98e12814c0c95b890227263fad4b6752c86683"
     },
     {
       "path": "assets/models/test-duck.glb",
@@ -46,5 +46,5 @@
       "sha": "f54eef60fedfb457c7919a0bdbf9571e035dc272"
     }
   ],
-  "generated_at": "2026-09-06T21:50:08.830157Z"
+  "generated_at": "2026-09-07T16:39:19.318373Z"
 }
