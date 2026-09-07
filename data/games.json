@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T22:14:16Z",
+  "generated_at": "2026-09-07T10:57:15Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -36,7 +36,7 @@
       "username": "onemella",
       "nickname": "onemella",
       "url": "https://naspeh.tech/profile/onemella",
-      "games_count": 1
+      "games_count": null
     }
   },
   "games": [
@@ -56,6 +56,10 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -94,6 +98,10 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -127,6 +135,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -162,10 +174,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -213,6 +221,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -494,6 +506,16 @@
           "entries": null,
           "place": null,
           "score": null
+        },
+        {
+          "source": "sibgamejam",
+          "title": "Siberian Game Jam — Ноябрь 2025",
+          "url": "https://itch.io/jam/sibgamejam-nov-2025",
+          "date_start": "2025-11-01",
+          "date_end": "2025-11-25",
+          "entries": null,
+          "place": null,
+          "score": null
         }
       ]
     }
@@ -502,7 +524,7 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19355,
+      "len": 19358,
       "games_fetched": 8,
       "count": 8
     },
@@ -530,9 +552,9 @@
     },
     "sibgamejam": {
       "url": "https://naspeh.tech/api/v1/games/public/onemella",
-      "http": 200,
-      "len": 1171,
-      "count": 1
+      "count": 0,
+      "error": "TimeoutError: The read operation timed out",
+      "kept_previous": 1
     }
   }
 }
