@@ -123,6 +123,26 @@ function fixFbxMaterials(model) {
         });
         return fixed;
       }
+      // MeshPhongMaterial / MeshLambertMaterial → MeshStandardMaterial (PBR)
+      if (m.isMeshPhongMaterial || m.isMeshLambertMaterial) {
+        const fixed = new THREE.MeshStandardMaterial({
+          color: m.color ? m.color.clone() : new THREE.Color(0xffffff),
+          map: m.map || null,
+          side: THREE.DoubleSide,
+          roughness: 0.55,
+          metalness: 0.15,
+          transparent: m.transparent,
+          opacity: m.opacity,
+          emissive: m.emissive ? m.emissive.clone() : new THREE.Color(0x000000),
+          emissiveMap: m.emissiveMap || null,
+          emissiveIntensity: m.emissiveIntensity !== undefined ? m.emissiveIntensity : 1,
+          normalMap: m.normalMap || null,
+          normalScale: m.normalScale ? m.normalScale.clone() : new THREE.Vector2(1, 1),
+          alphaMap: m.alphaMap || null,
+          vertexColors: !!m.vertexColors,
+        });
+        return fixed;
+      }
       // Убедимся что roughness/metalness адекватные
       if (m.isMeshStandardMaterial) {
         if (m.roughness === 0 && m.metalness === 0) {
@@ -142,6 +162,15 @@ function fixFbxMaterials(model) {
       return m;
     });
   });
+}
+
+// Камера по умолчанию: смотрим вдоль наименьшего размера модели, чтобы
+// показать её самую «широкую» сторону (а не узкий профиль).
+function defaultViewDir(size, elev = 0.35) {
+  const v = size.x <= size.y && size.x <= size.z
+    ? new THREE.Vector3(1, elev, 0)
+    : new THREE.Vector3(0, elev, 1);
+  return v.normalize();
 }
 
 function pickLoader(url) {
@@ -296,7 +325,7 @@ export function renderModelThumbnail(canvas, modelUrl) {
       const s = box.getSize(new THREE.Vector3());
       const maxDim = Math.max(s.x, s.y, s.z) || 2;
       const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.5;
-      camera.position.copy(cc).addScaledVector(new THREE.Vector3(0, 0.35, 1).normalize(), dist);
+      camera.position.copy(cc).addScaledVector(defaultViewDir(s), dist);
       camera.near = Math.max(dist / 1000, 0.001);
       camera.far = dist * 4 + maxDim;
       camera.updateProjectionMatrix();
@@ -605,7 +634,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
     const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.4;
-    const dir = new THREE.Vector3(0, 0.35, 1).normalize();
+    const dir = defaultViewDir(size);
     homePos.copy(center).addScaledVector(dir, dist);
     homeTarget.copy(center);
     camera.position.copy(homePos);
