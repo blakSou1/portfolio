@@ -241,7 +241,7 @@ function loadSideTextures(modelUrl, model, onDone) {
               applied.metalnessMap.colorSpace = THREE.LinearSRGBColorSpace;
               m.metalnessMap = applied.metalnessMap;
               m.metalness = 1;
-              if (m.envMapIntensity !== undefined) m.envMapIntensity = 2;
+              if (m.envMapIntensity !== undefined) m.envMapIntensity = 1;
             }
             if (applied.roughnessMap) {
               applied.roughnessMap.colorSpace = THREE.LinearSRGBColorSpace;
