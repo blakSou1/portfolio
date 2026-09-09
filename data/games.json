@@ -24,12 +24,12 @@
       },
       "score": 10
     },
-    "sibgamejam": {
+"sibgamejam": {
       "source": "sibgamejam",
       "username": "onemella",
       "nickname": "onemella",
-      "url": "https://naspeh.tech/profile/onemella",
-      "games_count": 1
+      "url": "https://platform.sibgamejam.com/users/onemella",
+      "games_count": null
     }
   },
   "games": [
@@ -469,12 +469,18 @@
       "id": "sibgamejam/inkdarkunk",
       "title": "InkDarKunk",
       "source": "sibgamejam",
-      "url": "https://naspeh.tech/games/inkdarkunk",
+      "url": "https://platform.sibgamejam.com/games/onemella/inkdarkunk",
       "cover": "https://storage.naspeh.tech/static/capsule-images/69f379da4f80cd3d2aa39fa2/1777810868408-56be67912f6ece8e-uploads.jpg",
       "description": "Это пошаговая абстрактная стратегическая игра\n\nЦель:\n        Собирайте Фишки с особыми способностями, побеждайте противников в нечестной партии и достигните \"оракула\"\n\nКак играть?\n        Выставляйте фишки на доску для захвата преимущества\n        Собирайте модифицированные фишки с поверженных противников\n        Для победы удержите превосходящее число фишек своего цвета на доске или захватите особенные клетки",
       "genre": "",
       "platforms": [],
-      "jams": []
+      "jams": [
+        {
+          "source": "sibgamejam",
+          "title": "Siberian Game Jam Май 2026",
+          "url": "https://platform.sibgamejam.com/games/onemella/inkdarkunk/jams"
+        }
+      ]
     }
   ],
   "sources": {
@@ -508,7 +514,7 @@
       "count": 2
     },
     "sibgamejam": {
-      "url": "https://naspeh.tech/api/v1/games/public/onemella",
+      "url": "https://platform.sibgamejam.com/api/v1/games/public/onemella",
       "http": 200,
       "len": 1171,
       "count": 1

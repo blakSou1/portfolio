@@ -11,8 +11,9 @@ Sources (all public):
 - itch.io   -- HTML scrape user game grid + per-game jam entries +
                jam page stats + results page rank
 - MyIndie   -- HTML scrape profile (account + games) + jam pages
-- SibGameJam-- public JSON API: https://naspeh.tech/api/v1/games/public/<user>
+- SibGameJam-- public JSON API: https://platform.sibgamejam.com/api/v1/games/public/<user>
                + статический конфиг джемов из data/projects.json -> games.jams
+               (страница платформы: https://platform.sibgamejam.com/users/<user>)
 
 Run: python3 tools/sync_games.py   (GitHub Actions runs it on a schedule)
 """
@@ -37,7 +38,7 @@ ITCH_CREATOR_URL = f"https://{ITCH_USER}.itch.io/"
 ITCH_JAM_URL = "https://itch.io/jam/"
 MYINDIE_URL = f"https://myindie.net/users/user/{MYINDIE_USER}"
 MYINDIE_JAM_URL = "https://myindie.net/jams/jam/"
-SIB_URL = f"https://naspeh.tech/api/v1/games/public/{SIB_USER}"
+SIB_URL = f"https://platform.sibgamejam.com/api/v1/games/public/{SIB_USER}"
 
 UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
@@ -614,11 +615,19 @@ def parse_sibgamejam(text):
         return res
     for item in data:
         slug = item.get("slug") or ""
+        owner = item.get("owner") or ""
+        base = "https://platform.sibgamejam.com"
+        if slug and owner:
+            game_url = f"{base}/games/{owner}/{slug}"
+        elif slug:
+            game_url = f"{base}/games/{slug}"
+        else:
+            game_url = base + "/"
         res.games.append({
             "id": "sibgamejam/" + slug,
             "title": (item.get("title") or slug).strip(),
             "source": "sibgamejam",
-            "url": ("https://naspeh.tech/games/" + slug) if slug else "https://naspeh.tech/",
+            "url": game_url,
             "cover": item.get("capsuleImage") or "",
             "description": (item.get("description") or "").strip(),
             "genre": "",
@@ -731,7 +740,7 @@ def main():
         "source": "sibgamejam",
         "username": SIB_USER,
         "nickname": SIB_USER,
-        "url": "https://naspeh.tech/profile/" + SIB_USER,
+        "url": "https://platform.sibgamejam.com/users/" + SIB_USER,
         "games_count": len(results["sibgamejam"].games) or None,
     }
     for key in ("itch", "myindie", "sibgamejam"):
