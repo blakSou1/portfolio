@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260909b";
+const ASSET_VERSION = "20260909c";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -310,37 +310,31 @@ function renderPlatformBlock(snap, source, projects) {
     empty.textContent = "Публичных данных о джемах на этой платформе нет.";
     jamsBox.appendChild(empty);
   } else {
-    const sel = el("select", "jam-select");
-    sel.id = "jam-select-" + source;
-    sel.setAttribute("aria-label", "Джемы");
-    list.forEach((item, i) => {
-      const o = el("option");
-      o.value = String(i);
-      const place = item.jam.place ? "#" + item.jam.place + " · " : "";
-      o.textContent = place + (item.jam.title || item.jam.slug || ("Джем " + (i + 1)));
-      sel.appendChild(o);
-    });
-    const detail = el("div", "jam-detail");
-    let jamAnimating = false;
-    const show = (i) => {
-      if (jamAnimating) return;
-      jamAnimating = true;
-      detail.style.opacity = "0";
-      detail.style.transform = "translateY(6px)";
-      setTimeout(() => {
-        detail.innerHTML = "";
-        if (list[i]) detail.appendChild(jamRow(list[i].jam, list[i].games));
-        detail.classList.remove("jam-detail--animate");
-        void detail.offsetWidth;
-        detail.classList.add("jam-detail--animate");
-        detail.style.opacity = "";
-        detail.style.transform = "";
-        jamAnimating = false;
-      }, 140);
+    const jamRank = (it) => {
+      const j = it.jam;
+      const n = parseInt(String(j.place), 10);
+      const hasPlace = !isNaN(n);
+      return {
+        hasPlace,
+        n: hasPlace ? n : Infinity,
+        score: typeof j.score === "number" ? j.score : -Infinity,
+      };
     };
-    sel.addEventListener("change", () => show(Number(sel.value)));
-    show(0);
-    jamsBox.append(sel, detail);
+    list.slice().sort((a, b) => {
+      const ra = jamRank(a), rb = jamRank(b);
+      if (ra.hasPlace !== rb.hasPlace) return ra.hasPlace ? -1 : 1;
+      if (ra.hasPlace && ra.n !== rb.n) return ra.n - rb.n;
+      if (rb.score !== ra.score) return rb.score - ra.score;
+      return (b.jam.date_start || "").localeCompare(a.jam.date_start || "");
+    }).forEach(({ jam, games }) => jamsBox.appendChild(jamRow(jam, games)));
+    // Ограниченное «окно»: помещается 1–3 джема, остальное — вертикальным скроллом.
+    if (list.length > 3) {
+      const rows = [...jamsBox.children];
+      const gap = 10;
+      const h = rows.slice(0, 3).reduce((s, r) => s + r.offsetHeight, 0) + gap * 2;
+      jamsBox.classList.add("gblk-jams-scroll");
+      jamsBox.style.height = h + "px";
+    }
   }
   gamesPane.appendChild(jamsBox);
   return blk;
