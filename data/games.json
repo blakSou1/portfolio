@@ -1,11 +1,18 @@
 {
-  "generated_at": "2026-09-08T10:13:51Z",
+  "generated_at": "2026-09-09T10:18:28Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
-      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
+      "nickname": "SoMeshBoy",
+      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
+      "counts": {
+        "posts": 15,
+        "subscribers": 9,
+        "following": 9
+      },
+      "joined": "26 March 2024 @ 14:10 UTC",
       "games_count": 8
     },
     "myindie": {
@@ -24,12 +31,12 @@
       },
       "score": 10
     },
-"sibgamejam": {
+    "sibgamejam": {
       "source": "sibgamejam",
       "username": "onemella",
       "nickname": "onemella",
       "url": "https://platform.sibgamejam.com/users/onemella",
-      "games_count": null
+      "games_count": 1
     }
   },
   "games": [
@@ -49,10 +56,6 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -79,6 +82,10 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -114,10 +121,6 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -152,6 +155,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
+      ],
+      "tags": [
+        "Puzzle",
+        "Free"
       ],
       "authors": [
         {
@@ -199,6 +206,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -273,6 +284,10 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
+      ],
+      "tags": [
+        "Puzzle",
+        "Free"
       ],
       "authors": [
         {
@@ -366,7 +381,7 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 9,
+        "views": 10,
         "likes": 0
       },
       "jams": [
@@ -478,7 +493,12 @@
         {
           "source": "sibgamejam",
           "title": "Siberian Game Jam Май 2026",
-          "url": "https://platform.sibgamejam.com/games/onemella/inkdarkunk/jams"
+          "url": "https://platform.sibgamejam.com/games/onemella/inkdarkunk/jams",
+          "date_start": null,
+          "date_end": null,
+          "entries": null,
+          "place": null,
+          "score": null
         }
       ]
     }
@@ -487,14 +507,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19355,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97285,
+      "len": 97286,
       "account": {
         "source": "myindie",
         "username": "someshboy",
