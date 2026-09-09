@@ -1,86 +1,86 @@
-# Портфолио: 3D / Шейдеры / Анимация
+# Portfolio: 3D / Shaders / Animation
 
-**Сайт:** https://blaksou1.github.io/portfolio/
+**Website:** https://blaksou1.github.io/portfolio/
 
-Статический сайт-портфолио для графических работ, хостится бесплатно на **GitHub Pages**.
-Работы загружаются через git — сайт сам подхватывает файлы из папок репозитория (`assets/...`).
+A static graphic-design portfolio, hosted for free on **GitHub Pages**.
+Works are uploaded through git — the site picks up files automatically from the repository folders (`assets/...`).
 
-## Что внутри
-- Интерактивный просмотр **3D-моделей** (Three.js + OrbitControls, авто-вращение, скелетная анимация).
-- Живые **шейдеры** (GLSL, запускаются прямо в браузере на WebGL).
-- **Видео** и **изображения** как превью.
-- Фильтр по категориям: моделирование / шейдеры / анимация / графика.
-- **Скрытый раздел** — файлы с префиксом `hidden` (например, `hidden-concept.glb`) или в папке `hidden/` не видны зрителям. Появляются только при открытии сайта с секретным ключом:
+## What's inside
+- Interactive **3D model** viewing (Three.js + OrbitControls, auto-rotation, skeletal animation).
+- Live **shaders** (GLSL, running right in the browser on WebGL).
+- **Video** and **images** as previews.
+- Category filter: modeling / shaders / animation / graphics.
+- **Hidden section** — files prefixed with `hidden` (e.g. `hidden-concept.glb`) or placed in a `hidden/` folder are not shown to visitors. They appear only when the site is opened with a secret key:
   `https://blaksou1.github.io/portfolio/?key=my-secret-key-123`
-- Исходники проектов (`.blend`, `.fbx`, сырые файлы) кладутся в `private/source/` и **не выдаются зрителям** — на сайте только рендер/превью.
+- Project sources (`.blend`, `.fbx`, raw files) go into `private/source/` and are **not served to visitors** — only renders/previews appear on the site.
 
-## Структура
+## Structure
 ```
 portfolio/
 ├── index.html
 ├── css/style.css
-├── js/main.js          # галерея, фильтры, скрытый раздел
-├── js/viewer.js        # Three.js + WebGL просмотрщики
-├── data/projects.json  # манифест работ (правишь его)
+├── js/main.js          # gallery, filters, hidden section
+├── js/viewer.js        # Three.js + WebGL viewers
+├── data/projects.json  # work manifest (edit this)
 ├── assets/
-│   ├── previews/       # картинки-превью
-│   ├── models/         # .glb для интерактивного просмотра (веб-оптимизированные)
-│   └── shaders/        # .frag файлы шейдеров
-└── private/source/     # исходники, скрытые от зрителей
+│   ├── previews/       # preview images
+│   ├── models/         # .glb for interactive viewing (web-optimized)
+│   └── shaders/        # .frag shader files
+└── private/source/     # sources, hidden from visitors
 ```
 
-## Как добавить работу
+## How to add a work
 
-### Способ 1 — автоматически (рекомендуется)
-Просто закинь файл в нужную папку и запушь. Сайт сам подхватит его через GitHub API:
+### Method 1 — automatic (recommended)
+Just drop a file into the right folder and push. The site picks it up automatically through the GitHub API:
 
-| Папка | Что класть | Станет |
-|-------|-----------|--------|
-| `assets/models/`   | `.glb`, `.gltf` | 3D-модель (с анимацией, если есть) |
-| `assets/shaders/`  | `.frag` | живой шейдер |
-| `assets/previews/` | `.png/.jpg/.webp/.svg` | картинка-работа |
-| `assets/videos/`   | `.mp4/.webm` | видео-анимация |
+| Folder            | What to place         | Becomes                          |
+|-------------------|-----------------------|----------------------------------|
+| `assets/models/`  | `.glb`, `.gltf`       | 3D model (animated if it has animations) |
+| `assets/shaders/` | `.frag`               | live shader                      |
+| `assets/previews/`| `.png/.jpg/.webp/.svg`| image work                       |
+| `assets/videos/`  | `.mp4/.webm`          | video animation                  |
 
-Название карточки берётся из имени файла. Категория определяется папкой автоматически.
-Дополнительные метаданные (описание, свой категорийный ярлык) не обязательны — сайт работает
-только по файлам в `assets/`.
+The card title is taken from the file name. The category is determined automatically from the folder.
+Extra metadata (description, custom category label) is optional — the site works
+from the files in `assets/` alone.
 
-Чтобы **убрать** работу — просто удали файл из репозитория и запуши. Карточка исчезнет сама.
+To **remove** a work, just delete the file from the repository and push. The card disappears by itself.
 
-`data/projects.json` теперь содержит только настройки (сайт, GitHub, секрет, категории)
-и не управляет списком работ.
+`data/projects.json` now only contains settings (site, GitHub, secret, categories)
+and does not manage the list of works.
 
-Затем:
+Then:
 ```bash
 git add .
 git commit -m "add work"
 git push
 ```
 
-## Управление просмотром
-- **Модели:** мышью крути/зум/панорама (OrbitControls); кнопки `⏸` воспроизведение анимации,
-  `Auto` авто-вращение, `Wire` каркас, `Grid` сетка, `Reset` сброс камеры, `Speed` скорость,
-  выбор `Anim` при нескольких анимациях.
-- **Шейдеры:** `⏸` пауза времени, `Shader` вкл/выкл отрисовку, `Speed` и ползунки `A/B/C`
-  (передаются в шейдер как uniform-ы `u_a, u_b, u_c`).
-- Свои uniform-ы добавляй в `.frag` файл; стандартные: `u_time`, `u_resolution`, `u_a/b/c`.
+## Viewing controls
+- **Models:** use the mouse to rotate/zoom/pan (OrbitControls); buttons `⏸` play/pause animation,
+  `Auto` auto-rotation, `Wire` wireframe, `Grid` grid, `Reset` reset camera, `Speed` speed,
+  `Anim` selector when there are multiple animations.
+- **Shaders:** `⏸` pauses time, `Shader` toggles rendering, `Speed` and the `A/B/C` sliders
+  (passed into the shader as `u_a`, `u_b`, `u_c` uniforms).
+- Add your own uniforms in the `.frag` file; standard ones: `u_time`, `u_resolution`, `u_a/b/c`.
 
-## Локальный запуск
-ES-модули и `fetch` требуют http, а не `file://`. Из папки `portfolio`:
+## Local development
+ES modules and `fetch` require http, not `file://`. From the `portfolio` folder:
 ```bash
 python -m http.server 8000
-# открой http://localhost:8000
+# open http://localhost:8000
 ```
 
-## Деплой на GitHub Pages
-Сайт уже опубликован: **https://blaksou1.github.io/portfolio/**
+## Deploying to GitHub Pages
+The site is already live: **https://blaksou1.github.io/portfolio/**
 
-Если нужно пересоздать с нуля:
-1. Создай репозиторий, закинь папку `portfolio`.
+To recreate it from scratch:
+1. Create a repository and put the `portfolio` folder into it.
 2. GitHub → Settings → Pages → Source: `main` / `/root`.
-3. Через минуту сайт будет на `https://твой-логин.github.io/проект/`.
-   Если репозиторий называется `username.github.io`, сайт будет в корне.
+3. In about a minute the site will be at `https://your-login.github.io/project/`.
+   If the repository is named `username.github.io`, the site is served from the root.
 
-> Секретный ключ меняется в `data/projects.json` поле `site.secretKey`.
-> Внимание: это «сокрытие от глаз», а не настоящая защита — код ключа виден в JS.
-> Для реальной приватности держи исходники в приватном репозитории / облаке.
+> The secret key is changed in `data/projects.json`, field `site.secretKey`.
+> Note: this is "hidden from view", not real protection — the key is visible in the JS code.
+> For actual privacy, keep sources in a private repository / cloud.

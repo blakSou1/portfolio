@@ -86,9 +86,9 @@ def load_static_jams():
 
 
 def game_match_keys(g):
-    """Ключи сопоставления игры с конфиг-джемом (ищутся по любой платформе)."""
-    keys = {(g.get("id") or "").split("/", 1)[-1].lower(),
-            (g.get("title") or "").strip().lower()}
+    """Ключи сопоставления игры с конфиг-джемом (по id/game_id, БЕЗ названия,
+    чтобы джем не привязался к одноимённой игре с другой платформы)."""
+    keys = {(g.get("id") or "").split("/", 1)[-1].lower()}
     gid = g.get("game_id")
     if gid is not None:
         keys.add(str(gid))
@@ -100,13 +100,24 @@ def attach_static_jams(games):
         wanted = {w.strip().lower() for w in (j.get("game_ids", []) or [])}
         if not wanted:
             continue
+        src = (j.get("source") or "").lower()
         for g in games:
+            if src and (g.get("source") or "").lower() != src:
+                # Джем со статическим конфигом привязываем только к играм
+                # той же платформы — одноимённая игра из другого источника
+                # (например, itch-версия той же игры) в нём не участвует.
+                continue
             if not (game_match_keys(g) & wanted):
                 continue
-            g.setdefault("jams", []).append({
+            existing_urls = {j2.get("url") or (j2.get("source", "") + "/" + j2.get("title", ""))
+                             for j2 in g.setdefault("jams", [])}
+            url = j.get("url", "")
+            if url and url in existing_urls:
+                continue
+            g["jams"].append({
                 "source": j.get("source", ""),
                 "title": j.get("title", ""),
-                "url": j.get("url", ""),
+                "url": url,
                 "date_start": j.get("date_start") or None,
                 "date_end": j.get("date_end") or None,
                 "entries": j.get("entries"),

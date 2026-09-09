@@ -60,18 +60,7 @@
           "url": "https://someshboy.itch.io"
         }
       ],
-      "jams": [
-        {
-          "source": "sibgamejam",
-          "title": "Siberian Game Jam — Ноябрь 2025",
-          "url": "https://itch.io/jam/sibgamejam-nov-2025",
-          "date_start": "2025-11-01",
-          "date_end": "2025-11-25",
-          "entries": null,
-          "place": null,
-          "score": null
-        }
-      ]
+      "jams": []
     },
     {
       "id": "itch/4223926",
