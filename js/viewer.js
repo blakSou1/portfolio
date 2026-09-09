@@ -530,8 +530,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.35;
   renderer.setClearColor(0x000000, 0);
   scene.environment = makeEnv(renderer);
   stage.appendChild(renderer.domElement);
@@ -544,9 +542,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   fill.position.set(-5, 4, -3); scene.add(fill);
   const rim = new THREE.DirectionalLight(0xffffff, 1.5);
   rim.position.set(-3, 6, -6); scene.add(rim);
-  const bottom = new THREE.DirectionalLight(0x303040, 0.5);
-  bottom.position.set(0, -4, 2); scene.add(bottom);
-  const sceneLights = [ambient, key, fill, rim, bottom];
+  const sceneLights = [ambient, key, fill, rim];
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -634,7 +630,7 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.2;
+    const dist = (maxDim / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * 1.25;
     const dir = defaultViewDir(size);
     homePos.copy(center).addScaledVector(dir, dist);
     homeTarget.copy(center);

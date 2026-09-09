@@ -1,10 +1,10 @@
-﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260907e";
+﻿import { openModelViewer, openShaderViewer, mountBackground, renderModelThumbnail } from "./viewer.js?v=20260909a";
 
 // GitHub Pages ставит долгий cache-control на статику. Чтобы браузер НЕ хранил
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260907e";
+const ASSET_VERSION = "20260909a";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -809,6 +809,15 @@ async function discover(g) {
     for (const it of items) {
       const ext = (it.name.split(".").pop() || "").toLowerCase();
       if (!cfg.ext.includes(ext)) continue;
+      // .blend с уже экспортированной моделью в той же папке — дубликат карточки:
+      // оставляем только саму модель, а исходник держим в репозитории.
+      if (ext === "blend") {
+        const base = it.name.replace(/\.[^.]+$/, "");
+        const dir = it.path.slice(0, it.path.lastIndexOf("/"));
+        const dupe = items.some((o) => o.path !== it.path && o.path.startsWith(dir + "/") &&
+          o.name.startsWith(base + ".") && !/\.blend$/i.test(o.name));
+        if (dupe) continue;
+      }
       const item = {
         id: it.path,
         title: humanize(it.name),

@@ -24,7 +24,7 @@ portfolio/
 ├── data/projects.json  # work manifest (edit this)
 ├── assets/
 │   ├── previews/       # preview images
-│   ├── models/         # .glb for interactive viewing (web-optimized)
+│   ├── models/<model>/  # exported model file (+ .blend source, textures)
 │   └── shaders/        # .frag shader files
 └── private/source/     # sources, hidden from visitors
 ```
@@ -36,10 +36,16 @@ Just drop a file into the right folder and push. The site picks it up automatica
 
 | Folder            | What to place         | Becomes                          |
 |-------------------|-----------------------|----------------------------------|
-| `assets/models/`  | `.glb`, `.gltf`       | 3D model (animated if it has animations) |
+| `assets/models/<model>/` | `.glb`, `.gltf`, `.fbx` | 3D model (animated if it has animations) |
 | `assets/shaders/` | `.frag`               | live shader                      |
 | `assets/previews/`| `.png/.jpg/.webp/.svg`| image work                       |
 | `assets/videos/`  | `.mp4/.webm`          | video animation                  |
+
+Each model lives in its own subfolder, e.g. `assets/models/chuba/` holds the exported
+model (`chuba.fbx`), its Blender source (`chuba.blend`, optional) and the textures.
+Only the exported model becomes a gallery card — a `.blend` next to it is kept as a
+source and is not duplicated into a second card. Renders/previews for the model go to
+`assets/renders/<model>/`.
 
 The card title is taken from the file name. The category is determined automatically from the folder.
 Extra metadata (description, custom category label) is optional — the site works
