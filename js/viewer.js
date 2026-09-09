@@ -624,7 +624,19 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
     // FBX-материалы: исправляем дефолтные свойства для PBR
     if (ext === "fbx") {
       fixFbxMaterials(model);
-      loadSideTextures(modelUrl, model);
+      // Показываем модель только после подхвата side-текстур (color/metalic…),
+      // иначе первые секунды она висит в дефолтном серо-белом виде.
+      const expose = () => {
+        if (model.visible) return;
+        clearTimeout(exposeTimer);
+        model.visible = true;
+        stopLoading();
+      };
+      const exposeTimer = setTimeout(expose, 5000);
+      model.visible = false;
+      loadSideTextures(modelUrl, model, expose);
+    } else {
+      stopLoading();
     }
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
@@ -690,7 +702,6 @@ export function openModelViewer(stage, modelUrl, opts = {}) {
   loader.load(
     modelUrl,
     (result) => {
-      stopLoading();
       const model = result.scene || result;
       const animations = result.animations || [];
       onLoaded(model, animations);
