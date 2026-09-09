@@ -4,7 +4,7 @@
 // старые файлы, к URL подставляем "v". Для ассетов (модели, рендеры) берём blob-SHA
 // файла из GitHub API: перезалил файл → sha сменился → URL новый → кэш не мешает.
 // Остальным файлам хватает статической версии ниже.
-const ASSET_VERSION = "20260909c";
+const ASSET_VERSION = "20260909d";
 
 function assetUrl(path, fileSha) {
   const v = fileSha || ASSET_VERSION;
@@ -204,6 +204,18 @@ function renderGamesTab() {
     if (!group.length) return;
     host.appendChild(renderPlatformBlock(snap, s, group));
   });
+  // Высота окна джемов считается только после вставки в DOM (offsetHeight требует layout).
+  applyJamWindowHeights(host);
+}
+
+function applyJamWindowHeights(root) {
+  root.querySelectorAll(".gblk-jams-scroll").forEach((box) => {
+    const rows = [...box.querySelectorAll(".jam-row")];
+    if (!rows.length) return;
+    const gap = 10;
+    const h = rows.slice(0, 3).reduce((s, r) => s + r.offsetHeight, 0) + gap * 2;
+    box.style.height = h + "px";
+  });
 }
 
 function renderPlatformBlock(snap, source, projects) {
@@ -327,14 +339,7 @@ function renderPlatformBlock(snap, source, projects) {
       if (rb.score !== ra.score) return rb.score - ra.score;
       return (b.jam.date_start || "").localeCompare(a.jam.date_start || "");
     }).forEach(({ jam, games }) => jamsBox.appendChild(jamRow(jam, games)));
-    // Ограниченное «окно»: помещается 1–3 джема, остальное — вертикальным скроллом.
-    if (list.length > 3) {
-      const rows = [...jamsBox.children];
-      const gap = 10;
-      const h = rows.slice(0, 3).reduce((s, r) => s + r.offsetHeight, 0) + gap * 2;
-      jamsBox.classList.add("gblk-jams-scroll");
-      jamsBox.style.height = h + "px";
-    }
+    if (list.length > 3) jamsBox.classList.add("gblk-jams-scroll");
   }
   gamesPane.appendChild(jamsBox);
   return blk;
