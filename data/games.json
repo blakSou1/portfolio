@@ -1,12 +1,19 @@
 {
-  "generated_at": "2026-09-13T10:44:49Z",
+  "generated_at": "2026-09-14T11:09:24Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
-      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "games_count": null
+      "nickname": "SoMeshBoy",
+      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
+      "counts": {
+        "posts": 15,
+        "subscribers": 9,
+        "following": 9
+      },
+      "joined": "26 March 2024 @ 14:10 UTC",
+      "games_count": 8
     },
     "myindie": {
       "source": "myindie",
@@ -49,10 +56,6 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -507,9 +510,10 @@
   "sources": {
     "itch": {
       "url": "https://itch.io/profile/someshboy",
-      "count": 0,
-      "error": "HTTPError: HTTP Error 429: Too Many Requests",
-      "kept_previous": 8
+      "http": 200,
+      "len": 19357,
+      "games_fetched": 8,
+      "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
