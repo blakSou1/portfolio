@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T10:26:08Z",
+  "generated_at": "2026-09-17T10:35:22Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -75,6 +75,10 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -200,6 +204,10 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -236,6 +244,10 @@
       "game_id": 3530433,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -496,7 +508,7 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19356,
       "games_fetched": 8,
       "count": 8
     },
