@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T10:14:39Z",
+  "generated_at": "2026-09-21T11:19:36Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -117,10 +117,6 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -155,10 +151,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -206,10 +198,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
-      ],
-      "tags": [
-        "Platformer",
-        "Free"
       ],
       "authors": [
         {
@@ -503,14 +491,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19355,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97287,
+      "len": 97286,
       "account": {
         "source": "myindie",
         "username": "someshboy",
