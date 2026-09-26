@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25T10:45:02Z",
+  "generated_at": "2026-09-26T10:27:31Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -145,10 +145,6 @@
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
       ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -195,6 +191,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -315,10 +315,6 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
-      ],
-      "tags": [
-        "Adventure",
-        "Free"
       ],
       "authors": [
         {
@@ -492,14 +488,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19357,
+      "len": 19359,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97286,
+      "len": 97362,
       "account": {
         "source": "myindie",
         "username": "someshboy",
