@@ -1,11 +1,18 @@
 {
-  "generated_at": "2026-09-26T10:27:31Z",
+  "generated_at": "2026-09-27T10:58:52Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
-      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
+      "nickname": "SoMeshBoy",
+      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
+      "counts": {
+        "posts": 15,
+        "subscribers": 9,
+        "following": 10
+      },
+      "joined": "26 March 2024 @ 14:10 UTC",
       "games_count": 8
     },
     "myindie": {
@@ -109,6 +116,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -316,6 +327,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
       ],
+      "tags": [
+        "Adventure",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -362,7 +377,7 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 10,
+        "views": 11,
         "likes": 0
       },
       "jams": [
@@ -415,7 +430,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 7,
+        "views": 8,
         "likes": 2
       },
       "jams": [
