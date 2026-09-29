@@ -1,18 +1,11 @@
 {
-  "generated_at": "2026-09-28T12:15:06Z",
+  "generated_at": "2026-09-29T11:44:33Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
+      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "nickname": "SoMeshBoy",
-      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
-      "counts": {
-        "posts": 15,
-        "subscribers": 9,
-        "following": 11
-      },
-      "joined": "26 March 2024 @ 14:10 UTC",
       "games_count": 8
     },
     "myindie": {
@@ -82,6 +75,10 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -203,10 +200,6 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
-      "tags": [
-        "Platformer",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -244,6 +237,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -280,10 +277,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -326,6 +319,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
+      ],
+      "tags": [
+        "Adventure",
+        "Free"
       ],
       "authors": [
         {
@@ -478,7 +475,7 @@
       "source": "sibgamejam",
       "url": "https://platform.sibgamejam.com/games/onemella/inkdarkunk",
       "cover": "https://storage.naspeh.tech/static/capsule-images/69f379da4f80cd3d2aa39fa2/1777810868408-56be67912f6ece8e-uploads.jpg",
-      "description": "Это пошаговая абстрактная стратегическая игра\n\nЦель:\n        Собирайте Фишки с особыми способностями, побеждайте противников в нечестной партии и достигните \"оракула\"\n\nКак играть?\n        Выставляйте фишки на доску для захвата преимущества\n        Собирайте модифицированные фишки с поверженных противников\n        Для победы удержите превосходящее число фишек своего цвета на доске или захватите особенные клетки",
+      "description": "",
       "genre": "",
       "platforms": [],
       "jams": [
@@ -499,14 +496,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19359,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97364,
+      "len": 97365,
       "account": {
         "source": "myindie",
         "username": "someshboy",
@@ -528,7 +525,7 @@
     "sibgamejam": {
       "url": "https://platform.sibgamejam.com/api/v1/games/public/onemella",
       "http": 200,
-      "len": 1171,
+      "len": 391,
       "count": 1
     }
   }
