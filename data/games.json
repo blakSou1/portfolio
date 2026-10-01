@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T11:31:08Z",
+  "generated_at": "2026-10-01T11:59:23Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -20,7 +20,6 @@
       "username": "someshboy",
       "url": "https://myindie.net/users/user/someshboy",
       "nickname": "SoMeshBoy",
-      "line": "@someshboy | разработчик",
       "avatar": "https://storage.yandexcloud.net/myindie/users/f5a4277f-6fba-4768-86e4-49a6ee0db699/1767266649194.jpeg",
       "counts": {
         "games": 2,
@@ -29,7 +28,7 @@
         "comments": 1,
         "reviews": 0
       },
-      "score": 10
+      "score": 1
     },
     "sibgamejam": {
       "source": "sibgamejam",
@@ -57,6 +56,10 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -82,10 +85,6 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -121,6 +120,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -155,10 +158,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -206,6 +205,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -373,7 +376,7 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 12,
+        "views": 15,
         "likes": 0
       },
       "jams": [
@@ -397,16 +400,16 @@
       ],
       "authors": [
         {
+          "name": "SoMeshBoy",
+          "url": "https://myindie.net/users/user/someshboy"
+        },
+        {
           "name": "Blezis",
           "url": "https://myindie.net/users/user/blezis"
         },
         {
           "name": "Tausdei",
           "url": "https://myindie.net/users/user/tausdei"
-        },
-        {
-          "name": "SoMeshBoy",
-          "url": "https://myindie.net/users/user/someshboy"
         }
       ],
       "published": "2026-01-26"
@@ -426,7 +429,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 9,
+        "views": 11,
         "likes": 2
       },
       "jams": [
@@ -450,6 +453,10 @@
       ],
       "authors": [
         {
+          "name": "Serafim_Dergunov",
+          "url": "https://myindie.net/users/user/serafimdergunov"
+        },
+        {
           "name": "TheGirs0n",
           "url": "https://myindie.net/users/user/thegirs0n"
         },
@@ -464,10 +471,6 @@
         {
           "name": "Nam",
           "url": "https://myindie.net/users/user/nam"
-        },
-        {
-          "name": "Serafim_Dergunov",
-          "url": "https://myindie.net/users/user/serafimdergunov"
         }
       ],
       "published": "2026-01-06"
@@ -499,20 +502,19 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19358,
+      "len": 19359,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 97364,
+      "len": 102321,
       "account": {
         "source": "myindie",
         "username": "someshboy",
         "url": "https://myindie.net/users/user/someshboy",
         "nickname": "SoMeshBoy",
-        "line": "@someshboy | разработчик",
         "avatar": "https://storage.yandexcloud.net/myindie/users/f5a4277f-6fba-4768-86e4-49a6ee0db699/1767266649194.jpeg",
         "counts": {
           "games": 2,
@@ -521,7 +523,7 @@
           "comments": 1,
           "reviews": 0
         },
-        "score": 10
+        "score": 1
       },
       "count": 2
     },
