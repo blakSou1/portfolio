@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T10:46:16Z",
+  "generated_at": "2026-10-04T11:27:58Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -10,7 +10,7 @@
       "counts": {
         "posts": 15,
         "subscribers": 9,
-        "following": 11
+        "following": 12
       },
       "joined": "26 March 2024 @ 14:10 UTC",
       "games_count": 8
@@ -82,10 +82,6 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -119,6 +115,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -154,10 +154,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -242,6 +238,10 @@
       "game_id": 3530433,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -494,14 +494,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19359,
+      "len": 19358,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 102388,
+      "len": 102386,
       "account": {
         "source": "myindie",
         "username": "someshboy",
