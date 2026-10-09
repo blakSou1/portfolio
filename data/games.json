@@ -1,12 +1,19 @@
 {
-  "generated_at": "2026-10-08T12:24:24Z",
+  "generated_at": "2026-10-09T12:13:55Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
-      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "games_count": 8
+      "nickname": "SoMeshBoy",
+      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
+      "counts": {
+        "posts": 15,
+        "subscribers": 9,
+        "following": 12
+      },
+      "joined": "26 March 2024 @ 14:10 UTC",
+      "games_count": 16
     },
     "myindie": {
       "source": "myindie",
@@ -48,10 +55,6 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -113,10 +116,6 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -151,6 +150,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
+      ],
+      "tags": [
+        "Puzzle",
+        "Free"
       ],
       "authors": [
         {
@@ -199,10 +202,6 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
-      "tags": [
-        "Platformer",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -239,10 +238,6 @@
       "game_id": 3530433,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
-      ],
-      "tags": [
-        "Platformer",
-        "Free"
       ],
       "authors": [
         {
@@ -322,6 +317,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
+      ],
+      "tags": [
+        "Adventure",
+        "Free"
       ],
       "authors": [
         {
@@ -502,7 +501,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 102722,
+      "len": 103044,
       "account": {
         "source": "myindie",
         "username": "someshboy",
