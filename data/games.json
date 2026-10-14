@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T13:06:10Z",
+  "generated_at": "2026-10-14T10:47:44Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -55,6 +55,10 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -115,6 +119,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -239,6 +247,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -275,10 +287,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -321,10 +329,6 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
-      ],
-      "tags": [
-        "Adventure",
-        "Free"
       ],
       "authors": [
         {
@@ -372,7 +376,7 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 17,
+        "views": 20,
         "likes": 0
       },
       "jams": [
@@ -425,7 +429,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 14,
+        "views": 15,
         "likes": 2
       },
       "jams": [
@@ -498,14 +502,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19542,
+      "len": 19541,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 103929,
+      "len": 104078,
       "account": {
         "source": "myindie",
         "username": "someshboy",
