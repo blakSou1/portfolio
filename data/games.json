@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T10:17:41Z",
+  "generated_at": "2026-10-17T09:51:39Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -56,6 +56,10 @@
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -81,10 +85,6 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -115,29 +115,7 @@
       ],
       "description": "",
       "game_id": 3720025,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        }
-      ],
-      "jams": [
-        {
-          "source": "itch",
-          "slug": "sibgamejam-nov-2025",
-          "title": "Siberian Game Jam - Ноябрь 2025",
-          "url": "https://itch.io/jam/sibgamejam-nov-2025",
-          "entries": 215,
-          "ratings": 4564,
-          "date_start": "2025-11-01",
-          "date_end": "2025-11-25"
-        }
-      ]
+      "jams": []
     },
     {
       "id": "itch/3645748",
@@ -151,44 +129,7 @@
       ],
       "description": "",
       "game_id": 3645748,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
-        "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        }
-      ],
-      "jams": [
-        {
-          "source": "itch",
-          "slug": "daydream-jam",
-          "title": "Daydream Jam SkillUp",
-          "url": "https://itch.io/jam/daydream-jam",
-          "entries": 2,
-          "ratings": 1,
-          "date_start": "2025-10-09",
-          "date_end": "2025-10-19"
-        },
-        {
-          "source": "itch",
-          "slug": "emotionally-loaded-ii",
-          "title": "emotionally loaded jam #2 🍂 fall 2025",
-          "url": "https://itch.io/jam/emotionally-loaded-ii",
-          "entries": 12,
-          "ratings": 7,
-          "date_start": "2025-09-14",
-          "date_end": "2025-10-20",
-          "place": "7th",
-          "score": 2.714
-        }
-      ]
+      "jams": []
     },
     {
       "id": "itch/3624616",
@@ -283,35 +224,7 @@
       ],
       "description": "",
       "game_id": 3400824,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
-        "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
-        "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        },
-        {
-          "name": "Илья",
-          "url": "https://shad1qq.itch.io"
-        }
-      ],
-      "jams": [
-        {
-          "source": "itch",
-          "slug": "cgcjam",
-          "title": "CGCJam",
-          "url": "https://itch.io/jam/cgcjam",
-          "entries": 8,
-          "ratings": 3,
-          "date_start": "2025-03-14",
-          "date_end": "2025-03-20",
-          "place": "4th",
-          "score": 2.333
-        }
-      ]
+      "jams": []
     },
     {
       "id": "itch/3164624",
@@ -508,12 +421,17 @@
       "http": 200,
       "len": 19543,
       "games_fetched": 8,
+      "game_page_notes": {
+        "itch/3720025": "game_page failed: HTTPError",
+        "itch/3645748": "game_page failed: HTTPError",
+        "itch/3400824": "game_page failed: HTTPError"
+      },
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 106641,
+      "len": 106642,
       "account": {
         "source": "myindie",
         "username": "someshboy",
