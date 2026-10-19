@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18T10:02:54Z",
+  "generated_at": "2026-10-19T11:28:04Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -171,8 +171,8 @@
           "slug": "daydream-jam",
           "title": "Daydream Jam SkillUp",
           "url": "https://itch.io/jam/daydream-jam",
-          "entries": 2,
-          "ratings": 1,
+          "entries": null,
+          "ratings": null,
           "date_start": "2025-10-09",
           "date_end": "2025-10-19"
         },
@@ -506,14 +506,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 19539,
+      "len": 19543,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 106641,
+      "len": 106642,
       "account": {
         "source": "myindie",
         "username": "someshboy",
