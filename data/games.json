@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19T11:28:04Z",
+  "generated_at": "2026-10-20T10:34:12Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -120,6 +120,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -171,8 +175,8 @@
           "slug": "daydream-jam",
           "title": "Daydream Jam SkillUp",
           "url": "https://itch.io/jam/daydream-jam",
-          "entries": null,
-          "ratings": null,
+          "entries": 2,
+          "ratings": 1,
           "date_start": "2025-10-09",
           "date_end": "2025-10-19"
         },
@@ -205,10 +209,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
-      ],
-      "tags": [
-        "Platformer",
-        "Free"
       ],
       "authors": [
         {
@@ -283,10 +283,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -433,7 +429,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 16,
+        "views": 17,
         "likes": 2
       },
       "jams": [
@@ -513,7 +509,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 106642,
+      "len": 107032,
       "account": {
         "source": "myindie",
         "username": "someshboy",
