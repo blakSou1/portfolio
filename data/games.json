@@ -1,19 +1,12 @@
 {
-  "generated_at": "2026-10-20T10:34:12Z",
+  "generated_at": "2026-10-21T10:46:21Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
+      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "nickname": "SoMeshBoy",
-      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
-      "counts": {
-        "posts": 15,
-        "subscribers": 9,
-        "following": 12
-      },
-      "joined": "26 March 2024 @ 14:10 UTC",
-      "games_count": 16
+      "games_count": 8
     },
     "myindie": {
       "source": "myindie",
@@ -119,10 +112,6 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -509,7 +498,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 107032,
+      "len": 107315,
       "account": {
         "source": "myindie",
         "username": "someshboy",
