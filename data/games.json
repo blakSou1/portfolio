@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T10:39:26Z",
+  "generated_at": "2026-10-24T09:57:04Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -214,6 +214,10 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -291,10 +295,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -388,7 +388,7 @@
       ],
       "stats": {
         "downloads": 14,
-        "views": 22,
+        "views": 23,
         "likes": 0
       },
       "jams": [
@@ -521,7 +521,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 107313,
+      "len": 107315,
       "account": {
         "source": "myindie",
         "username": "someshboy",
