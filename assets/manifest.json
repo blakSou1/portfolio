@@ -6,6 +6,11 @@
       "sha": "e74025a77b5e972e54d12aff5dacf48b5fe7e97e"
     },
     {
+      "path": "assets/models/m777/m777.fbx",
+      "name": "m777.fbx",
+      "sha": "508eb0eac8b58eaaaab671a8679664e1bb4139da"
+    },
+    {
       "path": "assets/models/test-duck/test-duck.glb",
       "name": "test-duck.glb",
       "sha": "78170efd55f69ea61bda4ab184ba0776c78c5b5c"
@@ -46,5 +51,5 @@
       "sha": "f54eef60fedfb457c7919a0bdbf9571e035dc272"
     }
   ],
-  "generated_at": "2026-09-09T09:40:55.536914Z"
+  "generated_at": "2026-10-24T09:34:04.279608Z"
 }
