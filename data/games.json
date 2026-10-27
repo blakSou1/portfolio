@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26T11:46:59Z",
+  "generated_at": "2026-10-27T11:12:56Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -49,16 +49,12 @@
       "platforms": [
         "web"
       ],
-      "description": "",
+      "description": "DeckBuilding, strategy, board game",
       "game_id": 4313240,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
         "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -78,13 +74,17 @@
       "platforms": [
         "web"
       ],
-      "description": "Protect your tower from intruders! Set traps and upgrade your fortress.",
+      "description": "casual, startegy, tower-defense",
       "game_id": 4223926,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2My5wbmc=/347x500/LeJZf1.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
+      ],
+      "tags": [
+        "Strategy",
+        "Free"
       ],
       "authors": [
         {
@@ -113,7 +113,7 @@
         "web",
         "windows"
       ],
-      "description": "",
+      "description": "dark, roguelike, rts",
       "game_id": 3720025,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
@@ -139,7 +139,7 @@
           "entries": 215,
           "ratings": 4564,
           "date_start": "2025-11-01",
-          "date_end": "2025-11-25"
+          "date_end": "2025-11-04"
         }
       ]
     },
@@ -153,7 +153,7 @@
       "platforms": [
         "web"
       ],
-      "description": "",
+      "description": "puzzle",
       "game_id": 3645748,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
@@ -174,7 +174,7 @@
           "entries": 2,
           "ratings": 1,
           "date_start": "2025-10-09",
-          "date_end": "2025-10-19"
+          "date_end": "2025-10-13"
         },
         {
           "source": "itch",
@@ -184,7 +184,7 @@
           "entries": 12,
           "ratings": 7,
           "date_start": "2025-09-14",
-          "date_end": "2025-10-20",
+          "date_end": "2025-10-14",
           "place": "7th",
           "score": 2.714
         }
@@ -206,6 +206,10 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -221,7 +225,7 @@
           "entries": 22,
           "ratings": 3,
           "date_start": "2025-06-12",
-          "date_end": "2025-06-22",
+          "date_end": "2025-06-16",
           "place": "11th",
           "score": 2.533
         }
@@ -258,7 +262,7 @@
           "entries": 217,
           "ratings": 4805,
           "date_start": "2025-05-01",
-          "date_end": "2025-06-02"
+          "date_end": "2025-05-04"
         }
       ]
     },
@@ -280,10 +284,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
       ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -303,7 +303,7 @@
           "entries": 8,
           "ratings": 3,
           "date_start": "2025-03-14",
-          "date_end": "2025-03-20",
+          "date_end": "2025-03-18",
           "place": "4th",
           "score": 2.333
         }
@@ -325,6 +325,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
+      ],
+      "tags": [
+        "Adventure",
+        "Free"
       ],
       "authors": [
         {
@@ -353,7 +357,7 @@
           "entries": 94,
           "ratings": 1198,
           "date_start": "2024-12-05",
-          "date_end": "2024-12-15"
+          "date_end": "2024-12-08"
         }
       ]
     },
@@ -371,8 +375,8 @@
         "MyIndie January Rush Lvl 8"
       ],
       "stats": {
-        "downloads": 14,
-        "views": 24,
+        "downloads": 15,
+        "views": 26,
         "likes": 0
       },
       "jams": [
@@ -425,7 +429,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 17,
+        "views": 18,
         "likes": 2
       },
       "jams": [
@@ -498,14 +502,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20026,
+      "len": 20173,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 107314,
+      "len": 109514,
       "account": {
         "source": "myindie",
         "username": "someshboy",
