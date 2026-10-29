@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T11:46:45Z",
+  "generated_at": "2026-10-29T11:54:51Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -35,7 +35,7 @@
       "username": "onemella",
       "nickname": "onemella",
       "url": "https://platform.sibgamejam.com/users/onemella",
-      "games_count": 1
+      "games_count": null
     }
   },
   "games": [
@@ -85,10 +85,6 @@
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
         "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -158,10 +154,6 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -334,6 +326,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
       ],
+      "tags": [
+        "Adventure",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -389,7 +385,7 @@
           "slug": "myindie-january-rush-lvl-8",
           "title": "MyIndie January Rush Lvl 8",
           "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-8",
-          "entries": 73,
+          "entries": 72,
           "participants": 329,
           "date_start": "2026-01-23T12:00:00Z",
           "date_end": "2026-02-03T20:00:00Z",
@@ -506,7 +502,7 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20180,
+      "len": 20181,
       "games_fetched": 8,
       "count": 8
     },
@@ -533,9 +529,9 @@
     },
     "sibgamejam": {
       "url": "https://platform.sibgamejam.com/api/v1/games/public/onemella",
-      "http": 200,
-      "len": 391,
-      "count": 1
+      "count": 0,
+      "error": "HTTPError: HTTP Error 404: Not Found",
+      "kept_previous": 1
     }
   }
 }
