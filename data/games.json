@@ -1,19 +1,12 @@
 {
-  "generated_at": "2026-10-30T11:48:43Z",
+  "generated_at": "2026-10-31T11:22:17Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
+      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "nickname": "SoMeshBoy",
-      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
-      "counts": {
-        "posts": 15,
-        "subscribers": 10,
-        "following": 14
-      },
-      "joined": "26 March 2024 @ 14:10 UTC",
-      "games_count": 16
+      "games_count": 8
     },
     "myindie": {
       "source": "myindie",
@@ -159,10 +152,6 @@
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
       ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -209,6 +198,10 @@
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
+      ],
+      "tags": [
+        "Platformer",
+        "Free"
       ],
       "authors": [
         {
@@ -287,10 +280,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc5MS5wbmc=/347x500/GiGONm.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
-      ],
-      "tags": [
-        "Puzzle",
-        "Free"
       ],
       "authors": [
         {
@@ -384,7 +373,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 27,
+        "views": 31,
         "likes": 0
       },
       "jams": [
@@ -510,14 +499,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20179,
+      "len": 20181,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 109515,
+      "len": 109514,
       "account": {
         "source": "myindie",
         "username": "someshboy",
