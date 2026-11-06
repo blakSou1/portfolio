@@ -1,19 +1,12 @@
 {
-  "generated_at": "2026-11-05T13:39:59Z",
+  "generated_at": "2026-11-06T13:23:55Z",
   "accounts": {
     "itch": {
       "source": "itch",
       "username": "someshboy",
+      "nickname": "someshboy",
       "url": "https://itch.io/profile/someshboy",
-      "nickname": "SoMeshBoy",
-      "avatar": "https://img.itch.zone/aW1nLzIzMzUzNDY0LmpwZw==/80x80%23/lB1fvC.jpg",
-      "counts": {
-        "posts": 15,
-        "subscribers": 10,
-        "following": 15
-      },
-      "joined": "26 March 2024 @ 14:10 UTC",
-      "games_count": 16
+      "games_count": null
     },
     "myindie": {
       "source": "myindie",
@@ -366,7 +359,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 19,
+        "views": 20,
         "likes": 2
       },
       "jams": [
@@ -438,19 +431,14 @@
   "sources": {
     "itch": {
       "url": "https://itch.io/profile/someshboy",
-      "http": 200,
-      "len": 19696,
-      "games_fetched": 8,
-      "game_page_notes": {
-        "itch/3645748": "game_page failed: HTTPError",
-        "itch/3530433": "game_page failed: HTTPError"
-      },
-      "count": 8
+      "count": 0,
+      "error": "HTTPError: HTTP Error 429: Too Many Requests",
+      "kept_previous": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 113900,
+      "len": 113901,
       "account": {
         "source": "myindie",
         "username": "someshboy",
