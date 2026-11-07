@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T13:23:55Z",
+  "generated_at": "2026-11-07T12:01:53Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -18,7 +18,7 @@
         "games": 2,
         "likes": 0,
         "subscribers": 0,
-        "comments": 1,
+        "comments": 0,
         "reviews": 0
       },
       "score": 1
@@ -315,7 +315,7 @@
           "slug": "myindie-january-rush-lvl-8",
           "title": "MyIndie January Rush Lvl 8",
           "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-8",
-          "entries": 72,
+          "entries": 71,
           "participants": 329,
           "date_start": "2026-01-23T12:00:00Z",
           "date_end": "2026-02-03T20:00:00Z",
@@ -368,7 +368,7 @@
           "slug": "myindie-january-rush-lvl-7",
           "title": "MyIndie January Rush Lvl 7",
           "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-7",
-          "entries": 55,
+          "entries": 54,
           "participants": 218,
           "date_start": "2026-01-03T12:00:00Z",
           "date_end": "2026-01-12T20:59:00Z",
@@ -438,7 +438,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 113901,
+      "len": 114352,
       "account": {
         "source": "myindie",
         "username": "someshboy",
@@ -449,7 +449,7 @@
           "games": 2,
           "likes": 0,
           "subscribers": 0,
-          "comments": 1,
+          "comments": 0,
           "reviews": 0
         },
         "score": 1
