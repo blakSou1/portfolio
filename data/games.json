@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T13:54:25Z",
+  "generated_at": "2026-11-11T13:07:51Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -124,6 +124,10 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
       ],
+      "tags": [
+        "Strategy",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -206,10 +210,6 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
-      "tags": [
-        "Platformer",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -246,10 +246,6 @@
       "game_id": 3530433,
       "screens": [
         "https://img.itch.zone/aW1hZ2UvMzUzMDQzMy8yMTAzMDE5Mi5naWY=/original/akX6WL.gif"
-      ],
-      "tags": [
-        "Platformer",
-        "Free"
       ],
       "authors": [
         {
@@ -429,7 +425,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 22,
+        "views": 23,
         "likes": 2
       },
       "jams": [
@@ -502,14 +498,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20512,
+      "len": 20514,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 114610,
+      "len": 114608,
       "account": {
         "source": "myindie",
         "username": "someshboy",
