@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T13:05:35Z",
+  "generated_at": "2026-11-16T14:12:22Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -18,7 +18,7 @@
         "games": 2,
         "likes": 0,
         "subscribers": 0,
-        "comments": 0,
+        "comments": 1,
         "reviews": 0
       },
       "score": 1
@@ -112,10 +112,6 @@
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
         "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
       ],
       "authors": [
         {
@@ -323,6 +319,10 @@
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
         "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
       ],
+      "tags": [
+        "Adventure",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -369,7 +369,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 37,
+        "views": 38,
         "likes": 0
       },
       "jams": [
@@ -378,7 +378,7 @@
           "slug": "myindie-january-rush-lvl-8",
           "title": "MyIndie January Rush Lvl 8",
           "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-8",
-          "entries": 71,
+          "entries": 72,
           "participants": 329,
           "date_start": "2026-01-23T12:00:00Z",
           "date_end": "2026-02-03T20:00:00Z",
@@ -422,7 +422,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 25,
+        "views": 26,
         "likes": 2
       },
       "jams": [
@@ -431,7 +431,7 @@
           "slug": "myindie-january-rush-lvl-7",
           "title": "MyIndie January Rush Lvl 7",
           "url": "https://myindie.net/jams/jam/myindie-january-rush-lvl-7",
-          "entries": 54,
+          "entries": 55,
           "participants": 218,
           "date_start": "2026-01-03T12:00:00Z",
           "date_end": "2026-01-12T20:59:00Z",
@@ -495,14 +495,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20500,
+      "len": 20503,
       "games_fetched": 8,
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 115286,
+      "len": 113403,
       "account": {
         "source": "myindie",
         "username": "someshboy",
@@ -513,7 +513,7 @@
           "games": 2,
           "likes": 0,
           "subscribers": 0,
-          "comments": 0,
+          "comments": 1,
           "reviews": 0
         },
         "score": 1
