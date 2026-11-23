@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T13:43:45Z",
+  "generated_at": "2026-11-23T16:44:38Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -199,6 +199,10 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
+      "tags": [
+        "Platformer",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -277,6 +281,10 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
       ],
+      "tags": [
+        "Puzzle",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -294,9 +302,11 @@
           "title": "CGCJam",
           "url": "https://itch.io/jam/cgcjam",
           "entries": 8,
-          "ratings": 25,
+          "ratings": 3,
           "date_start": "2025-03-14",
-          "date_end": "2025-03-18"
+          "date_end": "2025-03-18",
+          "place": "4th",
+          "score": 2.333
         }
       ]
     },
@@ -500,7 +510,7 @@
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 115075,
+      "len": 115103,
       "account": {
         "source": "myindie",
         "username": "someshboy",
