@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T16:44:38Z",
+  "generated_at": "2026-11-24T16:39:41Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -44,17 +44,6 @@
       ],
       "description": "DeckBuilding, strategy, board game",
       "game_id": 4313240,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNC5qcGc=/347x500/HlECYT.jpg",
-        "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyNS5qcGc=/347x500/mMWao7.jpg",
-        "https://img.itch.zone/aW1hZ2UvNDMxMzI0MC8yODA4MTMyOC5qcGc=/347x500/V4e9ZK.jpg"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        }
-      ],
       "jams": []
     },
     {
@@ -69,30 +58,6 @@
       ],
       "description": "casual, startegy, tower-defense",
       "game_id": 4223926,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2My5wbmc=/347x500/LeJZf1.png",
-        "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2OS5wbmc=/347x500/%2Fn5iK%2B.png",
-        "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk2Ny5wbmc=/347x500/sS3F1v.png",
-        "https://img.itch.zone/aW1hZ2UvNDIyMzkyNi8yNTQyNzk3MC5wbmc=/347x500/qY%2BsYK.png"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        },
-        {
-          "name": "Blezis",
-          "url": "https://blezis.itch.io"
-        },
-        {
-          "name": "Tausdei",
-          "url": "https://tausdei.itch.io"
-        }
-      ],
       "jams": []
     },
     {
@@ -108,33 +73,7 @@
       ],
       "description": "dark, roguelike, rts",
       "game_id": 3720025,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkyODg0Ny5naWY=/original/wY9FWk.gif",
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxNS5qcGc=/347x500/ln5aGN.jpg",
-        "https://img.itch.zone/aW1hZ2UvMzcyMDAyNS8yMzkzMzIxOC5qcGc=/347x500/62X1jK.jpg"
-      ],
-      "tags": [
-        "Strategy",
-        "Free"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        }
-      ],
-      "jams": [
-        {
-          "source": "itch",
-          "slug": "sibgamejam-nov-2025",
-          "title": "Siberian Game Jam - Ноябрь 2025",
-          "url": "https://itch.io/jam/sibgamejam-nov-2025",
-          "entries": 215,
-          "ratings": 4564,
-          "date_start": "2025-11-01",
-          "date_end": "2025-11-04"
-        }
-      ]
+      "jams": []
     },
     {
       "id": "itch/3645748",
@@ -164,8 +103,8 @@
           "slug": "daydream-jam",
           "title": "Daydream Jam SkillUp",
           "url": "https://itch.io/jam/daydream-jam",
-          "entries": 2,
-          "ratings": 1,
+          "entries": null,
+          "ratings": null,
           "date_start": "2025-10-09",
           "date_end": "2025-10-13"
         },
@@ -174,12 +113,10 @@
           "slug": "emotionally-loaded-ii",
           "title": "emotionally loaded jam #2 🍂 fall 2025",
           "url": "https://itch.io/jam/emotionally-loaded-ii",
-          "entries": 12,
-          "ratings": 7,
+          "entries": null,
+          "ratings": null,
           "date_start": "2025-09-14",
-          "date_end": "2025-10-14",
-          "place": "7th",
-          "score": 2.714
+          "date_end": "2025-10-14"
         }
       ]
     },
@@ -215,12 +152,10 @@
           "slug": "cgcjam2",
           "title": "CGC'Jam'2",
           "url": "https://itch.io/jam/cgcjam2",
-          "entries": 22,
-          "ratings": 3,
+          "entries": null,
+          "ratings": null,
           "date_start": "2025-06-12",
-          "date_end": "2025-06-16",
-          "place": "11th",
-          "score": 2.533
+          "date_end": "2025-06-16"
         }
       ]
     },
@@ -322,45 +257,7 @@
       ],
       "description": "",
       "game_id": 3164624,
-      "screens": [
-        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
-        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
-        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
-      ],
-      "tags": [
-        "Adventure",
-        "Free"
-      ],
-      "authors": [
-        {
-          "name": "SoMeshBoy",
-          "url": "https://someshboy.itch.io"
-        },
-        {
-          "name": "Илья",
-          "url": "https://shad1qq.itch.io"
-        },
-        {
-          "name": "GVPGerman",
-          "url": "https://gvpgerman.itch.io"
-        },
-        {
-          "name": "thenickto",
-          "url": "https://thenickto.itch.io"
-        }
-      ],
-      "jams": [
-        {
-          "source": "itch",
-          "slug": "gp-profit-jam-2",
-          "title": "GP Profit Jam #2 feat Pikabu",
-          "url": "https://itch.io/jam/gp-profit-jam-2",
-          "entries": 94,
-          "ratings": 1198,
-          "date_start": "2024-12-05",
-          "date_end": "2024-12-08"
-        }
-      ]
+      "jams": []
     },
     {
       "id": "myindie/overlord_kvv",
@@ -503,8 +400,14 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20504,
+      "len": 20505,
       "games_fetched": 8,
+      "game_page_notes": {
+        "itch/4313240": "game_page failed: HTTPError",
+        "itch/4223926": "game_page failed: HTTPError",
+        "itch/3720025": "game_page failed: HTTPError",
+        "itch/3164624": "game_page failed: HTTPError"
+      },
       "count": 8
     },
     "myindie": {
