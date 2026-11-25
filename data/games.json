@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T16:39:41Z",
+  "generated_at": "2026-11-25T16:22:57Z",
   "accounts": {
     "itch": {
       "source": "itch",
@@ -91,6 +91,10 @@
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0NC5qcGc=/347x500/3I%2B33j.jpg",
         "https://img.itch.zone/aW1hZ2UvMzY0NTc0OC8yMzU4ODc0Ni5qcGc=/347x500/aoQkGs.jpg"
       ],
+      "tags": [
+        "Puzzle",
+        "Free"
+      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -103,8 +107,8 @@
           "slug": "daydream-jam",
           "title": "Daydream Jam SkillUp",
           "url": "https://itch.io/jam/daydream-jam",
-          "entries": null,
-          "ratings": null,
+          "entries": 2,
+          "ratings": 1,
           "date_start": "2025-10-09",
           "date_end": "2025-10-13"
         },
@@ -113,8 +117,8 @@
           "slug": "emotionally-loaded-ii",
           "title": "emotionally loaded jam #2 🍂 fall 2025",
           "url": "https://itch.io/jam/emotionally-loaded-ii",
-          "entries": null,
-          "ratings": null,
+          "entries": 12,
+          "ratings": 66,
           "date_start": "2025-09-14",
           "date_end": "2025-10-14"
         }
@@ -136,10 +140,6 @@
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5MjcyOC5wbmc=/347x500/LZ6hCe.png",
         "https://img.itch.zone/aW1hZ2UvMzYyNDYxNi8yMTY5Mjc0Ni5naWY=/original/kE43vF.gif"
       ],
-      "tags": [
-        "Platformer",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -152,8 +152,8 @@
           "slug": "cgcjam2",
           "title": "CGC'Jam'2",
           "url": "https://itch.io/jam/cgcjam2",
-          "entries": null,
-          "ratings": null,
+          "entries": 22,
+          "ratings": 72,
           "date_start": "2025-06-12",
           "date_end": "2025-06-16"
         }
@@ -216,10 +216,6 @@
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTc3MS5wbmc=/347x500/jt1xc9.png",
         "https://img.itch.zone/aW1hZ2UvMzQwMDgyNC8yMDMxNTYxOS5wbmc=/347x500/sv6utR.png"
       ],
-      "tags": [
-        "Puzzle",
-        "Free"
-      ],
       "authors": [
         {
           "name": "SoMeshBoy",
@@ -236,7 +232,7 @@
           "slug": "cgcjam",
           "title": "CGCJam",
           "url": "https://itch.io/jam/cgcjam",
-          "entries": 8,
+          "entries": null,
           "ratings": 3,
           "date_start": "2025-03-14",
           "date_end": "2025-03-18",
@@ -257,7 +253,45 @@
       ],
       "description": "",
       "game_id": 3164624,
-      "jams": []
+      "screens": [
+        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5My5wbmc=/347x500/zALueL.png",
+        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NS5wbmc=/347x500/PuhkAx.png",
+        "https://img.itch.zone/aW1hZ2UvMzE2NDYyNC8xODkwNDg5NC5wbmc=/347x500/mIvpGS.png"
+      ],
+      "tags": [
+        "Adventure",
+        "Free"
+      ],
+      "authors": [
+        {
+          "name": "SoMeshBoy",
+          "url": "https://someshboy.itch.io"
+        },
+        {
+          "name": "Илья",
+          "url": "https://shad1qq.itch.io"
+        },
+        {
+          "name": "GVPGerman",
+          "url": "https://gvpgerman.itch.io"
+        },
+        {
+          "name": "thenickto",
+          "url": "https://thenickto.itch.io"
+        }
+      ],
+      "jams": [
+        {
+          "source": "itch",
+          "slug": "gp-profit-jam-2",
+          "title": "GP Profit Jam #2 feat Pikabu",
+          "url": "https://itch.io/jam/gp-profit-jam-2",
+          "entries": 94,
+          "ratings": 1198,
+          "date_start": "2024-12-05",
+          "date_end": "2024-12-08"
+        }
+      ]
     },
     {
       "id": "myindie/overlord_kvv",
@@ -327,7 +361,7 @@
       ],
       "stats": {
         "downloads": 15,
-        "views": 29,
+        "views": 30,
         "likes": 2
       },
       "jams": [
@@ -400,20 +434,19 @@
     "itch": {
       "url": "https://itch.io/profile/someshboy",
       "http": 200,
-      "len": 20505,
+      "len": 20503,
       "games_fetched": 8,
       "game_page_notes": {
         "itch/4313240": "game_page failed: HTTPError",
         "itch/4223926": "game_page failed: HTTPError",
-        "itch/3720025": "game_page failed: HTTPError",
-        "itch/3164624": "game_page failed: HTTPError"
+        "itch/3720025": "game_page failed: HTTPError"
       },
       "count": 8
     },
     "myindie": {
       "url": "https://myindie.net/users/user/someshboy",
       "http": 200,
-      "len": 115103,
+      "len": 115179,
       "account": {
         "source": "myindie",
         "username": "someshboy",
